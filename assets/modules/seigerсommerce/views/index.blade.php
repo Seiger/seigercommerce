@@ -2,12 +2,12 @@
 
 @section('content')
     <div class="notifier"><div class="notifier-txt"></div></div>
-    <h1><i class="fa fa-newspaper"></i> {{$_lang['spost_title']}}</h1>
-    <p style="margin-left:15px;">{!!$_lang['spost_description']!!}</p>
+    <h1><i class="fa fa-newspaper"></i> {{$_lang['scommerce_title']}}</h1>
+    <p style="margin-left:15px;">{!!$_lang['scommerce_description']!!}</p>
 
-    @if(in_array($get, ['post', 'postAdd']))
+    {{--@if(in_array($get, ['post', 'postAdd']))
         <form name="post" id="post" class="content" method="post" enctype="multipart/form-data" action="{!!$url!!}&get=postSave" onsubmit="documentDirty=false;">
-            @endif
+    @endif
             <div class="sectionBody">
                 <div class="tab-pane" id="resourcesPane">
                     <script>tpResources = new WebFXTabPane(document.getElementById('resourcesPane'), false);</script>
@@ -90,7 +90,7 @@
             @if(in_array($get, ['post', 'postAdd']))
                 <input type="hidden" name="post" value="@if(isset($post['post'])) {{(int)$post['post']}} @else 0 @endif">
         </form>
-    @endif
+    @endif--}}
     <img src="{{evo()->getConfig('site_url', '/')}}assets/snippets/phpthumb/noimage.png" id="img-preview" style="display: none;" class="post-thumbnail">
 
     <div class="modal fade" id="addTag" tabindex="-1" role="dialog" aria-hidden="true">
@@ -98,7 +98,7 @@
             <div class="modal-content">
                 <div class="modal-header">{{$_lang['spost_add_tag']}}</div>
                 <div class="modal-body">
-                    <p>{{$_lang['spost_add_new_tag']}} @if($sPost->langDefault() != 'base') {{$_lang['spost_on_lang']}} {{strtoupper($sPost->langDefault())}} @endif</p>
+                    <p>{{$_lang['spost_add_new_tag']}} @if($lang_default != 'base') {{$_lang['spost_on_lang']}} {{strtoupper($lang_default)}} @endif</p>
                     <input type="text" name="add_tag" value="" class="form-control">
                 </div>
                 <div class="modal-footer">
@@ -109,7 +109,7 @@
         </div>
     </div>
     <div id="copyright">
-        {!!$_lang['slang_copyright']!!} <strong><a href="https://seigerit.com/" target="_blank">Seiger IT</a></strong>
+        {!!$_lang['scommerce_copyright']!!} <strong><a href="https://seigerit.com/" target="_blank">Seiger IT</a></strong>
     </div>
 @endsection
 

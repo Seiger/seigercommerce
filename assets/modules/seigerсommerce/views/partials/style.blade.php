@@ -25,11 +25,6 @@
     .modal-backdrop {background-color:rgba(0, 0, 0, 0.5);}
     .modal-header{margin-top: 1rem;}
     .form-row .col-title{width: 9rem;}
-    .tagsTable {margin-left: 10%; width: 90%;}
-    .tagsTable table {width: {{count($sPost->langTabs())*20+25}}%;}
-    .tagsTable td:first-child {vertical-align: middle; position: absolute; width: 10%; margin-left: -10%;}
-    .tagsTable tbody td:first-child {padding-top: 10px;}
-    .tagsTable tbody td {width: {{100 / count($sPost->langTabs())}}%;}
     table .post-thumbnail{width: 70px; height: 45px;}
     #copyright{position:fixed;bottom:0;right:0;background-color: #0057b8;color: #ffd700;padding: 5px;}
     #copyright a{color: #ffd700;}
