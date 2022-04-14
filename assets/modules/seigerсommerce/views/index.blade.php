@@ -1,97 +1,115 @@
 @extends('manager::template.page')
 
 @section('content')
-    <div class="notifier"><div class="notifier-txt"></div></div>
-    <h1><i class="fa fa-newspaper"></i> {{$_lang['scommerce_title']}}</h1>
+    <div class="notifier">
+        <div class="notifier-txt"></div>
+    </div>
+    <h1><i class="fa fa-store"></i> {{$_lang['scommerce_title']}}</h1>
     <p style="margin-left:15px;">{!!$_lang['scommerce_description']!!}</p>
 
-    {{--@if(in_array($get, ['post', 'postAdd']))
-        <form name="post" id="post" class="content" method="post" enctype="multipart/form-data" action="{!!$url!!}&get=postSave" onsubmit="documentDirty=false;">
-    @endif
-            <div class="sectionBody">
-                <div class="tab-pane" id="resourcesPane">
-                    <script>tpResources = new WebFXTabPane(document.getElementById('resourcesPane'), false);</script>
+    @include('partials.formStart')
+    <div class="sectionBody">
+        <div class="tab-pane" id="resourcesPane">
+            <script>tpResources = new WebFXTabPane(document.getElementById('resourcesPane'), false);</script>
 
-                    @if(in_array($get, ['posts', 'tags']))
-                        <div class="tab-page postsTab" id="postsTab">
-                            <h2 class="tab"><a href="{!!$url!!}&get=posts"><span><i class="fa fa-scroll"></i> {{$_lang['spost_list']}}</span></a></h2>
-                            <script>tpResources.addTabPage(document.getElementById('postsTab'));</script>
-                            @if($get == 'posts')
-                                @include('postsTab')
-                            @endif
-                        </div>
-
-                        <div class="tab-page tagsTab" id="tagsTab">
-                            <h2 class="tab"><a href="{!!$url!!}&get=tags"><span><i class="fa fa-hashtag"></i> {{$_lang['spost_tags_list']}}</span></a></h2>
-                            <script>tpResources.addTabPage(document.getElementById('tagsTab'));</script>
-                            @if($get == 'tags')
-                                @include('tagsTab')
-                            @endif
-                        </div>
-
-                        <div class="tab-page postAddTab" id="postAddTab">
-                            <h2 class="tab"><a href="{!!$url!!}&get=postAdd"><span><i class="fa fa-plus-circle"></i> {{$_lang['spost_new_post']}}</span></a></h2>
-                            <script>tpResources.addTabPage(document.getElementById('postAddTab'));</script>
-                        </div>
-
-                        <div class="modal fade" id="confirmDelete" tabindex="-1" role="dialog" aria-hidden="true">
-                            <div class="modal-dialog">
-                                <div class="modal-content">
-                                    <div class="modal-header">{{$_lang['spost_confirm_delete']}}</div>
-                                    <div class="modal-body">
-                                        {{$_lang['spost_you_sure']}} <b id="confirm-name"></b> {{$_lang['spost_with_id']}} <b id="confirm-id"></b>
-                                    </div>
-                                    <div class="modal-footer">
-                                        <button type="button" class="btn btn-default" data-dismiss="modal">{{$_lang["cancel"]}}</button>
-                                        <a class="btn btn-danger btn-ok">{{$_lang['remove']}}</a>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                    @else
-                        <div class="tab-page postsTab" id="postsTab">
-                            <h2 class="tab"><a href="{!!$url!!}&get=posts"><span><i class="fa fa-scroll"></i> {{$_lang['spost_list']}}</span></a></h2>
-                            <script>tpResources.addTabPage(document.getElementById('postsTab'));</script>
-                        </div>
-
-                        <div class="tab-page tagsTab" id="tagsTab">
-                            <h2 class="tab"><a href="{!!$url!!}&get=tags"><span><i class="fa fa-hashtag"></i> {{$_lang['spost_tags_list']}}</span></a></h2>
-                            <script>tpResources.addTabPage(document.getElementById('tagsTab'));</script>
-                        </div>
-
-                        @if($get == 'post')
-                            <div class="tab-page postTab" id="postTab">
-                                <h2 class="tab"><i class="fa fa-pencil-alt"></i> {{$_lang['spost_edit_post']}}</h2>
-                                <script>tpResources.addTabPage(document.getElementById('postTab'));</script>
-                                @include('postTab')
-                            </div>
-                        @else
-                            <div class="tab-page postAddTab" id="postAddTab">
-                                <h2 class="tab"><i class="fa fa-plus-circle"></i> {{$_lang['spost_new_post']}}</h2>
-                                <script>tpResources.addTabPage(document.getElementById('postAddTab'));</script>
-                                @include('postTab')
-                            </div>
-                        @endif
-                        @if(isset($heading))
-                            @include('page_navigation')
-                        @endif
-                        @foreach($sPost->langTabs() as $lang => $tabName)
-                            <div class="tab-page postTexts{{$lang}}Tab" id="postTexts{{$lang}}Tab">
-                                <h2 class="tab"><i class="fa fa-flag"></i> {{$tabName}}</h2>
-                                <script>tpResources.addTabPage(document.getElementById('postTexts{{$lang}}Tab'));</script>
-                                @include('postTextsTab')
-                            </div>
-                        @endforeach
-                    @endif
-
-                    <script>tpResources.setSelectedTab('{{$get}}Tab');</script>
-                </div>
+            <div class="tab-page productsTab" id="productsTab">
+                <h2 class="tab">
+                    <a href="{!!$url!!}&get=products">
+                        <span><i class="fa fa-store"></i> {{$_lang['scommerce_products']}}</span>
+                    </a>
+                </h2>
+                <script>tpResources.addTabPage(document.getElementById('productsTab'));</script>
+                @if($get == 'products')
+                    @include('productsTab')
+                @endif
             </div>
-            @if(in_array($get, ['post', 'postAdd']))
-                <input type="hidden" name="post" value="@if(isset($post['post'])) {{(int)$post['post']}} @else 0 @endif">
-        </form>
-    @endif--}}
-    <img src="{{evo()->getConfig('site_url', '/')}}assets/snippets/phpthumb/noimage.png" id="img-preview" style="display: none;" class="post-thumbnail">
+
+            {{--@if(in_array($get, ['posts', 'tags']))
+                <div class="tab-page postsTab" id="postsTab">
+                    <h2 class="tab"><a href="{!!$url!!}&get=posts"><span><i class="fa fa-scroll"></i> {{$_lang['spost_list']}}</span></a>
+                    </h2>
+                    <script>tpResources.addTabPage(document.getElementById('postsTab'));</script>
+                    @if($get == 'posts')
+                        @include('postsTab')
+                    @endif
+                </div>
+
+                <div class="tab-page tagsTab" id="tagsTab">
+                    <h2 class="tab"><a href="{!!$url!!}&get=tags"><span><i class="fa fa-hashtag"></i> {{$_lang['spost_tags_list']}}</span></a>
+                    </h2>
+                    <script>tpResources.addTabPage(document.getElementById('tagsTab'));</script>
+                    @if($get == 'tags')
+                        @include('tagsTab')
+                    @endif
+                </div>
+
+                <div class="tab-page postAddTab" id="postAddTab">
+                    <h2 class="tab"><a href="{!!$url!!}&get=postAdd"><span><i class="fa fa-plus-circle"></i> {{$_lang['spost_new_post']}}</span></a>
+                    </h2>
+                    <script>tpResources.addTabPage(document.getElementById('postAddTab'));</script>
+                </div>
+
+                <div class="modal fade" id="confirmDelete" tabindex="-1" role="dialog" aria-hidden="true">
+                    <div class="modal-dialog">
+                        <div class="modal-content">
+                            <div class="modal-header">{{$_lang['spost_confirm_delete']}}</div>
+                            <div class="modal-body">
+                                {{$_lang['spost_you_sure']}} <b
+                                        id="confirm-name"></b> {{$_lang['spost_with_id']}} <b
+                                        id="confirm-id"></b>
+                            </div>
+                            <div class="modal-footer">
+                                <button type="button" class="btn btn-default"
+                                        data-dismiss="modal">{{$_lang["cancel"]}}</button>
+                                <a class="btn btn-danger btn-ok">{{$_lang['remove']}}</a>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            @else
+                <div class="tab-page postsTab" id="postsTab">
+                    <h2 class="tab"><a href="{!!$url!!}&get=posts"><span><i class="fa fa-scroll"></i> {{$_lang['spost_list']}}</span></a>
+                    </h2>
+                    <script>tpResources.addTabPage(document.getElementById('postsTab'));</script>
+                </div>
+
+                <div class="tab-page tagsTab" id="tagsTab">
+                    <h2 class="tab"><a href="{!!$url!!}&get=tags"><span><i class="fa fa-hashtag"></i> {{$_lang['spost_tags_list']}}</span></a>
+                    </h2>
+                    <script>tpResources.addTabPage(document.getElementById('tagsTab'));</script>
+                </div>
+
+                @if($get == 'post')
+                    <div class="tab-page postTab" id="postTab">
+                        <h2 class="tab"><i class="fa fa-pencil-alt"></i> {{$_lang['spost_edit_post']}}</h2>
+                        <script>tpResources.addTabPage(document.getElementById('postTab'));</script>
+                        @include('postTab')
+                    </div>
+                @else
+                    <div class="tab-page postAddTab" id="postAddTab">
+                        <h2 class="tab"><i class="fa fa-plus-circle"></i> {{$_lang['spost_new_post']}}</h2>
+                        <script>tpResources.addTabPage(document.getElementById('postAddTab'));</script>
+                        @include('postTab')
+                    </div>
+                @endif
+                @if(isset($heading))
+                    @include('page_navigation')
+                @endif
+                @foreach($sPost->langTabs() as $lang => $tabName)
+                    <div class="tab-page postTexts{{$lang}}Tab" id="postTexts{{$lang}}Tab">
+                        <h2 class="tab"><i class="fa fa-flag"></i> {{$tabName}}</h2>
+                        <script>tpResources.addTabPage(document.getElementById('postTexts{{$lang}}Tab'));</script>
+                        @include('postTextsTab')
+                    </div>
+                @endforeach
+            @endif--}}
+
+            <script>tpResources.setSelectedTab('{{$get}}Tab');</script>
+        </div>
+    </div>
+    @include('partials.formEnd')
+    <img src="{{evo()->getConfig('site_url', '/')}}assets/snippets/phpthumb/noimage.png" id="img-preview"
+         style="display: none;" class="post-thumbnail">
 
     <div class="modal fade" id="addTag" tabindex="-1" role="dialog" aria-hidden="true">
         <div class="modal-dialog">
@@ -109,12 +127,13 @@
         </div>
     </div>
     <div id="copyright">
-        {!!$_lang['scommerce_copyright']!!} <strong><a href="https://seigerit.com/" target="_blank">Seiger IT</a></strong>
+        {!!$_lang['scommerce_copyright']!!} <strong><a href="https://seigerit.com/" target="_blank">Seiger
+                IT</a></strong>
     </div>
 @endsection
 
 @push('scripts.top')
-    <link href="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/css/select2.min.css" rel="stylesheet" />
+    <link href="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/css/select2.min.css" rel="stylesheet"/>
     <script src="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/js/select2.min.js"></script>
     @include('partials.style')
     <script>
@@ -139,21 +158,21 @@
     <script src="actions/resources/functions.js"></script>
     <script type="text/javascript" src="media/calendar/datepicker.js"></script>
     <script>
-        $(document).ready(function() {
+        $(document).ready(function () {
             $('.select2').select2();
 
-            $("table img").on("mouseenter", function() {
+            $("table img").on("mouseenter", function () {
                 var alt = $(this).attr("alt");
                 if (alt.length > 0) {
                     $("#img-preview").attr("src", alt).show();
                 }
             });
 
-            $("table img").on("mouseleave", function() {
+            $("table img").on("mouseleave", function () {
                 $("#img-preview").hide();
             });
 
-            $('#confirmDelete').on('show.bs.modal', function(e) {
+            $('#confirmDelete').on('show.bs.modal', function (e) {
                 $(this).find('#confirm-id').text($(e.relatedTarget).data('id'));
                 $(this).find('#confirm-name').text($(e.relatedTarget).data('name'));
                 $(this).find('.btn-ok').attr('href', $(e.relatedTarget).data('href'));
@@ -198,10 +217,10 @@
 
         // Form Validation and Saving
         function saveForm(selector) {
-            var errors    = 0;
-            var messages  = "";
-            var validates = $(selector+" [data-validate]");
-            validates.each(function(k, v) {
+            var errors = 0;
+            var messages = "";
+            var validates = $(selector + " [data-validate]");
+            validates.each(function (k, v) {
                 var rule = $(v).attr("data-validate").split(":");
                 switch (rule[0]) {
                     case "textNoEmpty": // Not an empty field
@@ -250,12 +269,12 @@
                 $('.notifier').addClass("notifier-error");
                 $('.notifier').fadeIn(500);
                 $('.notifier').find('.notifier-txt').html(messages);
-                setTimeout(function() {
+                setTimeout(function () {
                     $('.notifier').fadeOut(5000);
-                },2000);
-                setTimeout(function() {
+                }, 2000);
+                setTimeout(function () {
                     $('.notifier').removeClass("notifier-error");
-                },5000);
+                }, 5000);
             }
         }
 

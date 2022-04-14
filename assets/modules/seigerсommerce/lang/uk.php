@@ -7,3 +7,7 @@ $_lang['scommerce_seotitle'] = 'SEO Заголовок';
 $_lang['scommerce_seodescription'] = 'SEO Опис';
 $_lang['scommerce_seodescription_help'] = 'Введіть SEO Опис для сторінки посту';
 $_lang['scommerce_copyright'] = 'Розробка';
+$_lang['scommerce_products'] = 'Товари';
+$_lang['scommerce_availability'] = 'Доступність';
+$_lang['scommerce_add'] = 'Додати';
+$_lang['scommerce_add_help'] = 'Додати новий запис';

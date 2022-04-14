@@ -3,8 +3,11 @@
  * Class sCommerce - Seiger Commerce - E-commerce Management Module for Evolution CMS admin panel.
  */
 
+require_once MODX_BASE_PATH . 'assets/modules/seigerсommerce/models/sProduct.php';
+
 use EvolutionCMS\Models\SiteModule;
 use Illuminate\Pagination\Paginator;
+use sCommerce\Models\sProduct;
 
 if (!class_exists('sCommerce')) {
     class sCommerce
@@ -17,6 +20,19 @@ if (!class_exists('sCommerce')) {
         {
             $this->url = $this->moduleUrl();
             Paginator::defaultView('pagination');
+        }
+
+        /**
+         * List products with default language
+         *
+         * @return array
+         */
+        public function products(): object
+        {
+            $order = 's_products.updated_at';
+            $direc = 'desc';
+
+            return sProduct::lang($this->langDefault())->orderBy($order, $direc)->get();
         }
 
         /**
