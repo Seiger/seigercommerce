@@ -5,9 +5,9 @@
 CREATE TABLE IF NOT EXISTS `{PREFIX}s_products`
 (
     `id` int(11) NOT NULL AUTO_INCREMENT,
-    `published` tinyint(4) NOT NULL DEFAULT '0',
-    `availability` tinyint(4) NOT NULL DEFAULT '0',
-    `status` tinyint(4) NOT NULL DEFAULT '0',
+    `published` tinyint(1) NOT NULL DEFAULT '0' COMMENT '0-Unpublished|1-Published',
+    `availability` tinyint(1) NOT NULL DEFAULT '0' COMMENT '0-Unpublished|1-Published',
+    `status` tinyint(1) NOT NULL DEFAULT '0',
     `category` int(11) NOT NULL DEFAULT '0',
     `position` int(11) NOT NULL DEFAULT '0',
     `alias` varchar(512) NOT NULL,
@@ -16,7 +16,7 @@ CREATE TABLE IF NOT EXISTS `{PREFIX}s_products`
     `price_old` float(9,2) NOT NULL DEFAULT '0.00',
     `weight` float(9,2) NOT NULL DEFAULT '0.00',
     `code` varchar(64) NOT NULL DEFAULT '',
-    `type` tinyint(4) NOT NULL DEFAULT 0 COMMENT '0-Simple',
+    `type` tinyint(1) NOT NULL DEFAULT 0 COMMENT '0-Simple',
     `rating` int(11) NOT NULL DEFAULT 0,
     `views` int(11) NOT NULL DEFAULT 0,
     `created_at` timestamp NULL DEFAULT NULL,

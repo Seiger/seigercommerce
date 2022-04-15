@@ -11,3 +11,4 @@ $_lang['scommerce_products'] = 'Products';
 $_lang['scommerce_availability'] = 'Availability';
 $_lang['scommerce_add'] = 'Add';
 $_lang['scommerce_add_help'] = 'Add new entry';
+$_lang['scommerce_status'] = 'Status';
