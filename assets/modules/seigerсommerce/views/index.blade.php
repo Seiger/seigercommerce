@@ -24,6 +24,18 @@
                 @endif
             </div>
 
+            <div class="tab-page productTab" id="productTab">
+                <h2 class="tab">
+                    <a href="{!!$url!!}&get=product">
+                        <span><i class="fa fa-meteor"></i> {{$_lang['scommerce_product']}}</span>
+                    </a>
+                </h2>
+                <script>tpResources.addTabPage(document.getElementById('productTab'));</script>
+                @if($get == 'product')
+                    @include('productTab')
+                @endif
+            </div>
+
             {{--@if(in_array($get, ['posts', 'tags']))
                 <div class="tab-page postsTab" id="postsTab">
                     <h2 class="tab"><a href="{!!$url!!}&get=posts"><span><i class="fa fa-scroll"></i> {{$_lang['spost_list']}}</span></a>

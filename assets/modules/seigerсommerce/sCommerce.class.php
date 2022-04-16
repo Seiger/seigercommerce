@@ -4,6 +4,7 @@
  */
 
 require_once MODX_BASE_PATH . 'assets/modules/seigerсommerce/models/sProduct.php';
+require_once MODX_BASE_PATH . 'assets/modules/seigerсommerce/models/sProductTranslate.php';
 
 use EvolutionCMS\Models\SiteModule;
 use Illuminate\Pagination\Paginator;
@@ -33,6 +34,22 @@ if (!class_exists('sCommerce')) {
             $direc = 'desc';
 
             return sProduct::lang($this->langDefault())->orderBy($order, $direc)->get();
+        }
+
+        /**
+         * Get product object with translation
+         *
+         * @param int $productId
+         * @param string $lang
+         * @return object
+         */
+        public function getProduct(int $productId, string $lang = ''): object
+        {
+            if (!trim($lang)) {
+                $lang = $this->langDefault();
+            }
+
+            return sProduct::lang($lang)->whereProduct($productId)->first();
         }
 
         /**

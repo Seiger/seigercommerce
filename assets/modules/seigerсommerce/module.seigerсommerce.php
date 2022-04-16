@@ -17,6 +17,15 @@ $data['url'] = $sCommerce->url;
 switch ($data['get']) {
     default:
         break;
+    case "product":
+        $texts = [];
+        $product = $sCommerce->getProduct(request()->i);
+        $pTexts = $product->texts->toArray();
+        foreach ($pTexts as $pText) {
+            $texts[$pText['lang']] = $pText;
+        }
+        $data['product'] = $product;
+        $data['texts'] = $texts;
 }
 
 $sCommerce->view('index', $data);

@@ -5,6 +5,14 @@ use Illuminate\Database\Eloquent;
 class sProduct extends Eloquent\Model
 {
     /**
+     * Get the translates for the product.
+     */
+    public function texts()
+    {
+        return $this->hasMany(sProductTranslate::class, 'product', 'product');
+    }
+
+    /**
      * Get the product item with lang
      *
      * @param $query
