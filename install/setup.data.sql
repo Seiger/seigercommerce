@@ -7,7 +7,7 @@ CREATE TABLE IF NOT EXISTS `{PREFIX}s_products`
     `id` int(11) NOT NULL AUTO_INCREMENT,
     `published` tinyint(1) NOT NULL DEFAULT '0' COMMENT '0-Unpublished|1-Published',
     `availability` tinyint(1) NOT NULL DEFAULT '0' COMMENT '0-Not available|1-In stock|2-On order',
-    `status` tinyint(1) NOT NULL DEFAULT '0',
+    `status` tinyint(1) NOT NULL DEFAULT '0' COMMENT '0-Select|1-Hit|2-New|3-Top|4-Sale|5-Stock',
     `category` int(11) NOT NULL DEFAULT '0',
     `position` int(11) NOT NULL DEFAULT '0',
     `alias` varchar(512) NOT NULL,

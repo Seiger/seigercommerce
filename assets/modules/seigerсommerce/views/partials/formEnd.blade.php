@@ -1,4 +1,4 @@
-@if(in_array($get, ['post', 'postAdd']))
-    <input type="hidden" name="post" value="@if(isset($post['post'])) {{(int)$post['post']}} @else 0 @endif">
-</form>
+@if(in_array($get, ['product']))
+    <input type="hidden" name="product" value="@if(isset($product->product)) {{(int)$product->product}} @else 0 @endif">
+    </form>
 @endif
