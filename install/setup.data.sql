@@ -47,3 +47,11 @@ CREATE TABLE IF NOT EXISTS `{PREFIX}s_product_translates`
 ) ENGINE = MyISAM {TABLEENCODING} AUTO_INCREMENT=1;
 
 -- --------------------------------------------------------
+
+--
+-- Create ecommerce structure
+--
+
+INSERT INTO `{PREFIX}site_content` (`alias`, `pagetitle`, `published`) SELECT * FROM (SELECT 'catalog' AS `alias`, 'Catalog' AS `pagetitle`, 1 AS `published`) AS temp WHERE NOT EXISTS (SELECT `alias` FROM `{PREFIX}site_content` WHERE `alias` = 'catalog') LIMIT 1;
+
+-- --------------------------------------------------------
