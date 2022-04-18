@@ -1,5 +1,6 @@
 <?php namespace sCommerce\Models;
 
+use EvolutionCMS\Facades\UrlProcessor;
 use Illuminate\Database\Eloquent;
 use ReflectionClass;
 
@@ -111,9 +112,11 @@ class sProduct extends Eloquent\Model
      */
     public function getLinkAttribute()
     {
-        $base_url = evo()->getConfig('base_url', '/');
-        if ($base_url == '/') {
-            $base_url = MODX_SITE_URL;
+        $site_start = evo()->getConfig('site_start', 1);
+        $catalog_root = evo()->getConfig('catalog_root', $site_start);
+        $base_url = UrlProcessor::makeUrl($catalog_root);
+        if (str_starts_with($base_url, '/')) {
+            $base_url = MODX_SITE_URL . ltrim($base_url, '/');
         }
         $suffix_url = evo()->getConfig('friendly_url_suffix', '');
         $link = $base_url . $this->alias . $suffix_url;
