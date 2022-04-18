@@ -55,3 +55,11 @@ CREATE TABLE IF NOT EXISTS `{PREFIX}s_product_translates`
 INSERT INTO `{PREFIX}site_content` (`alias`, `pagetitle`, `published`) SELECT * FROM (SELECT 'catalog' AS `alias`, 'Catalog' AS `pagetitle`, 1 AS `published`) AS temp WHERE NOT EXISTS (SELECT `alias` FROM `{PREFIX}site_content` WHERE `alias` = 'catalog') LIMIT 1;
 
 -- --------------------------------------------------------
+
+--
+-- Settings table `{PREFIX}system_settings`
+--
+
+REPLACE INTO `{PREFIX}system_settings` (`setting_name`, `setting_value`) VALUES ('catalog_root', (SELECT `id` FROM `{PREFIX}site_content` WHERE `alias` = 'catalog'))
+
+-- --------------------------------------------------------
