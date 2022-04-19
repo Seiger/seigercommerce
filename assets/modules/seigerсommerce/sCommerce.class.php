@@ -6,6 +6,7 @@
 require_once MODX_BASE_PATH . 'assets/modules/seigerсommerce/models/sProduct.php';
 require_once MODX_BASE_PATH . 'assets/modules/seigerсommerce/models/sProductTranslate.php';
 
+use EvolutionCMS\Models\SiteContent;
 use EvolutionCMS\Models\SiteModule;
 use Illuminate\Pagination\Paginator;
 use sCommerce\Models\sProduct;
@@ -16,6 +17,7 @@ if (!class_exists('sCommerce')) {
         public $url;
         public $perPage = 30;
         protected $basePath = MODX_BASE_PATH . 'assets/modules/seigerсommerce/';
+        protected $categories = [];
 
         public function __construct()
         {
@@ -50,6 +52,23 @@ if (!class_exists('sCommerce')) {
             }
 
             return sProduct::lang($lang)->whereProduct($productId)->first();
+        }
+
+        /**
+         * List of categories and subcategories
+         *
+         * @return array
+         */
+        public function listCategories(): array
+        {
+            $root = SiteContent::find(evo()->getConfig('catalog_root', 1));
+            $this->categories[$root->id] = $root->pagetitle;
+            if ($root->hasChildren()) {
+                foreach ($root->children as $item) {
+                    $this->categoryCrumb($item);
+                }
+            }
+            return $this->categories;
         }
 
         /**
@@ -146,17 +165,6 @@ if (!class_exists('sCommerce')) {
         }
 
         /**
-         * Module link
-         *
-         * @return string
-         */
-        protected function moduleUrl(): string
-        {
-            $module = SiteModule::whereName('sCommerce')->first();
-            return 'index.php?a=112&id=' . $module->id;
-        }
-
-        /**
          * Connecting the visual editor to the required fields
          *
          * @param string $ids List of id fields separated by commas
@@ -191,6 +199,28 @@ if (!class_exists('sCommerce')) {
                 'elements' => $elements,
                 'height' => $height
             ]));
+        }
+
+        /**
+         * Module link
+         *
+         * @return string
+         */
+        protected function moduleUrl(): string
+        {
+            $module = SiteModule::whereName('sCommerce')->first();
+            return 'index.php?a=112&id=' . $module->id;
+        }
+
+        protected function categoryCrumb($resource, $crumb = '')
+        {
+            $crumb = trim($crumb) ? $crumb . ' > ' . $resource->pagetitle : $resource->pagetitle;
+            $this->categories[$resource->id] = $crumb;
+            if ($resource->hasChildren()) {
+                foreach ($resource->children as $item) {
+                    $this->categoryCrumb($item, $crumb);
+                }
+            }
         }
     }
 }

@@ -119,7 +119,7 @@
             </div>
             <div class="input-group col">
                 <input type="text" id="alias" class="form-control" name="alias" maxlength="255" value="{{$product->alias ?? ''}}" onchange="documentDirty=true;" spellcheck="true">
-                <a id="preview" href="/" class="btn btn-outline-secondary form-control" type="button" target="_blank">{{$_lang["preview"]}}</a>
+                <a id="preview" href="{{$product->link ?? '/'}}" class="btn btn-outline-secondary form-control" type="button" target="_blank">{{$_lang["preview"]}}</a>
             </div>
         </div>
     </div>
@@ -132,9 +132,9 @@
             </div>
             <div class="col">
                 <select id="category" class="form-control" name="category" onchange="documentDirty=true;">
-                    {{--@foreach(\sPost\Models\sPostContent::listTypes() as $key => $type)
-                        <option value="{{$key}}" @if($key == ($post->type ?? '')) selected @endif>{{$type}} ({{$key}})</option>
-                    @endforeach--}}
+                    @foreach($sCommerce->listCategories() as $key => $value)
+                        <option value="{{$key}}" @if($key == ($product->category ?? evo()->getConfig('catalog_root', evo()->getConfig('site_start', 1)))) selected @endif>{{$value}}</option>
+                    @endforeach
                 </select>
             </div>
         </div>
@@ -165,9 +165,9 @@
             </div>
             <div class="col">
                 <select id="categories" class="form-control select2" name="categories[]" multiple onchange="documentDirty=true;">
-                    {{--@foreach(\sPost\Models\sPostTag::all() as $tag)
-                        <option value="{{$tag->id}}" @if(in_array($tag->id, $tags)) selected @endif>{!! $tag->{$sPost->langDefault()} !!} ({{$tag->alias}})</option>
-                    @endforeach--}}
+                    @foreach($sCommerce->listCategories() as $key => $value)
+                        <option value="{{$key}}" @if(in_array($key, [$product->category])) selected @endif>{{$value}}</option>
+                    @endforeach
                 </select>
             </div>
         </div>
