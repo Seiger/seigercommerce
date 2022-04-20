@@ -39,3 +39,5 @@ $_lang['scommerce_categories_help'] = 'List of categories in which the product s
 $_lang['scommerce_category_help'] = 'The main product category, used to form the main link and breadcrumbs.';
 $_lang['scommerce_image'] = 'Image';
 $_lang["scommerce_image_help"] = 'This is a preview image of the product.';
+$_lang['scommerce_texts'] = 'Texts';
+$_lang['scommerce_lang'] = 'language.';

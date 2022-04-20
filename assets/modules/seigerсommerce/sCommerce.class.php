@@ -10,6 +10,7 @@ use EvolutionCMS\Models\SiteContent;
 use EvolutionCMS\Models\SiteModule;
 use Illuminate\Pagination\Paginator;
 use sCommerce\Models\sProduct;
+use sCommerce\Models\sProductTranslate;
 
 if (!class_exists('sCommerce')) {
     class sCommerce
@@ -79,13 +80,13 @@ if (!class_exists('sCommerce')) {
             $product->weight = $this->validatePrice($data['weight']);
             $product->save();
 
-            /*foreach ($this->langTabs() as $lang => $label) {
-                if ($request->has($lang)) {
-                    $this->setContent($product->id, $lang, $request->input($lang));
+            foreach ($this->langTabs() as $lang => $label) {
+                if (request()->has('texts.'.$lang)) {
+                    $this->setProductTexts($product->id, $lang, request()->input('texts.'.$lang));
                 }
             }
 
-            if ($request->has('tags')) {
+            /*if ($request->has('tags')) {
                 $product->product = $product->id;
                 $product->tags()->sync($request->get('tags'));
             }*/
@@ -145,6 +146,43 @@ if (!class_exists('sCommerce')) {
             ]);
             echo View::make($tpl, $data);
             return true;
+        }
+
+        /**
+         * Content Tabs
+         *
+         * @return array
+         */
+        public function langTabs(): array
+        {
+            global $_lang;
+            if (is_file($this->basePath . 'lang/' . evo()->getConfig('manager_language', 'uk') . '.php')) {
+                require_once $this->basePath . 'lang/' . evo()->getConfig('manager_language', 'uk') . '.php';
+            }
+            $tabs = [];
+            $lang = evo()->getConfig('s_lang_config', '');
+            if (trim($lang)) {
+                $lang = explode(',', $lang);
+                foreach ($lang as $item) {
+                    $tabs[$item] = $_lang['scommerce_texts'] . ' ' . $item;
+                }
+            } else {
+                $tabs['base'] = $_lang['scommerce_texts'];
+            }
+            return $tabs;
+        }
+
+        /**
+         * Saving Product texts
+         *
+         * @param int $productId
+         * @param string $lang
+         * @param array $fields
+         * @return void
+         */
+        protected function setProductTexts(int $productId, string $lang, array $fields): void
+        {
+            sProductTranslate::updateOrCreate(['product' => $productId, 'lang' => $lang], $fields);
         }
 
         /**

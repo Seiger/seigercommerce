@@ -36,6 +36,14 @@
                         @include('productTab')
                     @endif
                 </div>
+
+                @foreach($sCommerce->langTabs() as $lang => $tabName)
+                    <div class="tab-page productTexts{{$lang}}Tab" id="productTexts{{$lang}}Tab">
+                        <h2 class="tab"><i class="fa fa-flag"></i> {{$tabName}}</h2>
+                        <script>tpResources.addTabPage(document.getElementById('productTexts{{$lang}}Tab'));</script>
+                        @include('productTextsTab')
+                    </div>
+                @endforeach
             @endif
 
             <script>tpResources.setSelectedTab('{{$get}}Tab');</script>

@@ -26,6 +26,7 @@ switch ($data['get']) {
         }
         $data['product'] = $product;
         $data['texts'] = $texts;
+        $data['editor'] = $sCommerce->textEditor("content,epilog");
         break;
     case "productSave":
         $sCommerce->saveProduct(request()->all());

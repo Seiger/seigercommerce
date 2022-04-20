@@ -39,3 +39,5 @@ $_lang['scommerce_categories'] = 'Категории';
 $_lang['scommerce_categories_help'] = 'Список категорий в которых должен отображаться товар.';
 $_lang['scommerce_image'] = 'Изображение';
 $_lang["scommerce_image_help"] = 'Это изображение превью товара.';
+$_lang['scommerce_texts'] = 'Тексты';
+$_lang['scommerce_lang'] = 'язык.';
