@@ -5,7 +5,7 @@
             <th style="width:70px;text-align:center;">ID</th>
             <th style="text-align:center;">{{$_lang["name"]}}</th>
             <th style="width:70px;text-align:center;">{{$_lang["scommerce_availability"]}}</th>
-            <th style="width:150px;text-align:center;">{{$_lang["scommerce_status"]}}</th>
+            <th style="width:70px;text-align:center;">{{$_lang["scommerce_status"]}}</th>
             <th style="width:260px;text-align:center;">{{$_lang["onlineusers_action"]}}</th>
         </tr>
         </thead>
@@ -18,15 +18,24 @@
                     <a href="{{$product->link}}" target="_blank"><b>{{$product->pagetitle}}</b></a>
                 </td>
                 <td>
-                    {{--@if($post['published'])
+                    @if($product->published)
                         <span class="badge badge-success">{{$_lang["page_data_published"]}}</span>
                     @else
-                        <span class="badge badge-secondary">{{$_lang["page_data_unpublished"]}}</span>
-                    @endif--}}
+                        <span class="badge badge-dark">{{$_lang["page_data_unpublished"]}}</span>
+                    @endif
+                    @if($product->availability == 1)
+                        <span class="badge badge-success">{{$_lang["scommerce_in_stock"]}}</span>
+                    @elseif($product->availability == 2)
+                        <span class="badge badge-secondary">{{$_lang["scommerce_on_order"]}}</span>
+                    @else
+                        <span class="badge badge-dark">{{$_lang["scommerce_not_available"]}}</span>
+                    @endif
                 </td>
                 <td>
-                    {{--@if($post['type'] == 0)<span class="badge badge-info">{{$_lang['spost_'.$post['type']]}}</span>@endif
-                    @if($post['type'] == 1)<span class="badge badge-dark">{{$_lang['spost_'.$post['type']]}}</span>@endif--}}
+                    <span class="badge badge-info">{{\sCommerce\Models\sProduct::listType()[$product->type]}}</span>
+                    @if($product->status)
+                        <span class="badge badge-warning">{{\sCommerce\Models\sProduct::listStatus()[$product->status]}}</span>
+                    @endif
                 </td>
                 <td style="text-align:center;">
                     <a href="{{$url}}&get=product&i={{$product->product}}" class="btn btn-outline-success"><i class="fa fa-pencil"></i>&emsp;{{$_lang['edit']}}</a>

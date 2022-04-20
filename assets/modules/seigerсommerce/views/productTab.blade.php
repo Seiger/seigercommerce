@@ -147,7 +147,7 @@
                 <i class="fa fa-question-circle" data-tooltip="{{$_lang["scommerce_image_help"]}}"></i>
             </div>
             <div class="col">
-                <input type="text" id="cover" class="form-control" name="cover" value="{{$product->coverSrc ?? ''}}" onchange="documentDirty=true;">
+                <input type="text" id="cover" class="form-control" name="cover" value="{{$product->cover ?? ''}}" onchange="documentDirty=true;">
                 <input class="form-control" type="button" value="{{$_lang["insert"]}}" onclick="BrowseServer('cover')">
                 <div class="col-12">
                     <div id="image_for_cover" class="image_for_field" data-image="{{$product->coverSrc ?? ''}}" onclick="BrowseServer('cover')" style="background-image: url('{{$product->coverSrc ?? ''}}');"></div>
@@ -175,5 +175,12 @@
 </div>
 
 @push('scripts.bot')
-    @include('partials.actionButtons')
+    <div id="actions">
+        <div class="btn-group">
+            <a id="Button1" class="btn btn-success" href="javascript:void(0);" onclick="saveForm('#product');">
+                <i class="fa fa-floppy-o"></i>
+                <span>{{$_lang['save']}}</span>
+            </a>
+        </div>
+    </div>
 @endpush

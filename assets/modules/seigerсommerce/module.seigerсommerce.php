@@ -26,6 +26,10 @@ switch ($data['get']) {
         }
         $data['product'] = $product;
         $data['texts'] = $texts;
+        break;
+    case "productSave":
+        $sCommerce->saveProduct(request()->all());
+        break;
 }
 
 $sCommerce->view('index', $data);

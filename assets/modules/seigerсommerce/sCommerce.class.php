@@ -54,6 +54,45 @@ if (!class_exists('sCommerce')) {
             return sProduct::lang($lang)->whereProduct($productId)->first();
         }
 
+        public function saveProduct($data)
+        {
+            $product = false;
+            if ((int)$data['product']) {
+                $product = sProduct::find((int)$data['product']);
+            }
+            if (!$product) {
+                $product = new sProduct();
+            }
+
+            $product->published = (int)$data['published'];
+            $product->availability = (int)$data['availability'];
+            $product->status = (int)$data['status'];
+            $product->category = (int)$data['category'];
+            $product->position = (int)$data['position'];
+            $product->type = (int)$data['type'];
+            $product->rating = (int)$data['rating'];
+            $product->code = (string)$data['code'];
+            $product->alias = $this->validateAlias($data);
+            $product->cover = $this->validateImage($data['cover']);
+            $product->price = $this->validatePrice($data['price']);
+            $product->price_old = $this->validatePrice($data['price_old']);
+            $product->weight = $this->validatePrice($data['weight']);
+            $product->save();
+
+            /*foreach ($this->langTabs() as $lang => $label) {
+                if ($request->has($lang)) {
+                    $this->setContent($product->id, $lang, $request->input($lang));
+                }
+            }
+
+            if ($request->has('tags')) {
+                $product->product = $product->id;
+                $product->tags()->sync($request->get('tags'));
+            }*/
+
+            return header('Location: ' . $this->moduleUrl() . '&get=product&i=' . $product->id);
+        }
+
         /**
          * List of categories and subcategories
          *
@@ -118,13 +157,6 @@ if (!class_exists('sCommerce')) {
          */
         protected function googleTranslate(string $text, string $source = 'ru', string $target = 'uk'): string
         {
-            if ($source == 'ind') {
-                $source = 'id';
-            }
-            if ($target == 'ind') {
-                $target = 'id';
-            }
-
             if ($source == $target) {
                 return $text;
             }
@@ -212,7 +244,14 @@ if (!class_exists('sCommerce')) {
             return 'index.php?a=112&id=' . $module->id;
         }
 
-        protected function categoryCrumb($resource, $crumb = '')
+        /**
+         * Categories name as crumb
+         *
+         * @param $resource
+         * @param $crumb
+         * @return void
+         */
+        protected function categoryCrumb($resource, $crumb = ''): void
         {
             $crumb = trim($crumb) ? $crumb . ' > ' . $resource->pagetitle : $resource->pagetitle;
             $this->categories[$resource->id] = $crumb;
@@ -221,6 +260,78 @@ if (!class_exists('sCommerce')) {
                     $this->categoryCrumb($item, $crumb);
                 }
             }
+        }
+
+        /**
+         * Alias validation
+         *
+         * @param $data
+         * @return string
+         */
+        protected function validateAlias($data): string
+        {
+            if (trim($data['alias'])) {
+                $alias = Str::slug(trim($data['alias']), '-');
+            } elseif (isset($data['en_pagetitle']) && trim($data['en_pagetitle'])) {
+                $alias = Str::slug(trim($data['en_pagetitle']), '-');
+            } elseif (isset($data['base_pagetitle']) && trim($data['base_pagetitle'])) {
+                $alias = Str::slug(trim($data['base_pagetitle']), '-');
+            } else {
+                $langDefault = evo()->getConfig('s_lang_default', 'uk');
+                $alias = Str::slug(trim($langDefault . '_pagetitle'), '-');
+            }
+
+            $siteContent = SiteContent::withTrashed()->get('alias')->pluck('alias')->toArray();
+            $products = sProduct::where('id', '<>', (int)$data['product'])->get('alias')->pluck('alias')->toArray();
+            $aliases = array_merge($siteContent, $products);
+
+            if (in_array($alias, $aliases)) {
+                $cnt = 1;
+                $tempAlias = $alias;
+                while (in_array($tempAlias, $aliases)) {
+                    $tempAlias = $alias . $cnt;
+                    $cnt++;
+                }
+                $alias = $tempAlias;
+            }
+            return $alias;
+        }
+
+        /**
+         * Image validation
+         *
+         * @param string $image
+         * @return string
+         */
+        protected function validateImage(string $image): string
+        {
+            $validImg = '';
+            if (trim($image)) {
+                if (is_file(MODX_BASE_PATH . $image)) {
+                    $validImg = $image;
+                }
+            }
+            return $validImg;
+        }
+
+        /**
+         * Price validation
+         *
+         * @param mixed $price
+         * @return float
+         */
+        protected function validatePrice(mixed $price): float
+        {
+            $validPrice = 0.00;
+
+            if (is_int($price) || is_numeric($price)) {
+                $price = floatval($price);
+                $validPrice = floatval(number_format($price, 2, '.', ''));
+            } elseif (is_float($price)) {
+                $validPrice = floatval(number_format($price, 2, '.', ''));
+            }
+
+            return $validPrice;
         }
     }
 }
