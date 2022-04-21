@@ -87,10 +87,10 @@ if (!class_exists('sCommerce')) {
                 }
             }
 
-            /*if ($request->has('tags')) {
+            if (isset($data['categories']) && is_array($data['categories'])) {
                 $product->product = $product->id;
-                $product->tags()->sync($request->get('tags'));
-            }*/
+                $product->categories()->sync($data['categories']);
+            }
 
             return header('Location: ' . $this->moduleUrl() . '&get=product&i=' . $product->id);
         }

@@ -166,7 +166,7 @@
             <div class="col">
                 <select id="categories" class="form-control select2" name="categories[]" multiple onchange="documentDirty=true;">
                     @foreach($sCommerce->listCategories() as $key => $value)
-                        <option value="{{$key}}" @if(in_array($key, [$product->category])) selected @endif>{{$value}}</option>
+                        <option value="{{$key}}" @if(in_array($key, $categories)) selected @endif>{{$value}}</option>
                     @endforeach
                 </select>
             </div>

@@ -20,13 +20,18 @@ switch ($data['get']) {
     case "product":
         $texts = [];
         $product = $sCommerce->getProduct(request()->i);
+        $categories = array_unique(array_merge(
+            [(int)$product->category ?? evo()->getConfig('catalog_root', evo()->getConfig('site_start', 1))],
+            $product->categories->pluck('id')->toArray()
+        ));
         $pTexts = $product->texts->toArray();
         foreach ($pTexts as $pText) {
             $texts[$pText['lang']] = $pText;
         }
         $data['product'] = $product;
+        $data['categories'] = $categories;
         $data['texts'] = $texts;
-        $data['editor'] = $sCommerce->textEditor("content,epilog");
+        $data['editor'] = $sCommerce->textEditor("content");
         break;
     case "productSave":
         $sCommerce->saveProduct(request()->all());
