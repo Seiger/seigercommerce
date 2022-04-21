@@ -49,6 +49,17 @@ CREATE TABLE IF NOT EXISTS `{PREFIX}s_product_translates`
 -- --------------------------------------------------------
 
 --
+-- Table structure `{PREFIX}s_product_category`
+--
+
+CREATE TABLE IF NOT EXISTS `{PREFIX}s_product_category` (
+    `product` int(11) NOT NULL,
+    `category` int(11) NOT NULL
+    ) ENGINE=MyISAM {TABLEENCODING};
+
+-- --------------------------------------------------------
+
+--
 -- Create ecommerce structure
 --
 

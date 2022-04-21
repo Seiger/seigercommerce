@@ -3,12 +3,13 @@
  * Class sCommerce - Seiger Commerce - E-commerce Management Module for Evolution CMS admin panel.
  */
 
+require_once MODX_BASE_PATH . 'assets/modules/seigerсommerce/models/sCategory.php';
 require_once MODX_BASE_PATH . 'assets/modules/seigerсommerce/models/sProduct.php';
 require_once MODX_BASE_PATH . 'assets/modules/seigerсommerce/models/sProductTranslate.php';
 
-use EvolutionCMS\Models\SiteContent;
 use EvolutionCMS\Models\SiteModule;
 use Illuminate\Pagination\Paginator;
+use sCommerce\Models\sCategory;
 use sCommerce\Models\sProduct;
 use sCommerce\Models\sProductTranslate;
 
@@ -101,7 +102,7 @@ if (!class_exists('sCommerce')) {
          */
         public function listCategories(): array
         {
-            $root = SiteContent::find(evo()->getConfig('catalog_root', 1));
+            $root = sCategory::find(evo()->getConfig('catalog_root', 1));
             $this->categories[$root->id] = $root->pagetitle;
             if ($root->hasChildren()) {
                 foreach ($root->children as $item) {
@@ -319,9 +320,9 @@ if (!class_exists('sCommerce')) {
                 $alias = Str::slug(trim($langDefault . '_pagetitle'), '-');
             }
 
-            $siteContent = SiteContent::withTrashed()->get('alias')->pluck('alias')->toArray();
+            $category = sCategory::withTrashed()->get('alias')->pluck('alias')->toArray();
             $products = sProduct::where('id', '<>', (int)$data['product'])->get('alias')->pluck('alias')->toArray();
-            $aliases = array_merge($siteContent, $products);
+            $aliases = array_merge($category, $products);
 
             if (in_array($alias, $aliases)) {
                 $cnt = 1;

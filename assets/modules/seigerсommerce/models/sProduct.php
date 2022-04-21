@@ -94,6 +94,14 @@ class sProduct extends Eloquent\Model
     }
 
     /**
+     * The categories that belong to the product.
+     */
+    public function categories()
+    {
+        return $this->belongsToMany(sCategory::class, 's_product_category', 'product', 'category', 'product');
+    }
+
+    /**
      * Get the product item with lang
      *
      * @param $query
