@@ -30,4 +30,5 @@
     #copyright a{color:#ffd700;}
     .input-group-text {padding:0.1rem 0.75rem;}
     #preview.form-control {max-width:100px;}
+    .dark .sectionBody a small, .darkness .sectionBody a small {color:#b3b3b3;}
 </style>

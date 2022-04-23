@@ -4,8 +4,7 @@
     <div class="notifier">
         <div class="notifier-txt"></div>
     </div>
-    <h1><i class="fa fa-store"></i> {{$_lang['scommerce_title']}}</h1>
-    <p style="margin-left:15px;">{!!$_lang['scommerce_description']!!}</p>
+    <h1><i class="fa fa-store" data-tooltip="{{$_lang["scommerce_description"]}}"></i> {{$_lang['scommerce_title']}}</h1>
 
     @include('partials.formStart')
     <div class="sectionBody">
@@ -15,7 +14,7 @@
             <div class="tab-page productsTab" id="productsTab">
                 <h2 class="tab">
                     <a href="{!!$url!!}&get=products">
-                        <span><i class="fa fa-store"></i> {{$_lang['scommerce_products']}}</span>
+                        <span><i class="fa fa-store" data-tooltip="{{$_lang["scommerce_products_help"]}}"></i> {{$_lang['scommerce_products']}}</span>
                     </a>
                 </h2>
                 <script>tpResources.addTabPage(document.getElementById('productsTab'));</script>
@@ -45,6 +44,18 @@
                     </div>
                 @endforeach
             @endif
+
+            <div class="tab-page filtersTab" id="filtersTab">
+                <h2 class="tab">
+                    <a href="{!!$url!!}&get=filters">
+                        <span><i class="fa fa-filter" data-tooltip="{{$_lang["scommerce_filters_help"]}}"></i> {{$_lang['scommerce_filters']}}</span>
+                    </a>
+                </h2>
+                <script>tpResources.addTabPage(document.getElementById('filtersTab'));</script>
+                @if($get == 'filters')
+                    @include('filtersTab')
+                @endif
+            </div>
 
             <script>tpResources.setSelectedTab('{{$get}}Tab');</script>
         </div>
