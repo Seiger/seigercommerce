@@ -78,6 +78,39 @@ CREATE TABLE IF NOT EXISTS `{PREFIX}s_filters`
 -- --------------------------------------------------------
 
 --
+-- Table structure `{PREFIX}s_filter_translates`
+--
+
+CREATE TABLE IF NOT EXISTS `{PREFIX}s_filter_translates`
+(
+    `id` int(11) NOT NULL AUTO_INCREMENT,
+    `filter` int(11) NOT NULL,
+    `lang` varchar(4) NOT NULL DEFAULT 'base',
+    `pagetitle` varchar(512) NOT NULL DEFAULT '',
+    `introtext` text NOT NULL,
+    `content` text NOT NULL,
+    `seotitle` varchar(128) NOT NULL DEFAULT '',
+    `seodescription` varchar(255) NOT NULL DEFAULT '',
+    `created_at` timestamp NULL DEFAULT NULL,
+    `updated_at` timestamp NULL DEFAULT NULL,
+    PRIMARY KEY (`id`),
+    UNIQUE KEY `filter_lang` (`filter`, `lang`)
+    ) ENGINE = MyISAM {TABLEENCODING} AUTO_INCREMENT=1;
+
+-- --------------------------------------------------------
+
+--
+-- Table structure `{PREFIX}s_filter_category`
+--
+
+CREATE TABLE IF NOT EXISTS `{PREFIX}s_filter_category` (
+    `filter` int(11) NOT NULL,
+    `category` int(11) NOT NULL
+    ) ENGINE=MyISAM {TABLEENCODING};
+
+-- --------------------------------------------------------
+
+--
 -- Create ecommerce structure
 --
 
