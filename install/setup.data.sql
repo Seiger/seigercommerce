@@ -67,7 +67,7 @@ CREATE TABLE IF NOT EXISTS `{PREFIX}s_filters`
 (
     `id` int(11) NOT NULL AUTO_INCREMENT,
     `type` tinyint(1) NOT NULL DEFAULT 0 COMMENT '0-Characteristic|1-Filter',
-    `category` int(11) NOT NULL DEFAULT 0,
+    `type_select` tinyint(1) NOT NULL DEFAULT 0 COMMENT '0-Number|1-Text|2-Select|3-Multiselect',
     `position` int(11) NOT NULL DEFAULT 0,
     `alias` varchar(512) NOT NULL,
     `created_at` timestamp NULL DEFAULT NULL,

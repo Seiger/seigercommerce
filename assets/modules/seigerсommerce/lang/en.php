@@ -1,5 +1,4 @@
 <?php
-
 $_lang['scommerce_title'] = 'E-commerce';
 $_lang['scommerce_description'] = '<b>sCommerce</b> allows you to manage products and orders on the site.';
 $_lang['scommerce_seotitle_help'] = 'Enter an SEO Title for the post page';
@@ -36,7 +35,8 @@ $_lang['scommerce_code'] = 'Vendor code';
 $_lang['scommerce_type_simple'] = 'Simple';
 $_lang['scommerce_category'] = 'Category';
 $_lang['scommerce_categories'] = 'Categories';
-$_lang['scommerce_categories_help'] = 'List of categories in which the product should be displayed.';
+$_lang['scommerce_categories_help'] = 'List of categories in which the product should be displayed. It is built from the resource tree from the root, which is designated as a directory.';
+$_lang['scommerce_filter_categories_help'] = 'List of categories to which the feature should be attached. It is built from the resource tree from the root, which is designated as a directory.';
 $_lang['scommerce_category_help'] = 'The main product category, used to form the main link and breadcrumbs.';
 $_lang['scommerce_image'] = 'Image';
 $_lang["scommerce_image_help"] = 'This is a preview image of the product.';
@@ -44,5 +44,14 @@ $_lang['scommerce_texts'] = 'Texts';
 $_lang['scommerce_lang'] = 'language.';
 $_lang['scommerce_filters'] = 'Filters';
 $_lang['scommerce_filters_help'] = 'Available filters and shop features.';
+$_lang['scommerce_filter'] = 'Filter';
+$_lang['scommerce_new_filter'] = 'New Filter';
 $_lang['scommerce_ftype_characteristic'] = 'Characteristic';
 $_lang['scommerce_ftype_filter'] = 'Filter';
+$_lang['scommerce_type_help'] = 'Feature type. If you select a filter, the feature will become available for filtering in the catalog.';
+$_lang['scommerce_type_select'] = 'Select type';
+$_lang['scommerce_type_select_help'] = 'The type of feature data filling. <br><b>Numeric</b> - the value can only be a number. <br><b>Text</b> - the value can be a short text. <br><b>Choice</b> - the value can be one of the offered options. <br><b>Multi-choice</b> - the value can be many of the options offered. <br><b style="color:red;">Attention!!! When changing the selection type, you may lose feature data for products that were previously assigned.</b>';
+$_lang['scommerce_stype_number'] = 'Number';
+$_lang['scommerce_stype_text'] = 'Text';
+$_lang['scommerce_stype_select'] = 'Select';
+$_lang['scommerce_stype_multiselect'] = 'Multiselect';

@@ -1,5 +1,4 @@
 <?php
-
 $_lang['scommerce_title'] = 'Електронна комерція';
 $_lang['scommerce_description'] = '<b>sCommerce</b> дозволяє здійснювати управління товарами та замовленнями на сайті.';
 $_lang['scommerce_seotitle_help'] = 'Введіть SEO Заголовок для сторінки посту';
@@ -37,12 +36,22 @@ $_lang['scommerce_type_simple'] = 'Звичайний';
 $_lang['scommerce_category'] = 'Категорія';
 $_lang['scommerce_category_help'] = 'Основна категорія товару, що використовується для формування основного посилання та ланцюжка навігації.';
 $_lang['scommerce_categories'] = 'Категорії';
-$_lang['scommerce_categories_help'] = 'Список категорій, у яких повинен відображатися товар.';
+$_lang['scommerce_categories_help'] = 'Список категорій, у яких повинен відображатися товар. Формується із дерева ресурсів від кореня, який позначений як каталог.';
+$_lang['scommerce_filter_categories_help'] = 'Список категорій до яких має бути прив\'язана особливість. Будується з дерева ресурсів від кореня, позначеного як каталог.';
 $_lang['scommerce_image'] = 'Зображення';
 $_lang["scommerce_image_help"] = 'Це зображення прев\'ю товару.';
 $_lang['scommerce_texts'] = 'Тексти';
 $_lang['scommerce_lang'] = 'мова.';
 $_lang['scommerce_filters'] = 'Фільтри';
 $_lang['scommerce_filters_help'] = 'Доступні фільтри та характеристики магазину.';
+$_lang['scommerce_filter'] = 'Фільтр';
+$_lang['scommerce_new_filter'] = 'Новий фільтр';
 $_lang['scommerce_ftype_characteristic'] = 'Характеристика';
 $_lang['scommerce_ftype_filter'] = 'Фільтр';
+$_lang['scommerce_type_help'] = 'Тип особливості. Якщо вибрати фільтр, особливість стане доступною для фільтрації в каталозі.';
+$_lang['scommerce_type_select'] = 'Тип вибору';
+$_lang['scommerce_type_select_help'] = 'Тип заповнення даних особливості. <br><b>Числовий</b> - значенням може бути лише число. <b><b>Текстовий</b> - значенням може бути короткий текст. <br><b>Вибір</b> - значенням може бути одна із запропонованих опцій. <br><b>Мульти вибір</b> - значенням може бути безліч із запропонованих опцій. <br><br>Увага! При зміні типу вибору ви можете втратити дані особливостей у товарів, які були призначені раніше.</b>';
+$_lang['scommerce_stype_number'] = 'Числовий';
+$_lang['scommerce_stype_text'] = 'Текстовий';
+$_lang['scommerce_stype_select'] = 'Вибір';
+$_lang['scommerce_stype_multiselect'] = 'Мульти вибір';

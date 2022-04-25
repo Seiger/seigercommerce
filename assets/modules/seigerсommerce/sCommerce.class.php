@@ -6,10 +6,13 @@
 require_once MODX_BASE_PATH . 'assets/modules/seigerсommerce/models/sCategory.php';
 require_once MODX_BASE_PATH . 'assets/modules/seigerсommerce/models/sProduct.php';
 require_once MODX_BASE_PATH . 'assets/modules/seigerсommerce/models/sProductTranslate.php';
+require_once MODX_BASE_PATH . 'assets/modules/seigerсommerce/models/sFilter.php';
 
 use EvolutionCMS\Models\SiteModule;
 use Illuminate\Pagination\Paginator;
 use sCommerce\Models\sCategory;
+use sCommerce\Models\sFilter;
+use sCommerce\Models\sFilterTranslate;
 use sCommerce\Models\sProduct;
 use sCommerce\Models\sProductTranslate;
 
@@ -53,10 +56,16 @@ if (!class_exists('sCommerce')) {
                 $lang = $this->langDefault();
             }
 
-            return sProduct::lang($lang)->whereProduct($productId)->first();
+            return sProduct::lang($lang)->whereProduct($productId)->first() ?? new sProduct();
         }
 
-        public function saveProduct($data)
+        /**
+         * Save the product with parameters
+         *
+         * @param array $data
+         * @return void
+         */
+        public function saveProduct(array $data)
         {
             $product = false;
             if ((int)$data['product']) {
@@ -93,6 +102,71 @@ if (!class_exists('sCommerce')) {
             }
 
             return header('Location: ' . $this->moduleUrl() . '&get=product&i=' . $product->id);
+        }
+
+        /**
+         * List filters with default language
+         *
+         * @return array
+         */
+        public function filters(): object
+        {
+            $order = 's_filters.updated_at';
+            $direc = 'desc';
+
+            return sFilter::lang($this->langDefault())->orderBy($order, $direc)->get();
+        }
+
+        /**
+         * Get filter object with translation
+         *
+         * @param int $filterId
+         * @param string $lang
+         * @return object
+         */
+        public function getFilter(int $filterId, string $lang = ''): object
+        {
+            if (!trim($lang)) {
+                $lang = $this->langDefault();
+            }
+
+            return sFilter::lang($lang)->whereFilter($filterId)->first() ?? new sFilter();
+        }
+
+        /**
+         * Save the filter with parameters
+         *
+         * @param array $data
+         * @return void
+         */
+        public function saveFilter(array $data)
+        {
+            $filter = false;
+            if ((int)$data['filter']) {
+                $filter = sFilter::find((int)$data['filter']);
+            }
+            if (!$filter) {
+                $filter = new sFilter();
+            }
+
+            $filter->type = (int)$data['type'];
+            $filter->type_select = (int)$data['type_select'];
+            $filter->position = (int)$data['position'];
+            $filter->alias = $this->validateAlias($data);
+            $filter->save();
+
+            foreach ($this->langTabs() as $lang => $label) {
+                if (request()->has('texts.'.$lang)) {
+                    $this->setFilterTexts($filter->id, $lang, request()->input('texts.'.$lang));
+                }
+            }
+
+            if (isset($data['categories']) && is_array($data['categories'])) {
+                $filter->product = $filter->id;
+                $filter->categories()->sync($data['categories']);
+            }
+
+            return header('Location: ' . $this->moduleUrl() . '&get=filter&i=' . $filter->id);
         }
 
         /**
@@ -184,6 +258,19 @@ if (!class_exists('sCommerce')) {
         protected function setProductTexts(int $productId, string $lang, array $fields): void
         {
             sProductTranslate::updateOrCreate(['product' => $productId, 'lang' => $lang], $fields);
+        }
+
+        /**
+         * Saving Filter texts
+         *
+         * @param int $filterId
+         * @param string $lang
+         * @param array $fields
+         * @return void
+         */
+        protected function setFilterTexts(int $filterId, string $lang, array $fields): void
+        {
+            sFilterTranslate::updateOrCreate(['filter' => $filterId, 'lang' => $lang], $fields);
         }
 
         /**

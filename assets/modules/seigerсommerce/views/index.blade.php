@@ -11,17 +11,19 @@
         <div class="tab-pane" id="resourcesPane">
             <script>tpResources = new WebFXTabPane(document.getElementById('resourcesPane'), false);</script>
 
-            <div class="tab-page productsTab" id="productsTab">
-                <h2 class="tab">
-                    <a href="{!!$url!!}&get=products">
-                        <span><i class="fa fa-store" data-tooltip="{{$_lang["scommerce_products_help"]}}"></i> {{$_lang['scommerce_products']}}</span>
-                    </a>
-                </h2>
-                <script>tpResources.addTabPage(document.getElementById('productsTab'));</script>
-                @if($get == 'products')
-                    @include('productsTab')
-                @endif
-            </div>
+            @if(!in_array($get, ['filter']))
+                <div class="tab-page productsTab" id="productsTab">
+                    <h2 class="tab">
+                        <a href="{!!$url!!}&get=products">
+                            <span><i class="fa fa-store" data-tooltip="{{$_lang["scommerce_products_help"]}}"></i> {{$_lang['scommerce_products']}}</span>
+                        </a>
+                    </h2>
+                    <script>tpResources.addTabPage(document.getElementById('productsTab'));</script>
+                    @if($get == 'products')
+                        @include('productsTab')
+                    @endif
+                </div>
+            @endif
 
             @if(in_array($get, ['product']))
                 <div class="tab-page productTab" id="productTab">
@@ -56,6 +58,28 @@
                     @include('filtersTab')
                 @endif
             </div>
+
+            @if(in_array($get, ['filter']))
+                <div class="tab-page filterTab" id="filterTab">
+                    <h2 class="tab">
+                        <a href="{!!$url!!}&get=filter&i={{$product->product}}">
+                            <span><i class="fa fa-tools"></i> {{$_lang['scommerce_filter']}}</span>
+                        </a>
+                    </h2>
+                    <script>tpResources.addTabPage(document.getElementById('filterTab'));</script>
+                    @if($get == 'filter')
+                        @include('filterTab')
+                    @endif
+                </div>
+
+                @foreach($sCommerce->langTabs() as $lang => $tabName)
+                    <div class="tab-page productTexts{{$lang}}Tab" id="productTexts{{$lang}}Tab">
+                        <h2 class="tab"><i class="fa fa-flag"></i> {{$tabName}}</h2>
+                        <script>tpResources.addTabPage(document.getElementById('productTexts{{$lang}}Tab'));</script>
+                        {{--                        @include('productTextsTab')--}}
+                    </div>
+                @endforeach
+            @endif
 
             <script>tpResources.setSelectedTab('{{$get}}Tab');</script>
         </div>

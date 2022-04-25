@@ -120,8 +120,12 @@ class sProduct extends Eloquent\Model
      */
     public function getLinkAttribute()
     {
-        $site_start = evo()->getConfig('site_start', 1);
-        $catalog_root = evo()->getConfig('catalog_root', $site_start);
+        if ($this->category) {
+            $catalog_root = $this->category;
+        } else {
+            $site_start = evo()->getConfig('site_start', 1);
+            $catalog_root = evo()->getConfig('catalog_root', $site_start);
+        }
         $base_url = UrlProcessor::makeUrl($catalog_root);
         if (str_starts_with($base_url, '/')) {
             $base_url = MODX_SITE_URL . ltrim($base_url, '/');

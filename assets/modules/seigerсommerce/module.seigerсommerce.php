@@ -18,13 +18,13 @@ switch ($data['get']) {
     default:
         break;
     case "product":
-        $texts = [];
-        $product = $sCommerce->getProduct(request()->i);
+        $product = $sCommerce->getProduct((int)request()->i);
         $categories = array_unique(array_merge(
-            [(int)$product->category ?? evo()->getConfig('catalog_root', evo()->getConfig('site_start', 1))],
-            $product->categories->pluck('id')->toArray()
+            [(int)($product->category ?? evo()->getConfig('catalog_root', evo()->getConfig('site_start', 1)))],
+            ($product->categories ? $product->categories->pluck('id')->toArray() : [(int)($product->category ?? evo()->getConfig('catalog_root', evo()->getConfig('site_start', 1)))])
         ));
         $pTexts = $product->texts->toArray();
+        $texts = [];
         foreach ($pTexts as $pText) {
             $texts[$pText['lang']] = $pText;
         }
@@ -35,6 +35,17 @@ switch ($data['get']) {
         break;
     case "productSave":
         $sCommerce->saveProduct(request()->all());
+        break;
+    case "filter":
+        $filter = $sCommerce->getFilter((int)request()->i);
+        $categories = (
+        $filter->categories ? $filter->categories->pluck('id')->toArray() : [(int)($filter->category ?? evo()->getConfig('catalog_root', evo()->getConfig('site_start', 1)))]
+        );
+        $data['filter'] = $filter;
+        $data['categories'] = $categories;
+        break;
+    case "filterSave":
+        $sCommerce->saveFilter(request()->all());
         break;
 }
 
