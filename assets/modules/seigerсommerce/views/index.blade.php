@@ -62,7 +62,7 @@
             @if(in_array($get, ['filter']))
                 <div class="tab-page filterTab" id="filterTab">
                     <h2 class="tab">
-                        <a href="{!!$url!!}&get=filter&i={{$product->product}}">
+                        <a href="{!!$url!!}&get=filter&i={{$filter->filter}}">
                             <span><i class="fa fa-tools"></i> {{$_lang['scommerce_filter']}}</span>
                         </a>
                     </h2>
@@ -71,14 +71,6 @@
                         @include('filterTab')
                     @endif
                 </div>
-
-                @foreach($sCommerce->langTabs() as $lang => $tabName)
-                    <div class="tab-page productTexts{{$lang}}Tab" id="productTexts{{$lang}}Tab">
-                        <h2 class="tab"><i class="fa fa-flag"></i> {{$tabName}}</h2>
-                        <script>tpResources.addTabPage(document.getElementById('productTexts{{$lang}}Tab'));</script>
-                        {{--                        @include('productTextsTab')--}}
-                    </div>
-                @endforeach
             @endif
 
             <script>tpResources.setSelectedTab('{{$get}}Tab');</script>
@@ -137,42 +129,6 @@
                 $(this).find('#confirm-id').text($(e.relatedTarget).data('id'));
                 $(this).find('#confirm-name').text($(e.relatedTarget).data('name'));
                 $(this).find('.btn-ok').attr('href', $(e.relatedTarget).data('href'));
-            });
-
-            $('.js_add_tag').on('click', function () {
-                var _value = $(document).find('[name="add_tag"]').val();
-                jQuery.ajax({
-                    url: '{!!$url!!}&get=addTag',
-                    type: 'POST',
-                    data: 'value=' + _value,
-                });
-                $('#addTag').modal('hide');
-            });
-
-            $(document).on("click", ".js_translate", function () {
-                var _this = $(this).parents('td');
-                var source = _this.data('id');
-                var target = _this.data('lang');
-                $.ajax({
-                    url: '{!!$url!!}&get=translate',
-                    type: 'POST',
-                    data: 'source=' + source + '&target=' + target,
-                    success: function (ajax) {
-                        _this.find('input').val(ajax);
-                    }
-                });
-            });
-
-            jQuery(".sectionTrans").on("blur", "input", function () {
-                var _this = $(this).parents('td');
-                var source = _this.data('id');
-                var target = _this.data('lang');
-                var _value = _this.find('input').val();
-                jQuery.ajax({
-                    url: '{!!$url!!}&get=update',
-                    type: 'POST',
-                    data: 'source=' + source + '&target=' + target + '&value=' + _value,
-                });
             });
         });
 

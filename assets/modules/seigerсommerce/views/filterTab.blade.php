@@ -1,6 +1,5 @@
 <h3>{{$filter->pagetitle ?? $_lang['scommerce_new_filter']}}</h3>
 <div class="row form-row">
-
     <div class="row-col col-lg-3 col-md-3 col-12">
         <div class="row form-row">
             <div class="col-auto col-title">
@@ -42,7 +41,7 @@
             <div class="col">
                 <select id="type" class="form-control" name="type_select" onchange="documentDirty=true;">
                     @foreach(\sCommerce\Models\sFilter::listTypeSelect() as $key => $title)
-                        <option value="{{$key}}" @if($key == ($filter->type ?? 0)) selected @endif>{{$title}}</option>
+                        <option value="{{$key}}" @if($key == ($filter->type_select ?? 0)) selected @endif>{{$title}}</option>
                     @endforeach
                 </select>
             </div>
@@ -76,6 +75,34 @@
             </div>
         </div>
     </div>
+</div>
+<div class="split my-2"></div>
+<div class="row form-row">
+    @foreach($sCommerce->langTabs() as $lang => $tabName)
+        <div class="row-col col-lg-12 col-12">
+            @if($lang != 'base')<h4>{{$_lang['slang_lang_'.$lang]}} {{$_lang['scommerce_lang']}}</h4>@endif
+
+            <div class="row form-row">
+                <div class="col-auto col-title">
+                    <label for="{{$lang}}_pagetitle" class="warning" data-key="pagetitle">{{$_lang["resource_title"]}}</label>
+                    <i class="fa fa-question-circle" data-tooltip="{{$_lang["resource_title_help"]}}"></i>
+                </div>
+                <div class="col">
+                    <input type="text" id="{{$lang}}_pagetitle" class="form-control" name="texts[{{$lang}}][pagetitle]" maxlength="255" value="{{$texts[$lang]['pagetitle'] ?? ''}}" onchange="documentDirty=true;" spellcheck="true">
+                </div>
+            </div>
+
+            <div class="row form-row">
+                <div class="col-auto col-title">
+                    <label for="{{$lang}}_introtext" class="warning" data-key="introtext">{{$_lang["description"]}}</label>
+                    <i class="fa fa-question-circle" data-tooltip="{{$_lang["resource_summary_help"]}}"></i>
+                </div>
+                <div class="col">
+                    <textarea id="{{$lang}}_introtext" class="form-control" name="texts[{{$lang}}][introtext]" rows="5" wrap="soft" onchange="documentDirty=true;">{{$texts[$lang]['introtext'] ?? ''}}</textarea>
+                </div>
+            </div>
+        </div>
+    @endforeach
 </div>
 
 @push('scripts.bot')

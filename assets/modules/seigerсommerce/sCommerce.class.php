@@ -152,7 +152,7 @@ if (!class_exists('sCommerce')) {
             $filter->type = (int)$data['type'];
             $filter->type_select = (int)$data['type_select'];
             $filter->position = (int)$data['position'];
-            $filter->alias = $this->validateAlias($data);
+            $filter->alias = $this->validateAlias($data, "filter");
             $filter->save();
 
             foreach ($this->langTabs() as $lang => $label) {
@@ -162,7 +162,7 @@ if (!class_exists('sCommerce')) {
             }
 
             if (isset($data['categories']) && is_array($data['categories'])) {
-                $filter->product = $filter->id;
+                $filter->filter = $filter->id;
                 $filter->categories()->sync($data['categories']);
             }
 
@@ -394,7 +394,7 @@ if (!class_exists('sCommerce')) {
          * @param $data
          * @return string
          */
-        protected function validateAlias($data): string
+        protected function validateAlias($data, $table = ''): string
         {
             if (trim($data['alias'])) {
                 $alias = Str::slug(trim($data['alias']), '-');
@@ -408,8 +408,15 @@ if (!class_exists('sCommerce')) {
             }
 
             $category = sCategory::withTrashed()->get('alias')->pluck('alias')->toArray();
-            $products = sProduct::where('id', '<>', (int)$data['product'])->get('alias')->pluck('alias')->toArray();
-            $aliases = array_merge($category, $products);
+            switch ($table) {
+                case "filter":
+                    $others = sFilter::where('id', '<>', (int)$data['filter'])->get('alias')->pluck('alias')->toArray();
+                    break;
+                default:
+                    $others = sProduct::where('id', '<>', (int)$data['product'])->get('alias')->pluck('alias')->toArray();
+                    break;
+            }
+            $aliases = array_merge($category, $others);
 
             if (in_array($alias, $aliases)) {
                 $cnt = 1;
