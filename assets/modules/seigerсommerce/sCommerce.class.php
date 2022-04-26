@@ -7,6 +7,7 @@ require_once MODX_BASE_PATH . 'assets/modules/seigerсommerce/models/sCategory.p
 require_once MODX_BASE_PATH . 'assets/modules/seigerсommerce/models/sProduct.php';
 require_once MODX_BASE_PATH . 'assets/modules/seigerсommerce/models/sProductTranslate.php';
 require_once MODX_BASE_PATH . 'assets/modules/seigerсommerce/models/sFilter.php';
+require_once MODX_BASE_PATH . 'assets/modules/seigerсommerce/models/sFilterTranslate.php';
 
 use EvolutionCMS\Models\SiteModule;
 use Illuminate\Pagination\Paginator;

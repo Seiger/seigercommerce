@@ -55,3 +55,4 @@ $_lang['scommerce_stype_number'] = 'Number';
 $_lang['scommerce_stype_text'] = 'Text';
 $_lang['scommerce_stype_select'] = 'Select';
 $_lang['scommerce_stype_multiselect'] = 'Multiselect';
+$_lang['scommerce_value'] = 'Value';

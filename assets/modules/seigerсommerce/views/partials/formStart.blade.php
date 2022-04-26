@@ -5,3 +5,7 @@
 @if(in_array($get, ['filter']))
     <form name="filter" id="filter" class="content" method="post" action="{!!$url!!}&get=filterSave" onsubmit="documentDirty=false;">
 @endif
+
+@if(in_array($get, ['filterValues']))
+    <form name="filterValues" id="filterValues" class="content" method="post" action="{!!$url!!}&get=filterValuesSave" onsubmit="documentDirty=false;">
+@endif

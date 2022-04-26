@@ -55,3 +55,4 @@ $_lang['scommerce_stype_number'] = 'Числовий';
 $_lang['scommerce_stype_text'] = 'Текстовий';
 $_lang['scommerce_stype_select'] = 'Вибір';
 $_lang['scommerce_stype_multiselect'] = 'Мульти вибір';
+$_lang['scommerce_value'] = 'Значення';

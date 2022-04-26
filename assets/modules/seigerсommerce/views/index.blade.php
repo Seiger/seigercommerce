@@ -11,7 +11,7 @@
         <div class="tab-pane" id="resourcesPane">
             <script>tpResources = new WebFXTabPane(document.getElementById('resourcesPane'), false);</script>
 
-            @if(!in_array($get, ['filter']))
+            @if(!in_array($get, ['filter', 'filterValues']))
                 <div class="tab-page productsTab" id="productsTab">
                     <h2 class="tab">
                         <a href="{!!$url!!}&get=products">
@@ -59,7 +59,7 @@
                 @endif
             </div>
 
-            @if(in_array($get, ['filter']))
+            @if(in_array($get, ['filter', 'filterValues']))
                 <div class="tab-page filterTab" id="filterTab">
                     <h2 class="tab">
                         <a href="{!!$url!!}&get=filter&i={{$filter->filter}}">
@@ -71,6 +71,25 @@
                         @include('filterTab')
                     @endif
                 </div>
+
+                @if(
+                    in_array($filter->type_select, [
+                        \sCommerce\Models\sFilter::STYPE_SELECT,
+                        \sCommerce\Models\sFilter::STYPE_MULTISELECT
+                        ])
+                    )
+                    <div class="tab-page filterValuesTab" id="filterValuesTab">
+                        <h2 class="tab">
+                            <a href="{!!$url!!}&get=filterValues&i={{$filter->filter}}">
+                                <span><i class="fa fa-cloud"></i> {{$_lang['tmplvars_elements']}}</span>
+                            </a>
+                        </h2>
+                        <script>tpResources.addTabPage(document.getElementById('filterValuesTab'));</script>
+                        @if($get == 'filterValues')
+                            @include('filterValuesTab')
+                        @endif
+                    </div>
+                @endif
             @endif
 
             <script>tpResources.setSelectedTab('{{$get}}Tab');</script>

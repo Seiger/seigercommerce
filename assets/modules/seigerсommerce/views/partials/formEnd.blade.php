@@ -9,3 +9,8 @@
     <input type="hidden" name="filter" value="{{$filter->filter ?? 0}}">
     </form>
 @endif
+
+@if(in_array($get, ['filterValues']))
+    <input type="hidden" name="filter" value="{{$filter->filter ?? 0}}">
+    </form>
+@endif

@@ -55,7 +55,7 @@ CREATE TABLE IF NOT EXISTS `{PREFIX}s_product_translates`
 CREATE TABLE IF NOT EXISTS `{PREFIX}s_product_category` (
     `product` int(11) NOT NULL,
     `category` int(11) NOT NULL
-    ) ENGINE=MyISAM {TABLEENCODING};
+) ENGINE=MyISAM {TABLEENCODING};
 
 -- --------------------------------------------------------
 
@@ -73,7 +73,7 @@ CREATE TABLE IF NOT EXISTS `{PREFIX}s_filters`
     `created_at` timestamp NULL DEFAULT NULL,
     `updated_at` timestamp NULL DEFAULT NULL,
     PRIMARY KEY (`id`)
-    ) ENGINE = MyISAM {TABLEENCODING} AUTO_INCREMENT=1;
+) ENGINE = MyISAM {TABLEENCODING} AUTO_INCREMENT=1;
 
 -- --------------------------------------------------------
 
@@ -95,7 +95,24 @@ CREATE TABLE IF NOT EXISTS `{PREFIX}s_filter_translates`
     `updated_at` timestamp NULL DEFAULT NULL,
     PRIMARY KEY (`id`),
     UNIQUE KEY `filter_lang` (`filter`, `lang`)
-    ) ENGINE = MyISAM {TABLEENCODING} AUTO_INCREMENT=1;
+) ENGINE = MyISAM {TABLEENCODING} AUTO_INCREMENT=1;
+
+-- --------------------------------------------------------
+
+--
+-- Table structure `{PREFIX}s_filter_values`
+--
+
+CREATE TABLE IF NOT EXISTS `{PREFIX}s_filter_values`
+(
+    `vid` int(11) NOT NULL AUTO_INCREMENT,
+    `filter` int(11) NOT NULL,
+    `alias` varchar(512) NOT NULL,
+    `base` varchar(512) NOT NULL DEFAULT '',
+    `created_at` timestamp NULL DEFAULT NULL,
+    `updated_at` timestamp NULL DEFAULT NULL,
+    PRIMARY KEY (`vid`)
+) ENGINE = MyISAM {TABLEENCODING} AUTO_INCREMENT=1;
 
 -- --------------------------------------------------------
 
@@ -106,7 +123,7 @@ CREATE TABLE IF NOT EXISTS `{PREFIX}s_filter_translates`
 CREATE TABLE IF NOT EXISTS `{PREFIX}s_filter_category` (
     `filter` int(11) NOT NULL,
     `category` int(11) NOT NULL
-    ) ENGINE=MyISAM {TABLEENCODING};
+) ENGINE=MyISAM {TABLEENCODING};
 
 -- --------------------------------------------------------
 

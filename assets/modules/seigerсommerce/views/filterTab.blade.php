@@ -1,4 +1,4 @@
-<h3>{{$filter->pagetitle ?? $_lang['scommerce_new_filter']}}</h3>
+<h3>{{$filter->pagetitle ?? $_lang['scommerce_new_filter']}} <small>({{$filter->filter ?? 0}})</small></h3>
 <div class="row form-row">
     <div class="row-col col-lg-3 col-md-3 col-12">
         <div class="row form-row">
@@ -98,7 +98,7 @@
                     <i class="fa fa-question-circle" data-tooltip="{{$_lang["resource_summary_help"]}}"></i>
                 </div>
                 <div class="col">
-                    <textarea id="{{$lang}}_introtext" class="form-control" name="texts[{{$lang}}][introtext]" rows="5" wrap="soft" onchange="documentDirty=true;">{{$texts[$lang]['introtext'] ?? ''}}</textarea>
+                    <textarea id="{{$lang}}_introtext" class="form-control" name="texts[{{$lang}}][introtext]" rows="2" wrap="soft" onchange="documentDirty=true;">{{$texts[$lang]['introtext'] ?? ''}}</textarea>
                 </div>
             </div>
         </div>
