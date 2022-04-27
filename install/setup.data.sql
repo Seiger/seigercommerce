@@ -107,8 +107,9 @@ CREATE TABLE IF NOT EXISTS `{PREFIX}s_filter_values`
 (
     `vid` int(11) NOT NULL AUTO_INCREMENT,
     `filter` int(11) NOT NULL,
+    `position` int(11) NOT NULL DEFAULT 0,
     `alias` varchar(512) NOT NULL,
-    `base` varchar(512) NOT NULL DEFAULT '',
+    `base` tinytext NOT NULL DEFAULT '',
     `created_at` timestamp NULL DEFAULT NULL,
     `updated_at` timestamp NULL DEFAULT NULL,
     PRIMARY KEY (`vid`)

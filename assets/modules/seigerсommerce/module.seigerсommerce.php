@@ -40,8 +40,9 @@ switch ($data['get']) {
     case "productSave":
         $sCommerce->saveProduct(request()->all());
         break;
-    case "filter":
     case "filterValues":
+        $sCommerce->setModifyTables();
+    case "filter":
         $filter = $sCommerce->getFilter((int)request()->i);
         $categories = (
         $filter->categories
@@ -59,6 +60,9 @@ switch ($data['get']) {
         break;
     case "filterSave":
         $sCommerce->saveFilter(request()->all());
+        break;
+    case "filterValuesSave":
+        $sCommerce->saveFilterValues(request()->all());
         break;
 }
 

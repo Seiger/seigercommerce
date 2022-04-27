@@ -8,12 +8,14 @@ require_once MODX_BASE_PATH . 'assets/modules/seigerсommerce/models/sProduct.ph
 require_once MODX_BASE_PATH . 'assets/modules/seigerсommerce/models/sProductTranslate.php';
 require_once MODX_BASE_PATH . 'assets/modules/seigerсommerce/models/sFilter.php';
 require_once MODX_BASE_PATH . 'assets/modules/seigerсommerce/models/sFilterTranslate.php';
+require_once MODX_BASE_PATH . 'assets/modules/seigerсommerce/models/sFilterValue.php';
 
 use EvolutionCMS\Models\SiteModule;
 use Illuminate\Pagination\Paginator;
 use sCommerce\Models\sCategory;
 use sCommerce\Models\sFilter;
 use sCommerce\Models\sFilterTranslate;
+use sCommerce\Models\sFilterValue;
 use sCommerce\Models\sProduct;
 use sCommerce\Models\sProductTranslate;
 
@@ -24,10 +26,12 @@ if (!class_exists('sCommerce')) {
         public $perPage = 30;
         protected $basePath = MODX_BASE_PATH . 'assets/modules/seigerсommerce/';
         protected $categories = [];
+        protected $tblFVals = 's_filter_values';
 
         public function __construct()
         {
             $this->url = $this->moduleUrl();
+            $this->tblFVals = evo()->getDatabase()->getFullTableName($this->tblFVals);
             Paginator::defaultView('pagination');
         }
 
@@ -171,6 +175,81 @@ if (!class_exists('sCommerce')) {
         }
 
         /**
+         * List filter values
+         *
+         * @return array
+         */
+        public function filterValues(): object
+        {
+            $order = 's_filter_values.position';
+            $direc = 'asc';
+
+            return sFilterValue::whereFilter((int)request()->i)->orderBy($order, $direc)->get();
+        }
+
+        /**
+         * Save the filter values
+         *
+         * @param array $data
+         * @return void
+         */
+        public function saveFilterValues(array $data)
+        {
+            if ((int)$data['filter']) {
+                $filterValues = sFilterValue::whereFilter((int)$data['filter'])->get();
+                if (isset($data['values']) && is_array($data['values'])) {
+                    $values = [];
+                    $fields = array_keys($data['values']);
+                    if (count($fields)) {
+                        foreach ($data['values']['vid'] as $idx => $vid) {
+                            $array = [];
+                            foreach ($fields as $field) {
+                                $array[$field] = $data['values'][$field][$idx];
+                            }
+
+                            if (count(array_diff($array, [""]))) {
+                                $array['alias'] = $this->validateFilterValueAlias($array);
+                                $array['filter'] = (int)$data['filter'];
+                                $array['position'] = $idx;
+                                unset($array['vid']);
+                                $values[$array['alias']] = $array;
+                            }
+                        }
+                    }
+
+                    foreach ($filterValues as $filterValue) {
+                        if (isset($values[$filterValue->alias])) {
+                            foreach ($values[$filterValue->alias] as $field => $item) {
+                                $filterValue->{$field} = $item;
+                            }
+                            $filterValue->update();
+
+                            unset($values[$filterValue->alias]);
+                        } else {
+                            $filterValue->delete();
+                        }
+                    }
+
+                    if (count($values)) {
+                        foreach ($values as $value) {
+                            $filterValue = new sFilterValue();
+                            foreach ($value as $field => $item) {
+                                $filterValue->{$field} = $item;
+                            }
+                            $filterValue->save();
+                        }
+                    }
+                } else {
+                    foreach ($filterValues as $filterValue) {
+                        $filterValue->delete();
+                    }
+                }
+            }
+
+            return header('Location: ' . $this->moduleUrl() . '&get=filterValues&i=' . (int)$data['filter']);
+        }
+
+        /**
          * List of categories and subcategories
          *
          * @return array
@@ -272,6 +351,42 @@ if (!class_exists('sCommerce')) {
         protected function setFilterTexts(int $filterId, string $lang, array $fields): void
         {
             sFilterTranslate::updateOrCreate(['filter' => $filterId, 'lang' => $lang], $fields);
+        }
+
+        /**
+         * Modifying table filter values for translates
+         *
+         * @return void
+         */
+        public function setModifyTables(): void
+        {
+            $lang = evo()->getConfig('s_lang_config', '');
+            if (trim($lang)) {
+                $needs = [];
+                $columns = [];
+                $lang = explode(',', $lang);
+                $query = evo()->getDatabase()->query("DESCRIBE {$this->tblFVals}");
+
+                if ($query) {
+                    $fields = evo()->getDatabase()->makeArray($query);
+
+                    foreach ($fields as $field) {
+                        $columns[$field['Field']] = $field;
+                    }
+
+                    foreach ($lang as $item) {
+                        if (!isset($columns[$item])) {
+                            $needs[] = "ADD `{$item}` tinytext COMMENT '" . strtoupper($item) . " filter value version'";
+                        }
+                    }
+                }
+
+                if (count($needs)) {
+                    $need = implode(', ', $needs);
+                    $query = "ALTER TABLE `{$this->tblFVals}` {$need}";
+                    evo()->getDatabase()->query($query);
+                }
+            }
         }
 
         /**
@@ -405,7 +520,7 @@ if (!class_exists('sCommerce')) {
                 $alias = Str::slug(trim($data['base_pagetitle']), '-');
             } else {
                 $langDefault = evo()->getConfig('s_lang_default', 'uk');
-                $alias = Str::slug(trim($langDefault . '_pagetitle'), '-');
+                $alias = Str::slug(trim($data[$langDefault . '_pagetitle']), '-');
             }
 
             $category = sCategory::withTrashed()->get('alias')->pluck('alias')->toArray();
@@ -418,6 +533,39 @@ if (!class_exists('sCommerce')) {
                     break;
             }
             $aliases = array_merge($category, $others);
+
+            if (in_array($alias, $aliases)) {
+                $cnt = 1;
+                $tempAlias = $alias;
+                while (in_array($tempAlias, $aliases)) {
+                    $tempAlias = $alias . $cnt;
+                    $cnt++;
+                }
+                $alias = $tempAlias;
+            }
+            return $alias;
+        }
+
+        /**
+         * Alias validation
+         *
+         * @param $data
+         * @return string
+         */
+        protected function validateFilterValueAlias($data): string
+        {
+            if (trim($data['alias'])) {
+                $alias = Str::slug(trim($data['alias']), '-');
+            } elseif (isset($data['en']) && trim($data['en'])) {
+                $alias = Str::slug(trim($data['en']), '-');
+            } elseif (isset($data['base']) && trim($data['base'])) {
+                $alias = Str::slug(trim($data['base']), '-');
+            } else {
+                $langDefault = evo()->getConfig('s_lang_default', 'uk');
+                $alias = Str::slug(trim($data[$langDefault]), '-');
+            }
+
+            $aliases = sFilterValue::where('vid', '<>', (int)$data['vid'])->get('alias')->pluck('alias')->toArray();
 
             if (in_array($alias, $aliases)) {
                 $cnt = 1;
