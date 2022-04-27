@@ -9,7 +9,7 @@
             <div class="col">
                 <select id="type" class="form-control" name="type" onchange="documentDirty=true;">
                     @foreach(\sCommerce\Models\sFilter::listType() as $key => $title)
-                        <option value="{{$key}}" @if($key == ($filter->type ?? 0)) selected @endif>{{$title}}</option>
+                        <option value="{{$key}}" @if($key == ($filter->type ?? \sCommerce\Models\sFilter::FTYPE_CHARACTERISTIC)) selected @endif>{{$title}}</option>
                     @endforeach
                 </select>
             </div>
@@ -41,7 +41,7 @@
             <div class="col">
                 <select id="type" class="form-control" name="type_select" onchange="documentDirty=true;">
                     @foreach(\sCommerce\Models\sFilter::listTypeSelect() as $key => $title)
-                        <option value="{{$key}}" @if($key == ($filter->type_select ?? 0)) selected @endif>{{$title}}</option>
+                        <option value="{{$key}}" @if($key == ($filter->type_select ?? \sCommerce\Models\sFilter::STYPE_SELECT)) selected @endif>{{$title}}</option>
                     @endforeach
                 </select>
             </div>

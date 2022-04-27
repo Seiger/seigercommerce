@@ -39,7 +39,7 @@
 @push('scripts.bot')
     <div id="actions">
         <div class="btn-group">
-            <a href="{!!$url!!}&get=filter" class="btn btn-success" title="{{$_lang["scommerce_add_help"]}}">
+            <a href="{!!$url!!}&get=filter" class="btn btn-primary" title="{{$_lang["scommerce_add_help"]}}">
                 <i class="fa fa-plus-circle"></i>&emsp;<span>{{$_lang["scommerce_add"]}}</span>
             </a>
         </div>

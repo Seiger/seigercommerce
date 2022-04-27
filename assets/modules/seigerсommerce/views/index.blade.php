@@ -47,17 +47,19 @@
                 @endforeach
             @endif
 
-            <div class="tab-page filtersTab" id="filtersTab">
-                <h2 class="tab">
-                    <a href="{!!$url!!}&get=filters">
-                        <span><i class="fa fa-filter" data-tooltip="{{$_lang["scommerce_filters_help"]}}"></i> {{$_lang['scommerce_filters']}}</span>
-                    </a>
-                </h2>
-                <script>tpResources.addTabPage(document.getElementById('filtersTab'));</script>
-                @if($get == 'filters')
-                    @include('filtersTab')
-                @endif
-            </div>
+            @if(!in_array($get, ['product']))
+                <div class="tab-page filtersTab" id="filtersTab">
+                    <h2 class="tab">
+                        <a href="{!!$url!!}&get=filters">
+                            <span><i class="fa fa-filter" data-tooltip="{{$_lang["scommerce_filters_help"]}}"></i> {{$_lang['scommerce_filters']}}</span>
+                        </a>
+                    </h2>
+                    <script>tpResources.addTabPage(document.getElementById('filtersTab'));</script>
+                    @if($get == 'filters')
+                        @include('filtersTab')
+                    @endif
+                </div>
+            @endif
 
             @if(in_array($get, ['filter', 'filterValues']))
                 <div class="tab-page filterTab" id="filterTab">

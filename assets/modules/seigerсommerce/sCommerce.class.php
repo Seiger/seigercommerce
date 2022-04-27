@@ -157,12 +157,12 @@ if (!class_exists('sCommerce')) {
             $filter->type = (int)$data['type'];
             $filter->type_select = (int)$data['type_select'];
             $filter->position = (int)$data['position'];
-            $filter->alias = $this->validateAlias($data, "filter");
+            $filter->alias = $this->validateAlias(array_merge($data, $data['texts']), "filter");
             $filter->save();
 
             foreach ($this->langTabs() as $lang => $label) {
-                if (request()->has('texts.'.$lang)) {
-                    $this->setFilterTexts($filter->id, $lang, request()->input('texts.'.$lang));
+                if (isset($data['texts'][$lang]) && is_array($data['texts'][$lang])) {
+                    $this->setFilterTexts($filter->id, $lang, $data['texts'][$lang]);
                 }
             }
 
@@ -514,13 +514,13 @@ if (!class_exists('sCommerce')) {
         {
             if (trim($data['alias'])) {
                 $alias = Str::slug(trim($data['alias']), '-');
-            } elseif (isset($data['en_pagetitle']) && trim($data['en_pagetitle'])) {
-                $alias = Str::slug(trim($data['en_pagetitle']), '-');
-            } elseif (isset($data['base_pagetitle']) && trim($data['base_pagetitle'])) {
-                $alias = Str::slug(trim($data['base_pagetitle']), '-');
+            } elseif (isset($data['en']['pagetitle']) && trim($data['en']['pagetitle'])) {
+                $alias = Str::slug(trim($data['en']['pagetitle']), '-');
+            } elseif (isset($data['base']['pagetitle']) && trim($data['base']['pagetitle'])) {
+                $alias = Str::slug(trim($data['base']['pagetitle']), '-');
             } else {
                 $langDefault = evo()->getConfig('s_lang_default', 'uk');
-                $alias = Str::slug(trim($data[$langDefault . '_pagetitle']), '-');
+                $alias = Str::slug(trim($data[$langDefault]['pagetitle']), '-');
             }
 
             $category = sCategory::withTrashed()->get('alias')->pluck('alias')->toArray();
