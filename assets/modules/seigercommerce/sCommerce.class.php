@@ -3,12 +3,12 @@
  * Class sCommerce - Seiger Commerce - E-commerce Management Module for Evolution CMS admin panel.
  */
 
-require_once MODX_BASE_PATH . 'assets/modules/seigerсommerce/models/sCategory.php';
-require_once MODX_BASE_PATH . 'assets/modules/seigerсommerce/models/sProduct.php';
-require_once MODX_BASE_PATH . 'assets/modules/seigerсommerce/models/sProductTranslate.php';
-require_once MODX_BASE_PATH . 'assets/modules/seigerсommerce/models/sFilter.php';
-require_once MODX_BASE_PATH . 'assets/modules/seigerсommerce/models/sFilterTranslate.php';
-require_once MODX_BASE_PATH . 'assets/modules/seigerсommerce/models/sFilterValue.php';
+require_once MODX_BASE_PATH . 'assets/modules/seigercommerce/models/sCategory.php';
+require_once MODX_BASE_PATH . 'assets/modules/seigercommerce/models/sProduct.php';
+require_once MODX_BASE_PATH . 'assets/modules/seigercommerce/models/sProductTranslate.php';
+require_once MODX_BASE_PATH . 'assets/modules/seigercommerce/models/sFilter.php';
+require_once MODX_BASE_PATH . 'assets/modules/seigercommerce/models/sFilterTranslate.php';
+require_once MODX_BASE_PATH . 'assets/modules/seigercommerce/models/sFilterValue.php';
 
 use EvolutionCMS\Models\SiteModule;
 use Illuminate\Pagination\Paginator;
@@ -24,7 +24,7 @@ if (!class_exists('sCommerce')) {
     {
         public $url;
         public $perPage = 30;
-        protected $basePath = MODX_BASE_PATH . 'assets/modules/seigerсommerce/';
+        protected $basePath = MODX_BASE_PATH . 'assets/modules/seigercommerce/';
         protected $categories = [];
         protected $tblFVals = 's_filter_values';
 

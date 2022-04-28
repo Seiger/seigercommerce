@@ -18,4 +18,4 @@
  * @internal	@installset base, sample
 */
 
-include_once(MODX_BASE_PATH.'assets/modules/seigerсommerce/module.seigerсommerce.php');
+include_once(MODX_BASE_PATH.'assets/modules/seigercommerce/module.seigercommerce.php');

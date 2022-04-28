@@ -12,5 +12,5 @@
  * @internal    @installset base, sample
  */
 
-require MODX_BASE_PATH."assets/modules/seigerсommerce/sCommerce.class.php";
-require MODX_BASE_PATH."assets/modules/seigerсommerce/plugin.seigerсommerce.php";
+require MODX_BASE_PATH."assets/modules/seigercommerce/sCommerce.class.php";
+require MODX_BASE_PATH."assets/modules/seigercommerce/plugin.seigercommerce.php";
