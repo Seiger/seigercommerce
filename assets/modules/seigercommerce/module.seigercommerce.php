@@ -5,7 +5,7 @@
 
 if (!defined('IN_MANAGER_MODE') || IN_MANAGER_MODE != 'true') die("No access");
 
-require_once MODX_BASE_PATH . 'assets/modules/seigerсommerce/sCommerce.class.php';
+require_once MODX_BASE_PATH . 'assets/modules/seigercommerce/sCommerce.class.php';
 
 $sCommerce = new sCommerce();
 $data['editor'] = '';
