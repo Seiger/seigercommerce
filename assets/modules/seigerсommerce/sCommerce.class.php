@@ -65,6 +65,36 @@ if (!class_exists('sCommerce')) {
         }
 
         /**
+         * Ged all features where category as the product
+         *
+         * @param int $productId
+         * @return object
+         */
+        public function getProductFeatures(int $productId): object
+        {
+            if ($productId) {
+                $productAllCats = [];
+                $product = $this->getProduct($productId);
+                $categories = array_unique(array_merge(
+                    [(int)($product->category ?? evo()->getConfig('catalog_root', evo()->getConfig('site_start', 1)))],
+                    (
+                    $product->categories
+                        ? $product->categories->pluck('id')->toArray()
+                        : [(int)($product->category ?? evo()->getConfig('catalog_root', evo()->getConfig('site_start', 1)))]
+                    )
+                ));
+
+                foreach ($categories as $category) {
+                    $productAllCats = array_merge($productAllCats, [$category], $this->categoryParentsIds($category));
+                }
+
+                $filters = sFilter::withLangCategories($this->langDefault(), $productAllCats)->orderBy('s_filters.position')->get();
+            }
+
+            return $filters ?? (object)[];
+        }
+
+        /**
          * Save the product with parameters
          *
          * @param array $data
@@ -505,12 +535,33 @@ if (!class_exists('sCommerce')) {
         }
 
         /**
+         * Get all parents of the current category up to the root of the directory
+         *
+         * @param int $categoryId
+         * @param array $array
+         * @return array
+         */
+        protected function categoryParentsIds(int $categoryId, array $array = [])
+        {
+            if ($categoryId != evo()->getConfig('catalog_root', evo()->getConfig('site_start', 1))) {
+                $category = sCategory::find($categoryId);
+                $parent = $category->getParent();
+                $array[] = $parent->id;
+                if ($categoryId != evo()->getConfig('catalog_root', evo()->getConfig('site_start', 1))) {
+                    $array = $this->categoryParentsIds($parent->id, $array);
+                }
+            }
+            return $array;
+        }
+
+        /**
          * Alias validation
          *
          * @param $data
+         * @param string $table
          * @return string
          */
-        protected function validateAlias($data, $table = ''): string
+        protected function validateAlias($data, string $table = ''): string
         {
             if (trim($data['alias'])) {
                 $alias = Str::slug(trim($data['alias']), '-');

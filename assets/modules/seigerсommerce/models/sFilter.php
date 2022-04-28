@@ -75,6 +75,14 @@ class sFilter extends Eloquent\Model
     }
 
     /**
+     * Get the translates for the filter.
+     */
+    public function values()
+    {
+        return $this->hasMany(sFilterValue::class, 'filter', 'filter');
+    }
+
+    /**
      * Get the filter item with lang
      *
      * @param $query
@@ -84,6 +92,22 @@ class sFilter extends Eloquent\Model
     public function scopeLang($query, $locale)
     {
         return $this->leftJoin('s_filter_translates', 's_filters.id', '=', 's_filter_translates.filter')->where('lang', '=', $locale);
+    }
+
+    /**
+     * Get All filters from selected lang and categories
+     *
+     * @param $query
+     * @param $locale
+     * @param $categories
+     * @return mixed
+     */
+    public function scopeWithLangCategories($query, $locale, $categories)
+    {
+        return $this->leftJoin('s_filter_category', 's_filters.id', '=', 's_filter_category.filter')
+            ->leftJoin('s_filter_translates', 's_filters.id', '=', 's_filter_translates.filter')
+            ->whereIn('category', $categories)
+            ->where('lang', $locale);
     }
 
     /**

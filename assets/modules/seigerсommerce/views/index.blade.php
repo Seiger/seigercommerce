@@ -28,14 +28,18 @@
             @if(in_array($get, ['product']))
                 <div class="tab-page productTab" id="productTab">
                     <h2 class="tab">
-                        <a href="{!!$url!!}&get=product&i={{$product->product}}">
-                            <span><i class="fa fa-meteor"></i> {{$_lang['scommerce_product']}}</span>
-                        </a>
+                        <span><i class="fa fa-meteor"></i> {{$_lang['scommerce_product']}}</span>
                     </h2>
                     <script>tpResources.addTabPage(document.getElementById('productTab'));</script>
                     @if($get == 'product')
                         @include('productTab')
                     @endif
+                </div>
+
+                <div class="tab-page productFeaturesTab" id="productFeaturesTab">
+                    <h2 class="tab"><i class="fa fa-puzzle-piece"></i> {{$_lang['scommerce_features']}}</h2>
+                    <script>tpResources.addTabPage(document.getElementById('productFeaturesTab'));</script>
+                    @include('productFeaturesTab')
                 </div>
 
                 @foreach($sCommerce->langTabs() as $lang => $tabName)

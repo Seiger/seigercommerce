@@ -56,3 +56,4 @@ $_lang['scommerce_stype_text'] = 'Текстовий';
 $_lang['scommerce_stype_select'] = 'Вибір';
 $_lang['scommerce_stype_multiselect'] = 'Мульти вибір';
 $_lang['scommerce_value'] = 'Значення';
+$_lang['scommerce_features'] = 'Особливості';
