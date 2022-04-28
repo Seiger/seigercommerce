@@ -7,7 +7,7 @@
             @endif
         </div>
         <div class="col">
-            <select id="productFeature{{$productFeature->filter}}" class="form-control" name="productFeature[{{$productFeature->filter}}]" onchange="documentDirty=true;">
+            <select id="productFeature{{$productFeature->filter}}" class="form-control select2" name="productFeature[{{$productFeature->filter}}][]" multiple onchange="documentDirty=true;">
                 @foreach($productFeature->values as $value)
                     <option value="{{$value->vid}}">{{ $value->{$sCommerce->langDefault()} }}</option>
                 @endforeach

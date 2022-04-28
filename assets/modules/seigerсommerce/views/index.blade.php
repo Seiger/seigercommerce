@@ -139,6 +139,10 @@
         $(document).ready(function () {
             $('.select2').select2();
 
+            $(document).on('click', '[data-target="#productTab"], [data-target="#productFeaturesTab"]', function () {
+                $('.select2').select2();
+            });
+
             $("table img").on("mouseenter", function () {
                 var alt = $(this).attr("alt");
                 if (alt.length > 0) {
