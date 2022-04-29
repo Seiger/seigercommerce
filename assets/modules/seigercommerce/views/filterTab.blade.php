@@ -112,6 +112,9 @@
                 <i class="fa fa-floppy-o"></i>
                 <span>{{$_lang['save']}}</span>
             </a>
+            <a id="Button3" class="btn btn-secondary" href="{!!$url!!}">
+                <i class="fa fa-times-circle"></i><span>{{$_lang["cancel"]}}</span>
+            </a>
         </div>
     </div>
 @endpush

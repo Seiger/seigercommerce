@@ -7,12 +7,12 @@
             @endif
         </div>
         <div class="col">
-            <select id="productFeature{{$productFeature->filter}}" class="form-control" name="productFeature[{{$productFeature->filter}}]" onchange="documentDirty=true;">
-                <option value=""></option>
-                @foreach($productFeature->values as $value)
-                    <option value="{{$value->vid}}">{{ $value->{$sCommerce->langDefault()} }}</option>
-                @endforeach
-            </select>
+            @foreach($sCommerce->langTabs() as $lang => $tabName)
+                <div class="input-group">
+                    <span class="input-group-text">{{mb_strtoupper($lang)}}</span>
+                    <input type="text" id="productFeature{{$productFeature->filter}}" name="productFeature[{{$productFeature->filter}}]" class="form-control" value="" onchange="documentDirty=true;">
+                </div>
+            @endforeach
         </div>
     </div>
 </div>
