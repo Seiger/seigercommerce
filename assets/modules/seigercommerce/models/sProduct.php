@@ -102,6 +102,14 @@ class sProduct extends Eloquent\Model
     }
 
     /**
+     * Get the features for the product.
+     */
+    public function features()
+    {
+        return $this->hasMany(sProductFeature::class, 'product', 'product');
+    }
+
+    /**
      * Get the product item with lang
      *
      * @param $query

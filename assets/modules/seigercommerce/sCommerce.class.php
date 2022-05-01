@@ -136,6 +136,40 @@ if (!class_exists('sCommerce')) {
                 $product->categories()->sync($data['categories']);
             }
 
+            if (isset($data['features']) && is_array($data['features'])) {
+                $features = [];
+                $filtersArray = [];
+                $filtersList = sFilter::whereIn('id', array_keys($data['features']))->get();
+
+                foreach ($filtersList as $item) {
+                    $filtersArray[$item->id] = $item;
+                }
+
+                foreach ($data['features'] as $id => $feature) {
+                    $filter = $filtersArray[$id];
+                    switch ($filter->type_select) {
+                        case sFilter::STYPE_NUMBER :
+                            if (is_numeric($feature)) {
+                                $features[] = $this->searchFilterValueId($filter->id, $feature);
+                            }
+                            break;
+                        case sFilter::STYPE_TEXT :
+                            if (is_array($feature)) {
+                                $features[] = $this->searchFilterValueId($filter->id, $feature);
+                            }
+                            break;
+                        case sFilter::STYPE_SELECT :
+                            $features[] = (int)$feature;
+                            break;
+                        case sFilter::STYPE_MULTISELECT :
+                            $features = array_merge($features, array_map('intval', $feature));
+                            break;
+                    }
+                }
+
+                dd(array_diff($features, [0]));
+            }
+
             return header('Location: ' . $this->moduleUrl() . '&get=product&i=' . $product->id);
         }
 
@@ -241,6 +275,9 @@ if (!class_exists('sCommerce')) {
                                 $array['alias'] = $this->validateFilterValueAlias($array);
                                 $array['filter'] = (int)$data['filter'];
                                 $array['position'] = $idx;
+                                if ($this->langDefault() != 'base') {
+                                    $array['base'] = $array[$this->langDefault()];
+                                }
                                 unset($array['vid']);
                                 $values[$array['alias']] = $array;
                             }
@@ -392,6 +429,9 @@ if (!class_exists('sCommerce')) {
         {
             $lang = evo()->getConfig('s_lang_config', '');
             if (trim($lang)) {
+                /**
+                 * Filter Values modify
+                 */
                 $needs = [];
                 $columns = [];
                 $lang = explode(',', $lang);
@@ -665,6 +705,34 @@ if (!class_exists('sCommerce')) {
             }
 
             return $validPrice;
+        }
+
+        protected function searchFilterValueId($filterId, $value) {
+            if (is_scalar($value) && trim($value)) {
+                $filterValue = sFilterValue::whereFilter($filterId)->whereBase($value)->firstOrCreate();
+                $filterValue->filter = $filterId;
+                $filterValue->base = $value;
+                $filterValue->alias = $this->validateFilterValueAlias(['vid' => $filterValue->vid, 'alias' => ($filterValue->alias ?? ''), 'base' => $filterValue->base]);
+                foreach ($this->langTabs() as $lang => $langTab) {
+                    $filterValue->{$lang} = $value;
+                }
+                $filterValue->save();
+            } elseif (is_array($value)) {
+                if (trim($value[$this->langDefault()])) {
+                    $filterValue = sFilterValue::whereFilter($filterId)->whereBase($value[$this->langDefault()])->firstOrCreate();
+                    $filterValue->filter = $filterId;
+                    $filterValue->base = $value[$this->langDefault()];
+                    $filterValue->alias = $this->validateFilterValueAlias(['vid' => $filterValue->vid, 'alias' => ($filterValue->alias ?? ''), 'base' => $filterValue->base]);
+                    foreach ($this->langTabs() as $lang => $langTab) {
+                        if (isset($value[$lang])) {
+                            $filterValue->{$lang} = $value[$lang];
+                        }
+                    }
+                    $filterValue->save();
+                }
+            }
+            return $filterValue->vid ?? 0;
+
         }
     }
 }

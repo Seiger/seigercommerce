@@ -65,19 +65,9 @@ CREATE TABLE IF NOT EXISTS `{PREFIX}s_product_category` (
 
 CREATE TABLE IF NOT EXISTS `{PREFIX}s_product_features`
 (
-    `fid` int(11) NOT NULL AUTO_INCREMENT,
     `product` int(11) NOT NULL,
-    `filter` int(11) NOT NULL,
-    `position` int(11) NOT NULL DEFAULT 0,
-    `alias` varchar(512) NOT NULL,
-    `base` tinytext NOT NULL DEFAULT '',
-    `created_at` timestamp NULL DEFAULT NULL,
-    `updated_at` timestamp NULL DEFAULT NULL,
-    PRIMARY KEY (`fid`),
-    KEY (`product`),
-    KEY (`filter`),
-    KEY (`alias`)
-    ) ENGINE = MyISAM {TABLEENCODING} AUTO_INCREMENT=1;
+    `feature` int(11) NOT NULL
+) ENGINE = MyISAM {TABLEENCODING};
 
 -- --------------------------------------------------------
 
