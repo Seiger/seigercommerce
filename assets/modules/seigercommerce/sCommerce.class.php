@@ -136,8 +136,8 @@ if (!class_exists('sCommerce')) {
                 $product->categories()->sync($data['categories']);
             }
 
+            $features = [];
             if (isset($data['features']) && is_array($data['features'])) {
-                $features = [];
                 $filtersArray = [];
                 $filtersList = sFilter::whereIn('id', array_keys($data['features']))->get();
 
@@ -166,9 +166,8 @@ if (!class_exists('sCommerce')) {
                             break;
                     }
                 }
-
-                dd(array_diff($features, [0]));
             }
+            $product->features()->sync(array_diff($features, [0]));
 
             return header('Location: ' . $this->moduleUrl() . '&get=product&i=' . $product->id);
         }
@@ -707,7 +706,15 @@ if (!class_exists('sCommerce')) {
             return $validPrice;
         }
 
-        protected function searchFilterValueId($filterId, $value) {
+        /**
+         * Search or Add Filter value and return the ID
+         *
+         * @param int $filterId
+         * @param $value
+         * @return int
+         */
+        protected function searchFilterValueId(int $filterId, mixed $value): int
+        {
             if (is_scalar($value) && trim($value)) {
                 $filterValue = sFilterValue::whereFilter($filterId)->whereBase($value)->firstOrCreate();
                 $filterValue->filter = $filterId;

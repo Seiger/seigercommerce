@@ -7,9 +7,11 @@
             @endif
         </div>
         <div class="col">
+            @php($select = (isset($features[$productFeature->filter]) && is_array($features[$productFeature->filter])) ? $features[$productFeature->filter] : [[0 => 0]])
             <select id="features{{$productFeature->filter}}" class="form-control select2" name="features[{{$productFeature->filter}}][]" multiple onchange="documentDirty=true;">
                 @foreach($productFeature->values as $value)
-                    <option value="{{$value->vid}}">{{ $value->{$sCommerce->langDefault()} }}</option>
+                    {!! $selected = in_array($value->vid, array_keys($select)) ? 'selected' : '' !!}
+                    <option value="{{$value->vid}}" {{$selected}}>{{ $value->{$sCommerce->langDefault()} }}</option>
                 @endforeach
             </select>
         </div>

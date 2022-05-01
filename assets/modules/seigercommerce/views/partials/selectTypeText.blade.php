@@ -7,10 +7,11 @@
             @endif
         </div>
         <div class="col">
+            @php($select = (isset($features[$productFeature->filter]) && is_array($features[$productFeature->filter])) ? reset($features[$productFeature->filter]) : ['base' => ''])
             @foreach($sCommerce->langTabs() as $lang => $tabName)
                 <div class="input-group">
                     <span class="input-group-text">{{mb_strtoupper($lang)}}</span>
-                    <input type="text" id="features{{$productFeature->filter}}" name="features[{{$productFeature->filter}}][{{$lang}}]" class="form-control" value="" onchange="documentDirty=true;">
+                    <input type="text" id="features{{$productFeature->filter}}" name="features[{{$productFeature->filter}}][{{$lang}}]" class="form-control" value="{{$select[$lang] ?? ''}}" onchange="documentDirty=true;">
                 </div>
             @endforeach
         </div>

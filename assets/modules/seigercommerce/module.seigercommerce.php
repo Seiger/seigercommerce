@@ -27,14 +27,20 @@ switch ($data['get']) {
                 : [(int)($product->category ?? evo()->getConfig('catalog_root', evo()->getConfig('site_start', 1)))]
             )
         ));
-        $pTexts = $product->texts->toArray();
+        $pTexts = $product->texts;
         $texts = [];
         foreach ($pTexts as $text) {
-            $texts[$text['lang']] = $text;
+            $texts[$text['lang']] = $text->toArray();
+        }
+        $pFeatures = $product->features;
+        $features  = [];
+        foreach ($pFeatures as $feature) {
+            $features[$feature->filter][$feature->vid] = $feature->toArray();
         }
         $data['product'] = $product;
         $data['categories'] = $categories;
         $data['texts'] = $texts;
+        $data['features'] = $features;
         $data['editor'] = $sCommerce->textEditor("content");
         break;
     case "productSave":

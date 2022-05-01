@@ -106,7 +106,7 @@ class sProduct extends Eloquent\Model
      */
     public function features()
     {
-        return $this->hasMany(sProductFeature::class, 'product', 'product');
+        return $this->belongsToMany(sFilterValue::class, 's_product_features', 'product', 'feature', 'product');
     }
 
     /**

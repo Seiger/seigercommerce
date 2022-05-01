@@ -7,8 +7,9 @@
             @endif
         </div>
         <div class="input-group col">
+            @php($select = (isset($features[$productFeature->filter]) && is_array($features[$productFeature->filter])) ? reset($features[$productFeature->filter]) : ['base' => ''])
             <span class="input-group-text"><i class="fas fa-remove-format"></i></span>
-            <input type="text" id="features{{$productFeature->filter}}" name="features[{{$productFeature->filter}}]" class="form-control" value="" onchange="documentDirty=true;">
+            <input type="text" id="features{{$productFeature->filter}}" name="features[{{$productFeature->filter}}]" class="form-control" value="{{$select['base']}}" onchange="documentDirty=true;">
         </div>
     </div>
 </div>
