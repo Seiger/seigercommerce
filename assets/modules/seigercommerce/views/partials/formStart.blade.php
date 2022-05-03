@@ -9,3 +9,7 @@
 @if(in_array($get, ['filterValues']))
     <form name="filterValues" id="filterValues" class="content" method="post" action="{!!$url!!}&get=filterValuesSave" onsubmit="documentDirty=false;">
 @endif
+
+@if(in_array($get, ['configs']))
+    <form name="configs" id="configs" class="content" method="post" action="{!!$url!!}&get=configs" onsubmit="documentDirty=false;">
+@endif

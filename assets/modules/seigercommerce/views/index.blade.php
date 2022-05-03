@@ -97,6 +97,20 @@
                 @endif
             @endif
 
+            @if(!in_array($get, ['product', 'filter', 'filterValues']))
+                <div class="tab-page configsTab" id="configsTab">
+                    <h2 class="tab">
+                        <a href="{!!$url!!}&get=configs">
+                            <span><i class="fa fa-cog" data-tooltip="{{$_lang["scommerce_configs_help"]}}"></i> {{$_lang['scommerce_configs']}}</span>
+                        </a>
+                    </h2>
+                    <script>tpResources.addTabPage(document.getElementById('configsTab'));</script>
+                    @if($get == 'configs')
+                        @include('configsTab')
+                    @endif
+                </div>
+            @endif
+
             <script>tpResources.setSelectedTab('{{$get}}Tab');</script>
         </div>
     </div>

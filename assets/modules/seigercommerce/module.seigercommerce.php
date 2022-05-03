@@ -3,6 +3,8 @@
  * E-commerce Management Module
  */
 
+use EvolutionCMS\Models\SystemSetting;
+
 if (!defined('IN_MANAGER_MODE') || IN_MANAGER_MODE != 'true') die("No access");
 
 require_once MODX_BASE_PATH . 'assets/modules/seigercommerce/sCommerce.class.php';
@@ -69,6 +71,20 @@ switch ($data['get']) {
         break;
     case "filterValuesSave":
         $sCommerce->saveFilterValues(request()->all());
+        break;
+    case "configs":
+        if (request()->isMethod('post')) {
+            foreach (request()->post() as $key => $value) {
+                if (is_scalar($value)) {
+                    $setting = SystemSetting::whereSettingName($key)->firstOrCreate();
+                    $setting->setting_name = $key;
+                    $setting->setting_value = $value;
+                    $setting->save();
+                    evo()->setConfig($key, $value);
+                }
+            }
+            evo()->clearCache('full');
+        }
         break;
 }
 

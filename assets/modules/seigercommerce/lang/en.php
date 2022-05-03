@@ -58,3 +58,7 @@ $_lang['scommerce_stype_select'] = 'Select';
 $_lang['scommerce_stype_multiselect'] = 'Multiselect';
 $_lang['scommerce_value'] = 'Value';
 $_lang['scommerce_features'] = 'Features';
+$_lang['scommerce_configs'] = 'Configs';
+$_lang['scommerce_configs_help'] = 'Configs the Shop';
+$_lang['scommerce_base_configs'] = 'Base configs';
+$_lang['scommerce_catalog_root'] = 'Catalog root directory';

@@ -58,3 +58,7 @@ $_lang['scommerce_stype_select'] = 'Вибір';
 $_lang['scommerce_stype_multiselect'] = 'Мульти вибір';
 $_lang['scommerce_value'] = 'Значення';
 $_lang['scommerce_features'] = 'Особливості';
+$_lang['scommerce_configs'] = 'Налаштування';
+$_lang['scommerce_configs_help'] = 'Налаштування магазина';
+$_lang['scommerce_base_configs'] = 'Базові налаштування';
+$_lang['scommerce_catalog_root'] = 'Коренева директорія каталогу';
