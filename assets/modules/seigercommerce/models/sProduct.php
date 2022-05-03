@@ -158,7 +158,7 @@ class sProduct extends Eloquent\Model
         if (!empty($this->cover) && is_file(MODX_BASE_PATH . $this->cover)) {
             $coverSrc = $base_url . $this->cover;
         } else {
-            $coverSrc = $base_url . 'assets/modules/seigerсommerce/images/noimage.png';
+            $coverSrc = $base_url . 'assets/modules/seigercommerce/images/noimage.png';
         }
 
         return $coverSrc;

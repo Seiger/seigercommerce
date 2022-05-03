@@ -1,5 +1,4 @@
 @extends('manager::template.page')
-
 @section('content')
     <div class="notifier">
         <div class="notifier-txt"></div>
@@ -102,7 +101,7 @@
         </div>
     </div>
     @include('partials.formEnd')
-    <img src="{{evo()->getConfig('site_url', '/')}}assets/snippets/phpthumb/noimage.png" id="img-preview"
+    <img src="{{evo()->getConfig('site_url', '/')}}assets/modules/seigercommerce/images/noimage.png" id="img-preview"
          style="display: none;" class="post-thumbnail">
 
     <div id="copyright">

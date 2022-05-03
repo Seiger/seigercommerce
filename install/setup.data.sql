@@ -152,6 +152,6 @@ INSERT INTO `{PREFIX}site_content` (`alias`, `pagetitle`, `published`) SELECT * 
 -- Settings table `{PREFIX}system_settings`
 --
 
-REPLACE INTO `{PREFIX}system_settings` (`setting_name`, `setting_value`) VALUES ('catalog_root', (SELECT `id` FROM `{PREFIX}site_content` WHERE `alias` = 'catalog'))
+REPLACE INTO `{PREFIX}system_settings` (`setting_name`, `setting_value`) VALUES ('catalog_root', (SELECT `id` FROM `{PREFIX}site_content` WHERE `alias` = 'catalog'));
 
 -- --------------------------------------------------------

@@ -5,7 +5,7 @@
             <th style="text-align:center;">{{$_lang["name"]}}</th>
             <th style="text-align:center;">{{$_lang["scommerce_categories"]}}</th>
             <th style="width:70px;text-align:center;">{{$_lang["type"]}}</th>
-            <th style="width:260px;text-align:center;">{{$_lang["onlineusers_action"]}}</th>
+            <th id="action-btns">{{$_lang["onlineusers_action"]}}</th>
         </tr>
         </thead>
         <tbody>
@@ -27,8 +27,14 @@
                     @endif
                 </td>
                 <td style="text-align:center;">
-                    <a href="{{$url}}&get=filter&i={{$filter->filter}}" class="btn btn-outline-success"><i class="fa fa-pencil"></i>&emsp;{{$_lang['edit']}}</a>
-                    <a href="#" data-href="{{$url}}&get=filterDelete&i={{$filter->filter}}" data-toggle="modal" data-target="#confirmDelete" data-id="{{$filter->filter}}" data-name="{{$filter->pagetitle}}" class="btn btn-outline-danger"><i class="fa fa-trash"></i>&emsp;{{$_lang['remove']}}</a>
+                    <div class="btn-group">
+                        <a href="{{$url}}&get=filter&i={{$filter->filter}}" class="btn btn-outline-success">
+                            <i class="fa fa-pencil"></i> <span>{{$_lang['edit']}}</span>
+                        </a>
+                        <a href="#" data-href="{{$url}}&get=filterDelete&i={{$filter->filter}}" data-toggle="modal" data-target="#confirmDelete" data-id="{{$filter->filter}}" data-name="{{$filter->pagetitle}}" class="btn btn-outline-danger">
+                            <i class="fa fa-trash"></i> <span>{{$_lang['remove']}}</span>
+                        </a>
+                    </div>
                 </td>
             </tr>
         @endforeach
@@ -40,7 +46,7 @@
     <div id="actions">
         <div class="btn-group">
             <a href="{!!$url!!}&get=filter" class="btn btn-primary" title="{{$_lang["scommerce_add_help"]}}">
-                <i class="fa fa-plus-circle"></i>&emsp;<span>{{$_lang["scommerce_add"]}}</span>
+                <i class="fa fa-plus-circle"></i> <span>{{$_lang["scommerce_add"]}}</span>
             </a>
         </div>
     </div>

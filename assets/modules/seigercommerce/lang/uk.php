@@ -1,4 +1,5 @@
 <?php
+$_lang['scommerce_menu'] = 'Магазин';
 $_lang['scommerce_title'] = 'Електронна комерція';
 $_lang['scommerce_description'] = '<b>sCommerce</b> дозволяє здійснювати управління товарами та замовленнями на сайті.';
 $_lang['scommerce_seotitle_help'] = 'Введіть SEO Заголовок для сторінки посту';

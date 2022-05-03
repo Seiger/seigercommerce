@@ -31,4 +31,13 @@
     .input-group-text {padding:0.1rem 0.75rem;}
     #preview.form-control {max-width:100px;}
     .dark .sectionBody a small, .darkness .sectionBody a small {color:#b3b3b3;}
+    .darkness .select2-selection, .darkness .select2-results__options{border-color:#414449;background-color:#202329;color:#333;}
+    .darkness .select2-container--default .select2-selection--multiple .select2-selection__choice{background-color:#eee;color:#495057;}
+    #action-btns{text-align:center;width:230px;}
+    .sectionTrans .btn-group .btn .fa{display:none;width:1em;font-size:1em;text-align:center;}
+    @media (max-width: 840px) {
+        #action-btns{width:80px;}
+        .sectionTrans .btn-group .btn .fa{display:inline-block;}
+        .sectionTrans .btn-group .btn span{display:none;}
+    }
 </style>
