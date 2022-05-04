@@ -62,3 +62,4 @@ $_lang['scommerce_configs'] = 'Configs';
 $_lang['scommerce_configs_help'] = 'Configs the Shop';
 $_lang['scommerce_base_configs'] = 'Base configs';
 $_lang['scommerce_catalog_root'] = 'Catalog root directory';
+$_lang['scommerce_letter_templates'] = 'Letter templates';

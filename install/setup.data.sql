@@ -141,6 +141,34 @@ CREATE TABLE IF NOT EXISTS `{PREFIX}s_filter_category` (
 -- --------------------------------------------------------
 
 --
+-- Table structure `{PREFIX}s_mail_templates`
+--
+
+CREATE TABLE IF NOT EXISTS `{PREFIX}s_mail_templates`
+(
+    `id` int(11) NOT NULL AUTO_INCREMENT,
+    `lang` varchar(4) NOT NULL DEFAULT 'base',
+    `name` varchar(32) NOT NULL,
+    `title` tinytext NOT NULL DEFAULT '',
+    `subject` tinytext NOT NULL DEFAULT '',
+    `template` text NOT NULL DEFAULT '',
+    `created_at` timestamp NULL DEFAULT NULL,
+    `updated_at` timestamp NULL DEFAULT NULL,
+    PRIMARY KEY (`id`),
+    UNIQUE KEY `lang_name` (`lang`,`name`)
+) ENGINE = MyISAM {TABLEENCODING} AUTO_INCREMENT=1;
+
+-- --------------------------------------------------------
+
+--
+-- Seed mail templates
+--
+
+INSERT INTO `{PREFIX}s_mail_templates` (`lang`, `name`, `title`, `subject`, `template`) SELECT * FROM (SELECT 'base' AS `lang`, 'meta' AS `name`, 'General template (wrapper)' AS `title`, 'default' AS `subject`, "<!DOCTYPE html>\n<html lang=\"uk\"><head>\n<meta charset=\"UTF-8\">\n<meta http-equiv=\"Content-Type\" content=\"text/html; charset=utf-8\">\n<title>Document</title>\n</head>\n<body style=\"margin:0;padding:0\" bgcolor=\"#ffffff\">\n{body}\n</body>" AS `template`) AS temp WHERE NOT EXISTS (SELECT `id` FROM `{PREFIX}s_mail_templates` WHERE `lang` = 'base' AND `name` = 'meta') LIMIT 1;
+
+-- --------------------------------------------------------
+
+--
 -- Create ecommerce structure
 --
 

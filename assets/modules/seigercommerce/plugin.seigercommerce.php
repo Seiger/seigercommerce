@@ -3,9 +3,20 @@
  * Plugin for Seiger Commerce Management Module for Evolution CMS admin panel.
  */
 
-use EvolutionCMS\Models\SiteModule;
+require_once MODX_BASE_PATH . 'assets/modules/seigercommerce/sCommerce.class.php';
 
 $e = evo()->event;
+$sCommerce = new sCommerce();
+$_lang = $sCommerce->managerLanguage();
+
+/**
+ * Base functionality
+ */
+if (in_array($e->name, ['OnPageNotFound', 'OnWebPageInit'])) {
+    if (request()->ajax() && request()->has('ajax')) {
+        //
+    }
+}
 
 /**
  * Add icon to tree
@@ -27,29 +38,18 @@ if ($e->name == 'OnManagerNodePrerender') {
  * Add Menu item
  */
 if ($e->name == 'OnManagerMenuPrerender') {
-    $module = SiteModule::whereName('sCommerce')->first();
-
-    if ($module) {
-        global $_lang;
-
-        if (is_file(MODX_BASE_PATH . 'assets/modules/seigercommerce/lang/' . evo()->getConfig('manager_language', 'uk') . '.php')) {
-            require_once MODX_BASE_PATH . 'assets/modules/seigercommerce/lang/' . evo()->getConfig('manager_language', 'uk') . '.php';
-        }
-
-        $menu['scommerce'] = [
-            "scommerce",
-            "main",
-            "<i class=\"fa fa-store\"></i> <span class=\"menu-item-text\">" . $_lang['scommerce_menu'] . "</span>",
-            "index.php?a=112&id={$module->id}",
-            $_lang['scommerce_menu'],
-            "",
-            "",
-            "main",
-            0,
-            11,
-            "",
-        ];
-
-        $e->addOutput(serialize(array_merge($e->params['menu'], $menu)));
-    }
+    $menu['scommerce'] = [
+        "scommerce",
+        "main",
+        "<i class=\"fa fa-store\"></i> <span class=\"menu-item-text\">" . $_lang['scommerce_menu'] . "</span>",
+        $sCommerce->url,
+        $_lang['scommerce_menu'],
+        "",
+        "",
+        "main",
+        0,
+        11,
+        "",
+    ];
+    $e->addOutput(serialize(array_merge($e->params['menu'], $menu)));
 }

@@ -62,3 +62,4 @@ $_lang['scommerce_configs'] = 'Настройки';
 $_lang['scommerce_configs_help'] = 'Настройки магазина';
 $_lang['scommerce_base_configs'] = 'Базовые настройки';
 $_lang['scommerce_catalog_root'] = 'Корневая директория каталога';
+$_lang['scommerce_letter_templates'] = 'Шаблоны писем';
