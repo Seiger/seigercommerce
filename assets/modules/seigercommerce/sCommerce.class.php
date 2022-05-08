@@ -9,13 +9,16 @@ require_once MODX_BASE_PATH . 'assets/modules/seigercommerce/models/sProductTran
 require_once MODX_BASE_PATH . 'assets/modules/seigercommerce/models/sFilter.php';
 require_once MODX_BASE_PATH . 'assets/modules/seigercommerce/models/sFilterTranslate.php';
 require_once MODX_BASE_PATH . 'assets/modules/seigercommerce/models/sFilterValue.php';
+require_once MODX_BASE_PATH . 'assets/modules/seigercommerce/models/sMailTemplate.php';
 
+use EvolutionCMS\Mail;
 use EvolutionCMS\Models\SiteModule;
 use Illuminate\Pagination\Paginator;
 use sCommerce\Models\sCategory;
 use sCommerce\Models\sFilter;
 use sCommerce\Models\sFilterTranslate;
 use sCommerce\Models\sFilterValue;
+use sCommerce\Models\sMailTemplate;
 use sCommerce\Models\sProduct;
 use sCommerce\Models\sProductTranslate;
 
@@ -333,6 +336,83 @@ if (!class_exists('sCommerce')) {
         }
 
         /**
+         * List mail templates with default language
+         *
+         * @return array
+         */
+        public function mailTemplates(): object
+        {
+            $order = 's_mail_templates.id';
+            $direc = 'asc';
+
+            return sMailTemplate::lang('base')->orderBy($order, $direc)->get();
+        }
+
+        /**
+         * Get mail template
+         *
+         * @param string $name
+         * @return object
+         */
+        public function getTemplate(string $name): object
+        {
+            $langs = implode('", "', array_keys($this->langTabs()));
+            return sMailTemplate::whereName($name)
+                ->orderByRaw('FIELD(lang, "base", "'.$langs.'")')
+                ->get()->mapWithKeys(function ($item, $key) {
+                    return [$item->lang => $item];
+                });
+        }
+
+        public function saveTemplate(array $data)
+        {
+            $fields = [];
+            $langs = array_keys($this->langTabs());
+            $name = $data['name'] ?? 'empty';
+
+            $templates = $this->getTemplate($name);
+
+            foreach ($data as $field => $datum) {
+                $array = explode('_', $field);
+                $lng = array_shift($array);
+                if (in_array($lng, $langs)) {
+                    $fields[$lng][implode('_', $array)] = $datum;
+                }
+            }
+
+            foreach ($langs as $lang) {
+                $title = $fields[$lang]['title'] ?? ($fields['base']['title'] ?? $templates['base']->title);
+                $subject = $fields[$lang]['subject'] ?? ($fields['base']['subject'] ?? $templates['base']->subject);
+                $tmplt = $fields[$lang]['template'] ?? $fields['base']['template'];
+
+                if (isset($templates[$lang])) {
+                    $template = $templates[$lang];
+                } else {
+                    $template = new sMailTemplate();
+                }
+
+                $template->lang = $lang;
+                $template->name = $name;
+                $template->title = ($title ?? '');
+                $template->subject = ($subject ?? '');
+                $template->template = ($tmplt ?? '');
+                $template->save();
+
+                if ($lang == $this->langDefault()) {
+                    $templateBase = sMailTemplate::whereName($name)->whereLang('base')->firstOrCreate();
+                    $templateBase->lang = 'base';
+                    $templateBase->name = $name;
+                    $templateBase->title = ($title ?? '');
+                    $templateBase->subject = ($subject ?? '');
+                    $templateBase->template = ($tmplt ?? '');
+                    $templateBase->save();
+                }
+            }
+
+            return header('Location: ' . $this->moduleUrl() . '&get=configs');
+        }
+
+        /**
          * Default language
          *
          * @return string
@@ -340,6 +420,21 @@ if (!class_exists('sCommerce')) {
         public function langDefault(): string
         {
             return evo()->getConfig('s_lang_default', 'base');
+        }
+
+        /**
+         * @return array
+         */
+        public function managerLanguage()
+        {
+            global $_lang;
+            if (is_file($this->basePath . 'lang/' . evo()->getConfig('manager_language', 'uk') . '.php')) {
+                require_once $this->basePath . 'lang/' . evo()->getConfig('manager_language', 'uk') . '.php';
+            }
+            if (is_file(MODX_BASE_PATH . 'assets/modules/seigerlang/lang/' . evo()->getConfig('manager_language', 'uk') . '.php')) {
+                require_once MODX_BASE_PATH . 'assets/modules/seigerlang/lang/' . evo()->getConfig('manager_language', 'uk') . '.php';
+            }
+            return $_lang;
         }
 
         /**
@@ -351,16 +446,7 @@ if (!class_exists('sCommerce')) {
          */
         public function view($tpl, array $data = [])
         {
-            global $_lang;
-            if (is_file($this->basePath . 'lang/' . evo()->getConfig('manager_language', 'uk') . '.php')) {
-                require_once $this->basePath . 'lang/' . evo()->getConfig('manager_language', 'uk') . '.php';
-            }
-            if (is_file(MODX_BASE_PATH . 'assets/modules/seigerlang/lang/' . evo()->getConfig('manager_language', 'uk') . '.php')) {
-                require_once MODX_BASE_PATH . 'assets/modules/seigerlang/lang/' . evo()->getConfig('manager_language', 'uk') . '.php';
-            }
-
-            $data = array_merge($data, ['modx' => evo(), 'data' => $data, '_lang' => $_lang]);
-
+            $data = array_merge($data, ['modx' => evo(), 'data' => $data, '_lang' => $this->managerLanguage()]);
             View::getFinder()->setPaths([
                 $this->basePath . 'views',
                 MODX_MANAGER_PATH . 'views'
@@ -385,7 +471,7 @@ if (!class_exists('sCommerce')) {
             if (trim($lang)) {
                 $lang = explode(',', $lang);
                 foreach ($lang as $item) {
-                    $tabs[$item] = $_lang['scommerce_texts'] . ' ' . $item;
+                    $tabs[$item] = $_lang['scommerce_texts'] . ' <span class="badge bg-seigerit">' . $item . '</span>';
                 }
             } else {
                 $tabs['base'] = $_lang['scommerce_texts'];
@@ -507,12 +593,46 @@ if (!class_exists('sCommerce')) {
             return $out;
         }
 
+        public function sendMail($to, $name, $data, $lang = false)
+        {
+            // Language detection
+            if (!$lang) {
+                $lang = evo()->getConfig('lang', $this->langDefault());
+            }
+
+            // Template preparation
+            $meta = sMailTemplate::whereName('meta')->whereIn('lang', [$lang, 'base'])->orderByRaw('FIELD(lang, "'.$lang.'", "base")')->first();
+            $template = sMailTemplate::whereName($name)->whereIn('lang', [$lang, 'base'])->orderByRaw('FIELD(lang, "'.$lang.'", "base")')->first();
+
+            if (is_array($data)) {
+                foreach ($data as $key => $value) {
+                    $parse["{".$key."}"] = $value;
+                }
+            }
+
+            $body = strtr($template->template, $parse);
+            $body = str_replace('{body}', $body, $meta->template);
+            $body = str_replace('[!', '[[', $body);
+            $body = str_replace('!]', ']]', $body);
+            $body = evo()->mergeSettingsContent($body);
+            $body = evo()->evalSnippets($body);
+            $body = UrlProcessor::rewriteUrls($body);
+
+            // Sending letter
+            $params['to'] = evo()->getConfig('emailsender');
+            $params['subject'] = evo()->mergeSettingsContent($template->subject);
+            $params['body'] = $body;
+
+            return evo()->sendmail($params);
+        }
+
+
         /**
          * Connecting the visual editor to the required fields
          *
          * @param string $ids List of id fields separated by commas
          * @param string $height Window height
-         * @param string $editor Which editor to use TinyMCE5, CodeMirror
+         * @param string $editor Which editor to use TinyMCE5, Codemirror
          * @return string
          */
         public function textEditor(string $ids, string $height = '500px', string $editor = ''): string
@@ -540,7 +660,8 @@ if (!class_exists('sCommerce')) {
             return implode("", evo()->invokeEvent('OnRichTextEditorInit', [
                 'editor' => $editor,
                 'elements' => $elements,
-                'height' => $height
+                'height' => $height,
+                'contentType' => 'htmlmixed'
             ]));
         }
 

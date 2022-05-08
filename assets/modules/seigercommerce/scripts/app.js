@@ -16,17 +16,21 @@ document.addEventListener('DOMContentLoaded', function() {
 
         fetch(ajaxRoot, {
             method: method,
+            cache: "no-store",
+            headers: {
+                "X-Requested-With": "XMLHttpRequest"
+            },
             body: new FormData(form)
         }).then((response) => {
             return response.json();
         }).then((data) => {
-            console.log(data);
             submit.disabled = false;
+            console.info('Form', form.querySelector('[name="ajax"]').value+'.', data.message);
         }).catch(function(error) {
             if (error == 'SyntaxError: Unexpected token < in JSON at position 0') {
-                console.log('Request failed SyntaxError: The response must contain a JSON string.');
+                console.error('Request failed SyntaxError: The response must contain a JSON string.');
             } else {
-                console.log('Request failed', error, '.');
+                console.error('Request failed', error, '.');
             }
             submit.disabled = false;
         });

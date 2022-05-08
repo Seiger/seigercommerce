@@ -13,3 +13,8 @@
 @if(in_array($get, ['configs']))
     <form name="configs" id="configs" class="content" method="post" action="{!!$url!!}&get=configs" onsubmit="documentDirty=false;">
 @endif
+
+@if(in_array($get, ['template']))
+    <form name="template" id="template" class="content" method="post" action="{!!$url!!}&get=templateSave" onsubmit="documentDirty=false;">
+        <input type="hidden" name="name" value="{{$template['base']->name ?? ''}}">
+@endif

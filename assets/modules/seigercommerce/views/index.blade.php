@@ -43,7 +43,7 @@
 
                 @foreach($sCommerce->langTabs() as $lang => $tabName)
                     <div class="tab-page productTexts{{$lang}}Tab" id="productTexts{{$lang}}Tab">
-                        <h2 class="tab"><i class="fa fa-flag"></i> {{$tabName}}</h2>
+                        <h2 class="tab"><i class="fa fa-flag"></i> {!! $tabName !!}</h2>
                         <script>tpResources.addTabPage(document.getElementById('productTexts{{$lang}}Tab'));</script>
                         @include('productTextsTab')
                     </div>
@@ -109,6 +109,18 @@
                         @include('configsTab')
                     @endif
                 </div>
+
+                @if(in_array($get, ['template']))
+                    <div class="tab-page templateTab" id="templateTab">
+                        <h2 class="tab">
+                            <a href="{{$url}}&get=template&i={{$template['base']->name}}">
+                                <span><i class="fab fa-mailchimp"></i> {{$template['base']->title}}</span>
+                            </a>
+                        </h2>
+                        <script>tpResources.addTabPage(document.getElementById('templateTab'));</script>
+                        @include('templateTab')
+                    </div>
+                @endif
             @endif
 
             <script>tpResources.setSelectedTab('{{$get}}Tab');</script>
@@ -119,7 +131,9 @@
          style="display: none;" class="post-thumbnail">
 
     <div id="copyright">
+        <span class="badge bg-seigerit">
         {!!$_lang['scommerce_copyright']!!} <strong><a href="https://seigerit.com/" target="_blank">Seiger IT</a></strong>
+        </span>
     </div>
 @endsection
 

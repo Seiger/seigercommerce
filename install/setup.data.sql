@@ -164,7 +164,8 @@ CREATE TABLE IF NOT EXISTS `{PREFIX}s_mail_templates`
 -- Seed mail templates
 --
 
-INSERT INTO `{PREFIX}s_mail_templates` (`lang`, `name`, `title`, `subject`, `template`) SELECT * FROM (SELECT 'base' AS `lang`, 'meta' AS `name`, 'General template (wrapper)' AS `title`, 'default' AS `subject`, "<!DOCTYPE html>\n<html lang=\"uk\"><head>\n<meta charset=\"UTF-8\">\n<meta http-equiv=\"Content-Type\" content=\"text/html; charset=utf-8\">\n<title>Document</title>\n</head>\n<body style=\"margin:0;padding:0\" bgcolor=\"#ffffff\">\n{body}\n</body>" AS `template`) AS temp WHERE NOT EXISTS (SELECT `id` FROM `{PREFIX}s_mail_templates` WHERE `lang` = 'base' AND `name` = 'meta') LIMIT 1;
+INSERT INTO `{PREFIX}s_mail_templates` (`lang`, `name`, `title`, `subject`, `template`) SELECT * FROM (SELECT 'base' AS `lang`, 'meta' AS `name`, 'General template (wrapper)' AS `title`, 'default' AS `subject`, "<!DOCTYPE html>\n<html lang=\"uk\">\n<head>\n\t<meta charset=\"UTF-8\">\n\t<meta http-equiv=\"Content-Type\" content=\"text/html; charset=utf-8\">\n\t<title>Default</title>\n</head>\n<body style=\"margin:0;padding:0\" bgcolor=\"#ffffff\">\n\t{body}\n</body>" AS `template`) AS temp WHERE NOT EXISTS (SELECT `id` FROM `{PREFIX}s_mail_templates` WHERE `lang` = 'base' AND `name` = 'meta') LIMIT 1;
+INSERT INTO `{PREFIX}s_mail_templates` (`lang`, `name`, `title`, `subject`, `template`) SELECT * FROM (SELECT 'base' AS `lang`, 'callback' AS `name`, 'Callback' AS `title`, 'Callback [(site_name)]' AS `subject`, "<p>Name: {name}</p>\n<p>Phone: {phone}</p>\n<p>Message: {message}</p>" AS `template`) AS temp WHERE NOT EXISTS (SELECT `id` FROM `{PREFIX}s_mail_templates` WHERE `lang` = 'base' AND `name` = 'callback') LIMIT 1;
 
 -- --------------------------------------------------------
 

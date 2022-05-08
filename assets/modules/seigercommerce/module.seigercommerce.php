@@ -86,6 +86,13 @@ switch ($data['get']) {
             evo()->clearCache('full');
         }
         break;
+    case "template":
+        $data['template'] = $sCommerce->getTemplate(request()->i);
+        $data['editor'] = $sCommerce->textEditor("template", "500px", "Codemirror");
+        break;
+    case "templateSave":
+        $sCommerce->saveTemplate(request()->all());
+        break;
 }
 
 $sCommerce->view('index', $data);

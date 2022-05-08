@@ -5,14 +5,9 @@
     </form>
 @endif
 
-@if(in_array($get, ['filter']))
+@if(in_array($get, ['filter', 'filterValues']))
     <input type="hidden" name="filter" value="{{$filter->filter ?? 0}}">
     </form>
 @endif
 
-@if(in_array($get, ['filterValues']))
-    <input type="hidden" name="filter" value="{{$filter->filter ?? 0}}">
-    </form>
-@endif
-
-@if(in_array($get, ['configs']))</form>@endif
+@if(in_array($get, ['configs', 'template']))</form>@endif

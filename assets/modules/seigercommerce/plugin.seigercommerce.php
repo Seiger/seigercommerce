@@ -14,7 +14,7 @@ $_lang = $sCommerce->managerLanguage();
  */
 if (in_array($e->name, ['OnPageNotFound', 'OnWebPageInit'])) {
     if (request()->ajax() && request()->has('ajax')) {
-        //
+        require_once MODX_BASE_PATH . 'assets/modules/seigercommerce/handlers/ajax.php';
     }
 }
 

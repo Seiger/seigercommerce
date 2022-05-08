@@ -26,8 +26,10 @@
     .modal-header{margin-top:1rem;}
     .form-row .col-title{width:9rem;}
     table .post-thumbnail{width:70px;height:45px;}
-    #copyright{position:fixed;bottom:0;right:0;background-color:#0057b8;color:#ffd700;padding:5px;}
+    .badge.bg-seigerit{background-color:#0057b8;color:#ffd700;font-size:85%;}
+    #copyright{position:fixed;bottom:0;right:0;padding:3px;}
     #copyright a{color:#ffd700;}
+    #copyright .badge{font-size:95%;}
     .input-group-text {padding:0.1rem 0.75rem;}
     #preview.form-control {max-width:100px;}
     .dark .sectionBody a small, .darkness .sectionBody a small {color:#b3b3b3;}
