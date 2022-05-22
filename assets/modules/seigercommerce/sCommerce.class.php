@@ -48,7 +48,7 @@ if (!class_exists('sCommerce')) {
             $order = 's_products.updated_at';
             $direc = 'desc';
 
-            return sProduct::lang($this->langDefault())->orderBy($order, $direc)->get();
+            return sProduct::lang($this->langDefault())->wherePublished(1)->orderBy($order, $direc)->get();
         }
 
         /**

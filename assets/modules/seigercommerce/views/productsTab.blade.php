@@ -3,6 +3,7 @@
         <thead>
         <tr>
             <th style="text-align:center;">{{$_lang["name"]}}</th>
+            <th style="width:70px;text-align:center;">{{$_lang["scommerce_price"]}}</th>
             <th style="width:70px;text-align:center;">{{$_lang["scommerce_availability"]}}</th>
             <th style="width:70px;text-align:center;">{{$_lang["scommerce_status"]}}</th>
             <th id="action-btns">{{$_lang["onlineusers_action"]}}</th>
@@ -15,6 +16,7 @@
                     <img src="{{$product->coverSrc}}" alt="{{$product->coverSrc}}" class="post-thumbnail">
                     <a href="{{$product->link}}" target="_blank"><b>{{$product->pagetitle}}</b> <small>({{$product->product}})</small></a>
                 </td>
+                <td style="text-align:center;">{{$product->price}}</td>
                 <td>
                     @if($product->published)
                         <span class="badge badge-success">{{$_lang["page_data_published"]}}</span>
