@@ -9,7 +9,7 @@
         </tr>
         </thead>
         <tbody>
-        @foreach($sCommerce->products() as $product)
+        @foreach($sCommerce->productsAll() as $product)
             <tr>
                 <td>
                     <img src="{{$product->coverSrc}}" alt="{{$product->coverSrc}}" class="post-thumbnail">

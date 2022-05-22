@@ -1,5 +1,5 @@
 <h3>{{$product->pagetitle ?? $_lang['scommerce_new_product']}}</h3>
-<div class="split my-1"></div>
+<div class="split my-3"></div>
 <div class="row form-row">
     <div class="row-col col-lg-3 col-md-3 col-12">
         <div class="row form-row form-row-checkbox">

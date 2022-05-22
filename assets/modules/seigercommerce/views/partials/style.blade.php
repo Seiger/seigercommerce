@@ -26,7 +26,7 @@
     .modal-header{margin-top:1rem;}
     .form-row .col-title{width:9rem;}
     table .post-thumbnail{width:70px;height:45px;}
-    .badge.bg-seigerit{background-color:#0057b8;color:#ffd700;font-size:85%;}
+    .badge.bg-seigerit{background-color:#0057b8 !important;color:#ffd700;font-size:85%;}
     #copyright{position:fixed;bottom:0;right:0;padding:3px;}
     #copyright a{color:#ffd700;}
     #copyright .badge{font-size:95%;}

@@ -35,6 +35,20 @@
                     @endif
                 </div>
 
+                @if(
+                    in_array($product->type, [
+                        \sCommerce\Models\sProduct::TYPE_OPTIONAL
+                    ])
+                    )
+                    <div class="tab-page productVariationsTab" id="productVariationsTab">
+                        <h2 class="tab">
+                            <span><i class="fas fa-code-branch"></i> {{$_lang['scommerce_variations']}}</span>
+                        </h2>
+                        <script>tpResources.addTabPage(document.getElementById('productVariationsTab'));</script>
+                        @include('productVariationsTab')
+                    </div>
+                @endif
+
                 <div class="tab-page productFeaturesTab" id="productFeaturesTab">
                     <h2 class="tab"><i class="fa fa-puzzle-piece"></i> {{$_lang['scommerce_features']}}</h2>
                     <script>tpResources.addTabPage(document.getElementById('productFeaturesTab'));</script>

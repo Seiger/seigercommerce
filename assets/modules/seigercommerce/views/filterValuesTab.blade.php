@@ -44,7 +44,7 @@
     </style>
     <script>
         $(document).on("click", ".close-icon", function () {
-            $(this).closest('.card').fadeOut();
+            $(this).closest('.card').remove();
             documentDirty=true;
         });
         function addFilterValue() {

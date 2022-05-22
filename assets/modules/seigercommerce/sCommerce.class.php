@@ -52,6 +52,19 @@ if (!class_exists('sCommerce')) {
         }
 
         /**
+         * List products with default language
+         *
+         * @return array
+         */
+        public function productsAll(): object
+        {
+            $order = 's_products.updated_at';
+            $direc = 'desc';
+
+            return sProduct::lang($this->langDefault())->orderBy($order, $direc)->get();
+        }
+
+        /**
          * Get product object with translation
          *
          * @param int $productId
@@ -98,6 +111,39 @@ if (!class_exists('sCommerce')) {
         }
 
         /**
+         * Ged list features where category as the product for optionals
+         *
+         * @param int $productId
+         * @return object
+         */
+        public function getProductOptionalsSelect(int $productId): object
+        {
+            if ($productId) {
+                $productAllCats = [];
+                $product = $this->getProduct($productId);
+                $categories = array_unique(array_merge(
+                    [(int)($product->category ?? evo()->getConfig('catalog_root', evo()->getConfig('site_start', 1)))],
+                    (
+                    $product->categories
+                        ? $product->categories->pluck('id')->toArray()
+                        : [(int)($product->category ?? evo()->getConfig('catalog_root', evo()->getConfig('site_start', 1)))]
+                    )
+                ));
+
+                foreach ($categories as $category) {
+                    $productAllCats = array_merge($productAllCats, [$category], $this->categoryParentsIds($category));
+                }
+
+                $filters = sFilter::withLangCategories($this->langDefault(), $productAllCats)
+                    ->whereIn('type_select', [sFilter::STYPE_MULTISELECT])
+                    ->orderBy('s_filters.position')
+                    ->get();
+            }
+
+            return $filters ?? (object)[];
+        }
+
+        /**
          * Save the product with parameters
          *
          * @param array $data
@@ -113,6 +159,28 @@ if (!class_exists('sCommerce')) {
                 $product = new sProduct();
             }
 
+            $variations = '';
+            if (isset($data['variations']) && is_array($data['variations'])) {
+                $checkPrice = true;
+                if (count($data['variations']) > 1) {
+                    unset($data['variations'][0]);
+                }
+
+                foreach ($data['variations'] as $keyVariations => $dataVariations) {
+                    foreach ($dataVariations as $keyVariation => $dataVariation) {
+                        $price = $this->validatePrice($dataVariation['price']);
+                        $price = number_format($price, 2, '.', '');
+                        $data['variations'][$keyVariations][$keyVariation]['price'] = $price;
+
+                        if ($dataVariation['published'] == 1 && $checkPrice) {
+                            $data['price'] = $dataVariation['price'];
+                            $checkPrice = false;
+                        }
+                    }
+                }
+                $variations = json_encode($data['variations']);
+            }
+
             $product->published = (int)$data['published'];
             $product->availability = (int)$data['availability'];
             $product->status = (int)$data['status'];
@@ -126,6 +194,7 @@ if (!class_exists('sCommerce')) {
             $product->price = $this->validatePrice($data['price']);
             $product->price_old = $this->validatePrice($data['price_old']);
             $product->weight = $this->validatePrice($data['weight']);
+            $product->variations = $variations;
             $product->save();
 
             foreach ($this->langTabs() as $lang => $label) {
@@ -245,12 +314,16 @@ if (!class_exists('sCommerce')) {
          *
          * @return array
          */
-        public function filterValues(): object
+        public function filterValues(int $filterId = 0): object
         {
             $order = 's_filter_values.position';
             $direc = 'asc';
 
-            return sFilterValue::whereFilter((int)request()->i)->orderBy($order, $direc)->get();
+            if ($filterId == 0) {
+                $filterId = (int)request()->i;
+            }
+
+            return sFilterValue::whereFilter($filterId)->orderBy($order, $direc)->get();
         }
 
         /**
@@ -729,6 +802,8 @@ if (!class_exists('sCommerce')) {
                 $alias = Str::slug(trim($data['en']['pagetitle']), '-');
             } elseif (isset($data['base']['pagetitle']) && trim($data['base']['pagetitle'])) {
                 $alias = Str::slug(trim($data['base']['pagetitle']), '-');
+            } elseif (isset($data['texts']['en']['pagetitle']) && trim($data['texts']['en']['pagetitle'])) {
+                $alias = Str::slug(trim($data['texts']['en']['pagetitle']), '-');
             } else {
                 $langDefault = evo()->getConfig('s_lang_default', 'uk');
                 $alias = Str::slug(trim($data[$langDefault]['pagetitle']), '-');
@@ -793,13 +868,13 @@ if (!class_exists('sCommerce')) {
         /**
          * Image validation
          *
-         * @param string $image
+         * @param string|null $image
          * @return string
          */
-        protected function validateImage(string $image): string
+        protected function validateImage($image): string
         {
             $validImg = '';
-            if (trim($image)) {
+            if (!empty($image) && trim($image)) {
                 if (is_file(MODX_BASE_PATH . $image)) {
                     $validImg = $image;
                 }
@@ -816,6 +891,7 @@ if (!class_exists('sCommerce')) {
         protected function validatePrice(mixed $price): float
         {
             $validPrice = 0.00;
+            $price = str_replace(',', '.', $price);
 
             if (is_int($price) || is_numeric($price)) {
                 $price = floatval($price);

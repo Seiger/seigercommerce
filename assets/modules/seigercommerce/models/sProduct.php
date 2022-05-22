@@ -17,6 +17,8 @@ class sProduct extends Eloquent\Model
      * Type constants
      */
     const TYPE_SIMPLE = 0;
+    const TYPE_OPTIONAL = 1;
+    const TYPE_VARIABLE = 2;
 
     /**
      * Status constants
@@ -162,5 +164,22 @@ class sProduct extends Eloquent\Model
         }
 
         return $coverSrc;
+    }
+
+    /**
+     * Get the product variations array
+     *
+     * @return array|bool|mixed
+     */
+    public function getVariationsArrayAttribute()
+    {
+        if ($result = data_is_json($this->variations, true)) {
+            if (isset($result[0]) && (int)$result[0] > 0) {
+                $result = array_flip($result);
+            }
+            return $result;
+        } else {
+            return [];
+        }
     }
 }
