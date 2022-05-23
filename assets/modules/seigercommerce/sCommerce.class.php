@@ -159,23 +159,22 @@ if (!class_exists('sCommerce')) {
                 $product = new sProduct();
             }
 
+            $grouping_parameters = '';
+            if (isset($data['grouping_parameters']) && is_array($data['grouping_parameters'])) {
+                $grouping_parameters = json_encode($data['grouping_parameters']);
+            }
+
             $variations = '';
             if (isset($data['variations']) && is_array($data['variations'])) {
                 $checkPrice = true;
-                if (count($data['variations']) > 1) {
-                    unset($data['variations'][0]);
-                }
+                foreach ($data['variations'] as $keyVariation => $dataVariation) {
+                    $price = $this->validatePrice($dataVariation['price']);
+                    $price = number_format($price, 2, '.', '');
+                    $data['variations'][$keyVariation]['price'] = $price;
 
-                foreach ($data['variations'] as $keyVariations => $dataVariations) {
-                    foreach ($dataVariations as $keyVariation => $dataVariation) {
-                        $price = $this->validatePrice($dataVariation['price']);
-                        $price = number_format($price, 2, '.', '');
-                        $data['variations'][$keyVariations][$keyVariation]['price'] = $price;
-
-                        if ($dataVariation['published'] == 1 && $checkPrice) {
-                            $data['price'] = $dataVariation['price'];
-                            $checkPrice = false;
-                        }
+                    if ($dataVariation['published'] == 1 && $checkPrice) {
+                        $data['price'] = $dataVariation['price'];
+                        $checkPrice = false;
                     }
                 }
                 $variations = json_encode($data['variations']);
@@ -194,6 +193,7 @@ if (!class_exists('sCommerce')) {
             $product->price = $this->validatePrice($data['price']);
             $product->price_old = $this->validatePrice($data['price_old']);
             $product->weight = $this->validatePrice($data['weight']);
+            $product->grouping_parameters = $grouping_parameters;
             $product->variations = $variations;
             $product->save();
 
@@ -936,7 +936,6 @@ if (!class_exists('sCommerce')) {
                 }
             }
             return $filterValue->vid ?? 0;
-
         }
     }
 }

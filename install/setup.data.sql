@@ -17,6 +17,7 @@ CREATE TABLE IF NOT EXISTS `{PREFIX}s_products`
     `weight` float(9,2) NOT NULL DEFAULT '0.00',
     `code` varchar(64) NOT NULL DEFAULT '',
     `type` tinyint(1) NOT NULL DEFAULT 0 COMMENT '0-Simple|1-Variable|2-Optional',
+    `grouping_parameters` longtext  NOT NULL DEFAULT '',
     `variations` longtext  NOT NULL DEFAULT '',
     `rating` int(11) NOT NULL DEFAULT 0,
     `views` int(11) NOT NULL DEFAULT 0,
