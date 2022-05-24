@@ -24,6 +24,8 @@ document.addEventListener('DOMContentLoaded', function() {
         }).then((response) => {
             return response.json();
         }).then((data) => {
+            document.getElementById('modal-thank-message').textContent = data.message;
+            $.fancybox.open({src:"#thank",type:"inline"});
             submit.disabled = false;
             console.info('Form', form.querySelector('[name="ajax"]').value+'.', data.message);
         }).catch(function(error) {
@@ -37,6 +39,15 @@ document.addEventListener('DOMContentLoaded', function() {
         e.preventDefault();
     });
     /*--------------------- Submitting a form ---------------------*/
+    /*--------------------- Select variation ----------------------*/
+    /*const selectVariation = document.querySelectorAll('[data-select-variation]');
+    for (let i = 0; i < selectVariation.length; i++) {
+        selectVariation[i].addEventListener("change", function(e) {
+            console.info('---------test---------')
+            console.dir(e);
+        })
+    }*/
+    /*--------------------- Select variation ----------------------*/
     /*------------------------ Add to cart ------------------------*/
     const buy = document.querySelectorAll('[data-buy]');
     for (let i = 0; i < buy.length; i++) {
@@ -46,16 +57,16 @@ document.addEventListener('DOMContentLoaded', function() {
             this.disabled = true;
 
             let count = 1;
-            let option = 0;
+            let variation = 0;
             let product = this.getAttribute('data-buy');
-            if (this.hasAttribute('data-option')) {
-                option = this.getAttribute('data-option');
+            if (this.hasAttribute('data-variation')) {
+                variation = this.getAttribute('data-variation');
             }
 
             let form = new FormData();
-            form.append('name', 'buy');
+            form.append('ajax', 'buy');
             form.append('product', product);
-            form.append('option', option);
+            form.append('variation', variation);
             form.append('count', count);
 
             fetch(ajaxRoot, {
@@ -68,6 +79,8 @@ document.addEventListener('DOMContentLoaded', function() {
             }).then((response) => {
                 return response.json();
             }).then((data) => {
+                document.getElementById('modal-thank-message').textContent = data.message;
+                $.fancybox.open({src:"#thank",type:"inline"});
                 this.disabled = false;
             }).catch(function(error) {
                 if (error == 'SyntaxError: Unexpected token < in JSON at position 0') {
@@ -80,4 +93,11 @@ document.addEventListener('DOMContentLoaded', function() {
         });
     }
     /*------------------------ Add to cart ------------------------*/
+});
+$(document).ready(function () {
+    $(document).on('change', '[data-select-variation]', function () {
+        $this = $(this);
+        $this.parents('.card').find('[data-variation]').attr('data-variation', $this.find('[selected]').val());
+        $this.parents('.card').find('.price__count').text($this.find('[selected]').attr('data-price'));
+    });
 });
