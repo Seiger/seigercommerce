@@ -13,6 +13,26 @@ $_lang = $sCommerce->managerLanguage();
  * Base functionality
  */
 if (in_array($e->name, ['OnPageNotFound', 'OnWebPageInit'])) {
+    // Catalog Filter Handler
+    if (in_array("f", request()->segments())) {
+        $keys = array_flip(request()->segments());
+        if (isset(request()->segments()[$keys['f']+1]) && trim(request()->segments()[$keys['f']+1])) {
+            evo()->setPlaceholder('filters', request()->segments()[$keys['f']+1]);
+
+            // Go to the page
+            $path = array_slice(request()->segments(), 0, ($keys['f']));
+            if (count($path)) {
+                $path = implode('/', $path);
+                if (array_key_exists($path, UrlProcessor::getFacadeRoot()->documentListing)) {
+                    $identifier = UrlProcessor::getFacadeRoot()->documentListing[$path];
+                    evo()->sendForward($identifier);
+                    exit();
+                }
+            }
+        }
+    }
+
+    // Asynchronous request handler
     if (request()->ajax() && request()->has('ajax')) {
         require_once MODX_BASE_PATH . 'assets/modules/seigercommerce/handlers/ajax.php';
     }
