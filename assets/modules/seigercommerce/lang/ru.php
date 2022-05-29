@@ -78,3 +78,5 @@ $_lang['scommerce_grouping_parameter'] = 'Параметр групировки'
 $_lang['scommerce_grouping_parameter_help'] = 'Выбирается из списка опций доступных товару. Опция должна иметь тип '. $_lang['scommerce_stype_multiselect'];
 $_lang['scommerce_variations_save_help'] = 'Вариации товара все еще не доступны на сайте. Настройте необходимые опции и сохраните товар.';
 $_lang['scommerce_variations_price_help'] = 'Основная цена товара будет заменена на цену первой опубликованной из списка.';
+$_lang['scommerce_gallery'] = 'Галерея';
+$_lang['scommerce_gallery_help'] = 'Используется в слайдере товара.';

@@ -173,6 +173,19 @@
             </div>
         </div>
     </div>
+
+    <div class="row-col col-12">
+        <div class="row form-row">
+            <div class="col-auto col-title">
+                <label for="categories" class="warning" data-key="categories">{{$_lang["scommerce_gallery"]}}</label>
+                <i class="fa fa-question-circle" data-tooltip="{{$_lang["scommerce_gallery_help"]}}"></i>
+            </div>
+            <div class="col">
+                @php($sGalleryController = new \Seiger\sGallery\Controllers\sGalleryController('section', 'product', 'i'))
+                {!! $sGalleryController->index() !!}
+            </div>
+        </div>
+    </div>
 </div>
 
 @push('scripts.bot')

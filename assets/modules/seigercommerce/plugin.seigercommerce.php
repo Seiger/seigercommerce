@@ -3,6 +3,9 @@
  * Plugin for Seiger Commerce Management Module for Evolution CMS admin panel.
  */
 
+use sCommerce\Models\sProduct;
+use sCommerce\Models\sProductTranslate;
+
 require_once MODX_BASE_PATH . 'assets/modules/seigercommerce/sCommerce.class.php';
 
 $e = evo()->event;
@@ -13,6 +16,11 @@ $_lang = $sCommerce->managerLanguage();
  * Base functionality
  */
 if (in_array($e->name, ['OnPageNotFound', 'OnWebPageInit'])) {
+    // Asynchronous request handler
+    if (request()->ajax() && request()->has('ajax')) {
+        require_once MODX_BASE_PATH . 'assets/modules/seigercommerce/handlers/ajax.php';
+    }
+
     // Catalog Filter Handler
     if (in_array("f", request()->segments())) {
         $keys = array_flip(request()->segments());
@@ -32,10 +40,28 @@ if (in_array($e->name, ['OnPageNotFound', 'OnWebPageInit'])) {
         }
     }
 
-    // Asynchronous request handler
-    if (request()->ajax() && request()->has('ajax')) {
-        require_once MODX_BASE_PATH . 'assets/modules/seigercommerce/handlers/ajax.php';
+    // Product Handler
+    $productList = Cache::get('productList', []);
+    if (isset($productList['/'.request()->path().'/'])) {
+        $identifier = UrlProcessor::getFacadeRoot()->documentListing['product'];
+        evo()->sendForward($identifier);
+        exit();
     }
+}
+
+/**
+ * Caching basic product data for fast lookups at the front
+ *
+ * Binding Product Alias and Product ID [Product Alias => Product ID]
+ */
+if ($e->name == 'OnCacheUpdate') {
+    $products = sProduct::wherePublished(1)->get();
+    if ($products) {
+        foreach ($products as $product) {
+            $productList[$product->link] = $product->id;
+        }
+    }
+    Cache::forever('productList', $productList);
 }
 
 /**

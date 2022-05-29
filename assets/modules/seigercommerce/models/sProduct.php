@@ -108,7 +108,7 @@ class sProduct extends Eloquent\Model
      */
     public function features()
     {
-        return $this->belongsToMany(sFilterValue::class, 's_product_features', 'product', 'feature', 'product');
+        return $this->belongsToMany(sFilterValue::class, 's_product_features', 'product', 'feature', 'product')->orderBy('position');
     }
 
     /**
@@ -126,7 +126,7 @@ class sProduct extends Eloquent\Model
     /**
      * Get the product link
      *
-     * @return string
+     * @return string link
      */
     public function getLinkAttribute()
     {
@@ -136,7 +136,26 @@ class sProduct extends Eloquent\Model
             $site_start = evo()->getConfig('site_start', 1);
             $catalog_root = evo()->getConfig('catalog_root', $site_start);
         }
-        $base_url = UrlProcessor::makeUrl($catalog_root);
+        $base_url = UrlProcessor::makeUrl(evo()->getConfig('site_start', 1));
+        $suffix_url = evo()->getConfig('friendly_url_suffix', '');
+        $link = $base_url . $this->alias . $suffix_url;
+        return $link;
+    }
+
+    /**
+     * Get the product full link
+     *
+     * @return string link
+     */
+    public function getFullLinkAttribute()
+    {
+        if ($this->category) {
+            $catalog_root = $this->category;
+        } else {
+            $site_start = evo()->getConfig('site_start', 1);
+            $catalog_root = evo()->getConfig('catalog_root', $site_start);
+        }
+        $base_url = UrlProcessor::makeUrl(evo()->getConfig('site_start', 1));
         if (str_starts_with($base_url, '/')) {
             $base_url = MODX_SITE_URL . ltrim($base_url, '/');
         }
@@ -148,7 +167,7 @@ class sProduct extends Eloquent\Model
     /**
      * Get the product cover src link
      *
-     * @return string
+     * @return string cover_src
      */
     public function getCoverSrcAttribute()
     {
@@ -167,19 +186,47 @@ class sProduct extends Eloquent\Model
     }
 
     /**
-     * Get the product variations array
+     * Get the product variations group array
      *
-     * @return array|bool|mixed
+     * @return array grouping_parameters_array
      */
-    public function getVariationsArrayAttribute()
+    public function getGroupingParametersArrayAttribute(): array
     {
-        if ($result = data_is_json($this->variations, true)) {
-            if (isset($result[0]) && (int)$result[0] > 0) {
-                $result = array_flip($result);
-            }
+        if ($result = data_is_json($this->grouping_parameters, true)) {
             return $result;
         } else {
             return [];
         }
+    }
+
+    /**
+     * Get the product variations array
+     *
+     * @return array variations_array
+     */
+    public function getVariationsArrayAttribute(): array
+    {
+        if ($result = data_is_json($this->variations, true)) {
+            return $result;
+        } else {
+            return [];
+        }
+    }
+
+    /**
+     * Get the product brand
+     *
+     * @return string brand
+     */
+    public function getBrandAttribute(): string
+    {
+        $filterBand = sFilter::whereAlias('brand')->first();
+        if ($filterBand) {
+            $brand = $this->features->filter(function ($item) use ($filterBand) {
+                return $item->filter == $filterBand->id;
+            })->first();
+        }
+
+        return $brand->{evo()->getConfig('lang', 'base')} ?? '';
     }
 }

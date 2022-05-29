@@ -78,3 +78,5 @@ $_lang['scommerce_grouping_parameter'] = 'Grouping parameter';
 $_lang['scommerce_grouping_parameter_help'] = 'It is selected from the list of options available to the product. The option must be of type '. $_lang['scommerce_stype_multiselect'];
 $_lang['scommerce_variations_save_help'] = 'Product variations are not yet available on the site. Set up the necessary options and save the product.';
 $_lang['scommerce_variations_price_help'] = 'The base price of the item will be replaced by the price of the first published item in the list.';
+$_lang['scommerce_gallery'] = 'Gallery';
+$_lang['scommerce_gallery_help'] = 'Used in product slider.';
