@@ -19,6 +19,8 @@ CREATE TABLE IF NOT EXISTS `{PREFIX}s_products`
     `type` tinyint(1) NOT NULL DEFAULT 0 COMMENT '0-Simple|1-Variable|2-Optional',
     `grouping_parameters` longtext  NOT NULL DEFAULT '',
     `variations` longtext  NOT NULL DEFAULT '',
+    `recommend` text  NOT NULL DEFAULT '',
+    `similar` text  NOT NULL DEFAULT '',
     `rating` int(11) NOT NULL DEFAULT 0,
     `views` int(11) NOT NULL DEFAULT 0,
     `created_at` timestamp NULL DEFAULT NULL,

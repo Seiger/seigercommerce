@@ -82,3 +82,5 @@ $_lang['scommerce_gallery'] = 'Gallery';
 $_lang['scommerce_gallery_help'] = 'Used in product slider.';
 $_lang['scommerce_downloads'] = 'Downloads';
 $_lang['scommerce_downloads_help'] = 'Files to download, such as certificates.';
+$_lang['scommerce_recommend'] = 'Recommend';
+$_lang['scommerce_similar'] = 'Similar';

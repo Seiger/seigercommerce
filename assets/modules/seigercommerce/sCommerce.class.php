@@ -180,6 +180,9 @@ if (!class_exists('sCommerce')) {
                 $variations = json_encode($data['variations']);
             }
 
+            $recommends = is_array($data['recommends']) ? implode(',', $data['recommends']) : '';
+            $similars = is_array($data['similars']) ? implode(',', $data['similars']) : '';
+
             $product->published = (int)$data['published'];
             $product->availability = (int)$data['availability'];
             $product->status = (int)$data['status'];
@@ -195,6 +198,8 @@ if (!class_exists('sCommerce')) {
             $product->weight = $this->validatePrice($data['weight']);
             $product->grouping_parameters = $grouping_parameters;
             $product->variations = $variations;
+            $product->recommend = $recommends;
+            $product->similar = $similars;
             $product->save();
 
             foreach ($this->langTabs() as $lang => $label) {

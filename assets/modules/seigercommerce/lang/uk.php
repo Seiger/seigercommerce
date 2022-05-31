@@ -82,3 +82,5 @@ $_lang['scommerce_gallery'] = 'Галерея';
 $_lang['scommerce_gallery_help'] = 'Використовується у слайдері товару.';
 $_lang['scommerce_downloads'] = 'Завантаження';
 $_lang['scommerce_downloads_help'] = 'Файли для завантаження, наприклад сертифікати.';
+$_lang['scommerce_recommend'] = 'Рекомендовані';
+$_lang['scommerce_similar'] = 'Схожі';
