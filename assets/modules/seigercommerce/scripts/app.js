@@ -98,8 +98,8 @@ $(document).ready(function () {
     /*--------------------- Change variation ----------------------*/
     $(document).on('change', '[data-select-variation]', function () {
         $this = $(this);
-        $this.parents('.card').find('[data-variation]').attr('data-variation', $this.find('[selected]').val());
-        $this.parents('.card').find('.price__count').text($this.find('[selected]').attr('data-price'));
+        $this.parents('.card, .product__info').find('[data-variation]').attr('data-variation', $this.find('[selected]').val());
+        $this.parents('.card, .product__info').find('.price__count').text($this.find('[selected]').attr('data-price'));
     });
     /*--------------------- Change variation ----------------------*/
     /*------------------- Filter initialization -------------------*/
@@ -113,8 +113,78 @@ $(document).ready(function () {
         generateFilterUrl('price='+priceMin+'-'+priceMax);
         return false;
     });
-
     /*------------------- Filter initialization -------------------*/
+    /*------------------ Sorting initialization -------------------*/
+    $(document).on("click", "[data-sort]", function () {
+        var sort = $(this).attr("data-sort");
+        catalogSort(sort);
+        return false;
+    });
+    function catalogSort(sort) {
+        var _url = window.location.href;
+        if (window.location.hash.length > 0) {
+            _url = _url.replace(window.location.hash, '');
+        }
+        var parts= _url.split('?');
+        if (parts.length>=2) {
+            var prefix = encodeURIComponent("sort")+"=";
+            var pars= parts[1].split(/[&;]/g);
+            //reverse iteration as may be destructive
+            for (var i= pars.length; i-- > 0;) {
+                //idiom for string.startsWith
+                if (pars[i].lastIndexOf(prefix, 0) !== -1) {
+                    pars.splice(i, 1);
+                }
+            }
+            _url= parts[0] + (pars.length > 0 ? "?" + pars.join('&') : "");
+        }
+        if (sort.length > 0) {
+            if (_url.indexOf("?") < 0) {
+                _url += "?sort=" + sort;
+            } else {
+                _url += "&sort=" + sort;
+            }
+        }
+
+        _url += "#catalog";
+        window.location.href = _url;
+        return false;
+    }
+    $(document).on("click", "[data-by]", function () {
+        var by = $(this).attr("data-by");
+        catalogSortBy(by);
+        return false;
+    });
+    function catalogSortBy(by) {
+        var _url = window.location.href;
+        if (window.location.hash.length > 0) {
+            _url = _url.replace(window.location.hash, '');
+        }
+        var parts= _url.split('?');
+        if (parts.length>=2) {
+            var prefix = encodeURIComponent("by")+"=";
+            var pars= parts[1].split(/[&;]/g);
+            //reverse iteration as may be destructive
+            for (var i= pars.length; i-- > 0;) {
+                //idiom for string.startsWith
+                if (pars[i].lastIndexOf(prefix, 0) !== -1) {
+                    pars.splice(i, 1);
+                }
+            }
+            _url= parts[0] + (pars.length > 0 ? "?" + pars.join('&') : "");
+        }
+        if (by.length > 0) {
+            if (_url.indexOf("?") < 0) {
+                _url += "?by=" + by;
+            } else {
+                _url += "&by=" + by;
+            }
+        }
+        _url += "#catalog";
+        window.location.href = _url;
+        return false;
+    }
+    /*------------------ Sorting initialization -------------------*/
 });
 /*------------------- Filter URL Generator --------------------*/
 function generateFilterUrl(filter, type) {

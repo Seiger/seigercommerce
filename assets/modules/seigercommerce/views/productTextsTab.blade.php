@@ -32,6 +32,16 @@
 
         <div class="row form-row">
             <div class="col-auto col-title">
+                <label for="{{$lang}}_downloads" class="warning">{{$_lang['scommerce_downloads']}}</label>
+                <i class="fa fa-question-circle" data-tooltip="{{$_lang['scommerce_downloads_help']}}"></i>
+            </div>
+            <div class="col">
+                {!! sGallery::initialise('sectionDownloads', 'product-downloads-'.$lang, 'i') !!}
+            </div>
+        </div>
+
+        <div class="row form-row">
+            <div class="col-auto col-title">
                 <label for="{{$lang}}_seotitle" class="warning" data-key="{{$lang}}_seotitle">{{$_lang['scommerce_seotitle']}}</label>
                 <i class="fa fa-question-circle" data-tooltip="{{$_lang['scommerce_seotitle_help']}}"></i>
             </div>

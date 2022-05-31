@@ -80,3 +80,5 @@ $_lang['scommerce_variations_save_help'] = 'Вариации товара все
 $_lang['scommerce_variations_price_help'] = 'Основная цена товара будет заменена на цену первой опубликованной из списка.';
 $_lang['scommerce_gallery'] = 'Галерея';
 $_lang['scommerce_gallery_help'] = 'Используется в слайдере товара.';
+$_lang['scommerce_downloads'] = 'Загрузки';
+$_lang['scommerce_downloads_help'] = 'Файлы для загрузки, например сертификаты.';

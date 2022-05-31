@@ -108,7 +108,11 @@ class sProduct extends Eloquent\Model
      */
     public function features()
     {
-        return $this->belongsToMany(sFilterValue::class, 's_product_features', 'product', 'feature', 'product')->orderBy('position');
+        return $this
+            ->belongsToMany(sFilterValue::class, 's_product_features', 'product', 'feature', 'product')
+            ->leftJoin('s_filters', 's_filters.id', '=', 's_filter_values.filter')
+            ->orderBy('s_filters.position')
+            ->orderBy('s_filter_values.position');
     }
 
     /**
@@ -145,7 +149,7 @@ class sProduct extends Eloquent\Model
     /**
      * Get the product full link
      *
-     * @return string link
+     * @return string full_link
      */
     public function getFullLinkAttribute()
     {

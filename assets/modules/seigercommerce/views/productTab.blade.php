@@ -181,8 +181,7 @@
                 <i class="fa fa-question-circle" data-tooltip="{{$_lang["scommerce_gallery_help"]}}"></i>
             </div>
             <div class="col">
-                @php($sGalleryController = new \Seiger\sGallery\Controllers\sGalleryController('section', 'product', 'i'))
-                {!! $sGalleryController->index() !!}
+                {!! sGallery::initialise('section', 'product', 'i') !!}
             </div>
         </div>
     </div>

@@ -9,8 +9,16 @@ class sFilterValue extends Eloquent\Model
     /**
      * Get the filter that owns the value.
      */
-    public function filter()
+    public function getFilter()
     {
         return $this->belongsTo(sFilter::class, 'filter');
+    }
+
+    /**
+     * Get the translates for the filter.
+     */
+    public function texts()
+    {
+        return $this->hasMany(sFilterTranslate::class, 'filter', 'filter');
     }
 }

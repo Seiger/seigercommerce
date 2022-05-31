@@ -80,3 +80,5 @@ $_lang['scommerce_variations_save_help'] = 'Product variations are not yet avail
 $_lang['scommerce_variations_price_help'] = 'The base price of the item will be replaced by the price of the first published item in the list.';
 $_lang['scommerce_gallery'] = 'Gallery';
 $_lang['scommerce_gallery_help'] = 'Used in product slider.';
+$_lang['scommerce_downloads'] = 'Downloads';
+$_lang['scommerce_downloads_help'] = 'Files to download, such as certificates.';
