@@ -55,6 +55,7 @@ if (in_array($e->name, ['OnPageNotFound', 'OnWebPageInit'])) {
  * Binding Product Alias and Product ID [Product Alias => Product ID]
  */
 if ($e->name == 'OnCacheUpdate') {
+    $productList = [];
     $products = sProduct::wherePublished(1)->get();
     if ($products) {
         foreach ($products as $product) {
