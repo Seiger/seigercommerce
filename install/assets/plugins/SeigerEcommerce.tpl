@@ -7,7 +7,7 @@
  * @category    plugin
  * @version 1.0
  * @author  Seiger
- * @internal    @events OnManagerNodePrerender,OnCacheUpdate,OnPageNotFound,OnAfterLoadDocumentObject
+ * @internal    @events OnManagerNodePrerender,OnCacheUpdate,OnPageNotFound,OnAfterLoadDocumentObject,OnWebPageInit,OnManagerMenuPrerender
  * @internal	@modx_category Manager and Admin
  * @internal    @installset base, sample
  */
