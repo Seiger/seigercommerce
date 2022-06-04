@@ -174,17 +174,19 @@
         </div>
     </div>
 
-    <div class="row-col col-12">
-        <div class="row form-row">
-            <div class="col-auto col-title">
-                <label for="categories" class="warning" data-key="categories">{{$_lang["scommerce_gallery"]}}</label>
-                <i class="fa fa-question-circle" data-tooltip="{{$_lang["scommerce_gallery_help"]}}"></i>
-            </div>
-            <div class="col">
-                {!! sGallery::initialise('section', 'product', 'i') !!}
+    @if($product->product)
+        <div class="row-col col-12">
+            <div class="row form-row">
+                <div class="col-auto col-title">
+                    <label for="categories" class="warning" data-key="categories">{{$_lang["scommerce_gallery"]}}</label>
+                    <i class="fa fa-question-circle" data-tooltip="{{$_lang["scommerce_gallery_help"]}}"></i>
+                </div>
+                <div class="col">
+                    {!! sGallery::initialise('section', 'product', 'i') !!}
+                </div>
             </div>
         </div>
-    </div>
+    @endif
 
     <div class="row-col col-lg-6 col-md-6 col-12">
         <div class="row form-row">
@@ -194,8 +196,8 @@
             <div class="col">
                 @php($recommends = Str::of($product->recommend)->explode(','))
                 <select id="recommends" class="form-control select2" name="recommends[]" multiple onchange="documentDirty=true;">
-                    @foreach($sCommerce->productsAll() as $value)
-                        <option value="{{$value->product}}" @if(in_array($value->product, $recommends)) selected @endif>{{$value->pagetitle}}</option>
+                    @foreach($sCommerce->productsAll()->where('product', '!=', request()->i) as $value)
+                        <option value="{{$value->product}}" @if(Arr::has($recommends, $value->product)) selected @endif>{{$value->pagetitle}}</option>
                     @endforeach
                 </select>
             </div>
@@ -210,8 +212,8 @@
             <div class="col">
                 @php($similars = Str::of($product->similar)->explode(','))
                 <select id="similars" class="form-control select2" name="similars[]" multiple onchange="documentDirty=true;">
-                    @foreach($sCommerce->productsAll() as $value)
-                        <option value="{{$value->product}}" @if(in_array($value->product, $similars)) selected @endif>{{$value->pagetitle}}</option>
+                    @foreach($sCommerce->productsAll()->where('product', '!=', request()->i) as $value)
+                        <option value="{{$value->product}}" @if(Arr::has($similars, $value->product)) selected @endif>{{$value->pagetitle}}</option>
                     @endforeach
                 </select>
             </div>
