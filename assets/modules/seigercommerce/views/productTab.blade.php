@@ -192,7 +192,7 @@
                 <label for="categories" class="warning">{{$_lang["scommerce_recommend"]}}</label>
             </div>
             <div class="col">
-                @php($recommends = (trim($product->recommend) ? explode(',', $product->recommend) : []))
+                @php($recommends = Str::of($product->recommend)->explode(','))
                 <select id="recommends" class="form-control select2" name="recommends[]" multiple onchange="documentDirty=true;">
                     @foreach($sCommerce->productsAll() as $value)
                         <option value="{{$value->product}}" @if(in_array($value->product, $recommends)) selected @endif>{{$value->pagetitle}}</option>
@@ -208,7 +208,7 @@
                 <label for="categories" class="warning">{{$_lang["scommerce_similar"]}}</label>
             </div>
             <div class="col">
-                @php($similars = (trim($product->similar) ? explode(',', $product->similar) : []))
+                @php($similars = Str::of($product->similar)->explode(','))
                 <select id="similars" class="form-control select2" name="similars[]" multiple onchange="documentDirty=true;">
                     @foreach($sCommerce->productsAll() as $value)
                         <option value="{{$value->product}}" @if(in_array($value->product, $similars)) selected @endif>{{$value->pagetitle}}</option>
