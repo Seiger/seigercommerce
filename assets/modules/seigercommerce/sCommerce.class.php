@@ -9,6 +9,7 @@ require_once MODX_BASE_PATH . 'assets/modules/seigercommerce/models/sProductTran
 require_once MODX_BASE_PATH . 'assets/modules/seigercommerce/models/sFilter.php';
 require_once MODX_BASE_PATH . 'assets/modules/seigercommerce/models/sFilterTranslate.php';
 require_once MODX_BASE_PATH . 'assets/modules/seigercommerce/models/sFilterValue.php';
+require_once MODX_BASE_PATH . 'assets/modules/seigercommerce/models/sUserCommerceAttribute.php';
 require_once MODX_BASE_PATH . 'assets/modules/seigercommerce/models/sMailTemplate.php';
 
 use EvolutionCMS\Mail;
