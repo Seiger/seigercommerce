@@ -175,15 +175,10 @@ class sProduct extends Eloquent\Model
      */
     public function getCoverSrcAttribute()
     {
-        $site_start = evo()->getConfig('site_start', 1);
-        $base_url = UrlProcessor::makeUrl($site_start);
-        if (str_starts_with($base_url, '/')) {
-            $base_url = MODX_SITE_URL . ltrim($base_url, '/');
-        }
         if (!empty($this->cover) && is_file(MODX_BASE_PATH . $this->cover)) {
-            $coverSrc = $base_url . $this->cover;
+            $coverSrc = MODX_SITE_URL . $this->cover;
         } else {
-            $coverSrc = $base_url . 'assets/modules/seigercommerce/images/noimage.png';
+            $coverSrc = MODX_SITE_URL . 'assets/modules/seigercommerce/images/noimage.png';
         }
 
         return $coverSrc;
