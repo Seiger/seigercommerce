@@ -84,3 +84,4 @@ $_lang['scommerce_downloads'] = 'Downloads';
 $_lang['scommerce_downloads_help'] = 'Files to download, such as certificates.';
 $_lang['scommerce_recommend'] = 'Recommend';
 $_lang['scommerce_similar'] = 'Similar';
+$_lang['scommerce_rating'] = 'Rating';

@@ -219,6 +219,21 @@
             </div>
         </div>
     </div>
+
+    <div class="row-col col-lg-6 col-md-6 col-12">
+        <div class="row form-row">
+            <div class="col-auto col-title">
+                <label for="categories" class="warning">{{$_lang["scommerce_rating"]}}</label>
+            </div>
+            <div class="col">
+                <select id="rating" class="form-control select2" name="rating" onchange="documentDirty=true;">
+                    @foreach([0, 1, 2, 3, 4, 5] as $value)
+                        <option value="{{$value}}" @if($product->rating == $value) selected @endif>{{$value}}</option>
+                    @endforeach
+                </select>
+            </div>
+        </div>
+    </div>
 </div>
 <div class="split my-3"></div>
 

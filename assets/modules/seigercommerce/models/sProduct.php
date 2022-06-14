@@ -2,6 +2,7 @@
 
 use EvolutionCMS\Facades\UrlProcessor;
 use Illuminate\Database\Eloquent;
+use Illuminate\Support\Facades\DB;
 use ReflectionClass;
 
 class sProduct extends Eloquent\Model
@@ -124,7 +125,17 @@ class sProduct extends Eloquent\Model
      */
     public function scopeLang($query, $locale)
     {
-        return $this->leftJoin('s_product_translates', 's_products.id', '=', 's_product_translates.product')->where('lang', '=', $locale);
+        return $this->leftJoin('s_product_translates', function ($leftJoin) use ($locale) {
+            $leftJoin->on('s_products.id', '=', 's_product_translates.product')
+                ->where('lang', function ($leftJoin) use ($locale) {
+                    $leftJoin->select('lang')
+                        ->from('s_product_translates')
+                        ->whereRaw(DB::getTablePrefix().'s_product_translates.product = '.DB::getTablePrefix().'s_products.id')
+                        ->whereIn('lang', [$locale, 'base'])
+                        ->orderByRaw('FIELD(lang, "'.$locale.'", "base")')
+                        ->limit(1);
+                });
+        });
     }
 
     /**

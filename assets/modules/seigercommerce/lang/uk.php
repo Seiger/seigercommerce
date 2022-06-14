@@ -84,3 +84,4 @@ $_lang['scommerce_downloads'] = 'Завантаження';
 $_lang['scommerce_downloads_help'] = 'Файли для завантаження, наприклад сертифікати.';
 $_lang['scommerce_recommend'] = 'Рекомендовані';
 $_lang['scommerce_similar'] = 'Схожі';
+$_lang['scommerce_rating'] = 'Рейтинг';
