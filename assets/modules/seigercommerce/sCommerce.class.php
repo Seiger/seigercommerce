@@ -181,8 +181,8 @@ if (!class_exists('sCommerce')) {
                 $variations = json_encode($data['variations']);
             }
 
-            $recommends = is_array($data['recommends']) ? implode(',', $data['recommends']) : '';
-            $similars = is_array($data['similars']) ? implode(',', $data['similars']) : '';
+            $recommends = (isset($data['recommends']) && is_array($data['recommends'])) ? implode(',', $data['recommends']) : '';
+            $similars = (isset($data['similars']) && is_array($data['similars'])) ? implode(',', $data['similars']) : '';
 
             $product->published = (int)$data['published'];
             $product->availability = (int)$data['availability'];
