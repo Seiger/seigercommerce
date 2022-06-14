@@ -62,6 +62,9 @@ switch ($data['get']) {
         foreach ($fTexts as $text) {
             $texts[$text['lang']] = $text;
         }
+        if (!isset($texts[evo()->getConfig('s_lang_default', 'base')]) && isset($texts['base'])) {
+            $texts[evo()->getConfig('s_lang_default', 'base')] = $texts['base'];
+        }
         $data['filter'] = $filter;
         $data['categories'] = $categories;
         $data['texts'] = $texts;
