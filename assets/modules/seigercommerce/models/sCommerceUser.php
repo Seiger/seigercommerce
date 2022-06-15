@@ -6,5 +6,5 @@ use Illuminate\Database\Eloquent;
  * @property string $internalKey
  */
 
-class sUserCommerceAttribute extends Eloquent\Model
+class sCommerceUser extends Eloquent\Model
 {}

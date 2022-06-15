@@ -148,10 +148,11 @@ CREATE TABLE IF NOT EXISTS `{PREFIX}s_filter_category` (
 -- Table structure `{PREFIX}s_user_commerce_attributes`
 --
 
-CREATE TABLE IF NOT EXISTS `{PREFIX}s_user_commerce_attributes` (
+CREATE TABLE IF NOT EXISTS `{PREFIX}s_commerce_users` (
     `id` int(11) NOT NULL AUTO_INCREMENT,
-    `internal_key` int(11) NOT NULL,
-    `product_history` longtext CHARACTER SET utf8mb4 NOT NULL DEFAULT '',
+    `user` int(11) NOT NULL,
+    `history` longtext CHARACTER SET utf8mb4 NOT NULL DEFAULT '',
+    `wishlist` longtext CHARACTER SET utf8mb4 NOT NULL DEFAULT '',
     `created_at` timestamp NULL DEFAULT NULL,
     `updated_at` timestamp NULL DEFAULT NULL,
     PRIMARY KEY (`id`)
