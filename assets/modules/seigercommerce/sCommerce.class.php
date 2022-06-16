@@ -257,8 +257,8 @@ if (!class_exists('sCommerce')) {
          */
         public function filters(): object
         {
-            $order = 's_filters.updated_at';
-            $direc = 'desc';
+            $order = 's_filters.position';
+            $direc = 'asc';
 
             return sFilter::lang($this->langDefault())->orderBy($order, $direc)->get();
         }
