@@ -672,6 +672,16 @@ if (!class_exists('sCommerce')) {
             return $out;
         }
 
+        /**
+         * Send Email
+         *
+         * @param $to
+         * @param $name
+         * @param $data
+         * @param $lang
+         * @return bool
+         * @throws \PHPMailer\PHPMailer\Exception
+         */
         public function sendMail($to, $name, $data, $lang = false)
         {
             // Language detection

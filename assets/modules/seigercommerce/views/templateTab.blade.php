@@ -18,7 +18,7 @@
                 <label for="alias" class="warning" data-key="alias">{{$_lang["scommerce_identifier"]}}</label>
             </div>
             <div class="col">
-                <input type="text" id="alias" class="form-control" name="alias" value="{{$template['base']->name ?? ''}}" {{$disabled}} {{trim($template['base']->name) ? 'disabled' : ''}} maxlength="255" onchange="documentDirty=true;" spellcheck="true">
+                <input type="text" id="alias" class="form-control" name="alias" value="{{$template['base']->name ?? ''}}" {{$disabled}} {{isset($template['base']) && trim($template['base']->name) ? 'disabled' : ''}} maxlength="255" onchange="documentDirty=true;" spellcheck="true">
             </div>
         </div>
     </div>

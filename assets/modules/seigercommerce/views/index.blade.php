@@ -127,8 +127,8 @@
                 @if(in_array($get, ['template']))
                     <div class="tab-page templateTab" id="templateTab">
                         <h2 class="tab">
-                            <a href="{{$url}}&get=template&i={{$template['base']->name}}">
-                                <span><i class="fab fa-mailchimp"></i> {{$template['base']->title}}</span>
+                            <a href="{{$url}}&get=template&i={{$template['base']->name ?? ''}}">
+                                <span><i class="fab fa-mailchimp"></i> {{$template['base']->title ?? $_lang['scommerce_status_new']}}</span>
                             </a>
                         </h2>
                         <script>tpResources.addTabPage(document.getElementById('templateTab'));</script>
