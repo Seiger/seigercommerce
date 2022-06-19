@@ -708,7 +708,7 @@ if (!class_exists('sCommerce')) {
             $body = UrlProcessor::rewriteUrls($body);
 
             // Sending letter
-            $params['to'] = evo()->getConfig('emailsender');
+            $params['to'] = $params['to'] = $to;;
             $params['subject'] = evo()->mergeSettingsContent($template->subject);
             $params['body'] = $body;
 
