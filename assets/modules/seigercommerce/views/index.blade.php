@@ -112,6 +112,20 @@
             @endif
 
             @if(!in_array($get, ['product', 'filter', 'filterValues']))
+                <div class="tab-page promoCodesTab" id="promoCodesTab">
+                    <h2 class="tab">
+                        <a href="{!!$url!!}&get=promoCodes">
+                            <span><i class="fas fa-frog" data-tooltip="{{$_lang["scommerce_promo_codes_help"]}}"></i>&emsp;{{$_lang['scommerce_promo_codes']}}</span>
+                        </a>
+                    </h2>
+                    <script>tpResources.addTabPage(document.getElementById('promoCodesTab'));</script>
+                    @if($get == 'promoCodes')
+                        @include('promoCodesTab')
+                    @endif
+                </div>
+            @endif
+
+            @if(!in_array($get, ['product', 'filter', 'filterValues']))
                 <div class="tab-page configsTab" id="configsTab">
                     <h2 class="tab">
                         <a href="{!!$url!!}&get=configs">

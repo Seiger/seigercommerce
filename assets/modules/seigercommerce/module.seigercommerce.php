@@ -96,6 +96,9 @@ switch ($data['get']) {
     case "templateSave":
         $sCommerce->saveTemplate(request()->all());
         break;
+    case "promoCodeSave":
+        $sCommerce->savePromoCode(request()->all());
+        break;
 }
 
 $sCommerce->view('index', $data);

@@ -443,6 +443,12 @@ if (!class_exists('sCommerce')) {
                 });
         }
 
+        /**
+         * Save chunk Template for Email
+         *
+         * @param array $data
+         * @return void
+         */
         public function saveTemplate(array $data)
         {
             $fields = [];
@@ -489,6 +495,38 @@ if (!class_exists('sCommerce')) {
             }
 
             return header('Location: ' . $this->moduleUrl() . '&get=configs');
+        }
+
+        /**
+         * Save Promo code
+         *
+         * @param array $data
+         * @return void
+         */
+        public function savePromoCode(array $data)
+        {
+            if (!isset($data['validity_from']) || $data['validity_from'] == '') {
+                $validity_from = Carbon::now()->startOfDay()->toDateTimeString();
+            } else {
+                $validity_from = Carbon::parse($data['validity_from'])->startOfDay()->toDateTimeString();
+            }
+
+            if (!isset($data['validity_to']) || $data['validity_to'] == '') {
+                $validity_to = null;
+            } else {
+                $validity_to = Carbon::parse($data['validity_to'])->endOfDay()->toDateTimeString();
+            }
+
+            $promoCode = sPromoCode::whereCode($data['code'])->firstOrCreate();
+            $promoCode->code = $data['code'];
+            $promoCode->discount = (int)$data['discount'];
+            $promoCode->type = (int)$data['type'];
+            $promoCode->validity_from = $validity_from;
+            $promoCode->validity_to = $validity_to;
+            $promoCode->published = (int)$data['published'];
+            $promoCode->save();
+
+            return header('Location: ' . $this->moduleUrl() . '&get=promoCodes');
         }
 
         /**
@@ -708,7 +746,7 @@ if (!class_exists('sCommerce')) {
             $body = UrlProcessor::rewriteUrls($body);
 
             // Sending letter
-            $params['to'] = $params['to'] = $to;;
+            $params['to'] = $params['to'] = $to;
             $params['subject'] = evo()->mergeSettingsContent($template->subject);
             $params['body'] = $body;
 
