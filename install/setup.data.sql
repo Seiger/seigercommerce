@@ -181,6 +181,27 @@ CREATE TABLE IF NOT EXISTS `{PREFIX}s_mail_templates`
 -- --------------------------------------------------------
 
 --
+-- Table structure `{PREFIX}s_promo_codes`
+--
+
+CREATE TABLE IF NOT EXISTS `{PREFIX}s_promo_codes`
+(
+    `id` int(11) NOT NULL AUTO_INCREMENT,
+    `code` varchar(512) NOT NULL,
+    `validity_from` timestamp NULL DEFAULT NULL,
+    `validity_to` timestamp NULL DEFAULT NULL,
+    `discount` int(11) NOT NULL DEFAULT 0,
+    `type` tinyint(1) NOT NULL DEFAULT 0 COMMENT '0-Percent|1-Fixed',
+    `published` tinyint(1) NOT NULL DEFAULT 0,
+    `applieds` int(11) NOT NULL DEFAULT 0,
+    `created_at` timestamp NULL DEFAULT NULL,
+    `updated_at` timestamp NULL DEFAULT NULL,
+    PRIMARY KEY (`id`)
+) ENGINE = MyISAM {TABLEENCODING} AUTO_INCREMENT=1;
+
+-- --------------------------------------------------------
+
+--
 -- Seed mail templates
 --
 

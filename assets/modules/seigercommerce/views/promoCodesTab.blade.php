@@ -104,7 +104,7 @@
                                     <div class="input-group-prepend">
                                         <span class="input-group-text">{{$_lang['scommerce_from']}}</span>
                                     </div>
-                                    <input type="text" id="validity_from" name="validity_from" class="form-control DatePicker" data-format="dd-mm-YYYY">
+                                    <input type="text" id="validity_from" name="validity_from" class="form-control DatePicker" data-format="dd-mm-YYYY 00:00">
                                     <span class="input-group-append">
                                         <a class="btn text-danger" href="javascript:(0);" onclick="documentDirty=true; return true;">
                                             <i class="fa fa-calendar-times-o" title="{{$_lang["remove_date"]}}"></i>
@@ -113,7 +113,7 @@
                                     <div class="input-group-prepend">
                                         <span class="input-group-text">{{$_lang['scommerce_to']}}</span>
                                     </div>
-                                    <input type="text" id="validity_to" name="validity_to" class="form-control DatePicker" data-format="dd-mm-YYYY">
+                                    <input type="text" id="validity_to" name="validity_to" class="form-control DatePicker" data-format="dd-mm-YYYY 23:59">
                                     <span class="input-group-append">
                                         <a class="btn text-danger" href="javascript:(0);" onclick="documentDirty=true; return true;">
                                             <i class="fa fa-calendar-times-o" title="{{$_lang["remove_date"]}}"></i>

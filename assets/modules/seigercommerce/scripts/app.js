@@ -3,41 +3,44 @@ document.addEventListener('DOMContentLoaded', function() {
     const ajaxRoot = document.getElementsByName('ajaxRoot')[0].content;
     /*------------------- URL for AJAX requests -------------------*/
     /*--------------------- Submitting a form ---------------------*/
-    document.querySelector('.scommerce-ajax').addEventListener('submit', function (e) {
-        let form = this;
-        let method = form.getAttribute('method');
-        let submit = form.querySelector('[type="submit"]');
+    const submitting = document.querySelectorAll('.scommerce-ajax');
+    for (let i = 0; i < submitting.length; i++) {
+        submitting[i].addEventListener("click", function(e) {
+            let form = this;
+            let method = form.getAttribute('method');
+            let submit = form.querySelector('[type="submit"]');
 
-        if (method === null) {
-            method = 'post';
-        }
-
-        submit.disabled = true;
-
-        fetch(ajaxRoot, {
-            method: method,
-            cache: "no-store",
-            headers: {
-                "X-Requested-With": "XMLHttpRequest"
-            },
-            body: new FormData(form)
-        }).then((response) => {
-            return response.json();
-        }).then((data) => {
-            document.getElementById('modal-thank-message').textContent = data.message;
-            $.fancybox.open({src:"#thank",type:"inline"});
-            submit.disabled = false;
-            console.info('Form', form.querySelector('[name="ajax"]').value+'.', data.message);
-        }).catch(function(error) {
-            if (error == 'SyntaxError: Unexpected token < in JSON at position 0') {
-                console.error('Request failed SyntaxError: The response must contain a JSON string.');
-            } else {
-                console.error('Request failed', error, '.');
+            if (method === null) {
+                method = 'post';
             }
-            submit.disabled = false;
+
+            submit.disabled = true;
+
+            fetch(ajaxRoot, {
+                method: method,
+                cache: "no-store",
+                headers: {
+                    "X-Requested-With": "XMLHttpRequest"
+                },
+                body: new FormData(form)
+            }).then((response) => {
+                return response.json();
+            }).then((data) => {
+                document.getElementById('modal-thank-message').textContent = data.message;
+                $.fancybox.open({src:"#thank",type:"inline"});
+                submit.disabled = false;
+                console.info('Form', form.querySelector('[name="ajax"]').value+'.', data.message);
+            }).catch(function(error) {
+                if (error == 'SyntaxError: Unexpected token < in JSON at position 0') {
+                    console.error('Request failed SyntaxError: The response must contain a JSON string.');
+                } else {
+                    console.error('Request failed', error, '.');
+                }
+                submit.disabled = false;
+            });
+            e.preventDefault();
         });
-        e.preventDefault();
-    });
+    }
     /*--------------------- Submitting a form ---------------------*/
     /*--------------------- Select variation ----------------------*/
     /*const selectVariation = document.querySelectorAll('[data-select-variation]');

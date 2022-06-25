@@ -38,6 +38,25 @@ switch (request()->ajax) {
             $ajax['message'] = __('Product added to cart!');
         }
         break;
+    /* Check the promo code actual */
+    case "checkPromoCode":
+        $ajax['status'] = 1;
+        $code = sPromoCode::whereCode(request()->promoCode)
+            ->where('validity_from', '<', now())
+            ->where(function($query) {
+                $query->where('validity_to', '>', now())
+                    ->orWhereNull('validity_to');
+            })
+            ->wherePublished(1)
+            ->first();
 
+        if ($code) {
+            $ajax['return'] = true;
+            $ajax['message'] = __('Ok');
+        } else {
+            $ajax['return'] = false;
+            $ajax['message'] = __('Promo code is not valid');
+        }
+        break;
 }
 die(json_encode($ajax));
