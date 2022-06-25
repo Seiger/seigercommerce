@@ -40,7 +40,6 @@ switch (request()->ajax) {
         break;
     /* Check the promo code actual */
     case "checkPromoCode":
-        $ajax['status'] = 1;
         $code = sPromoCode::whereCode(request()->promoCode)
             ->where('validity_from', '<', now())
             ->where(function($query) {
@@ -51,10 +50,11 @@ switch (request()->ajax) {
             ->first();
 
         if ($code) {
-            $ajax['return'] = true;
+            $ajax['status'] = 1;
             $ajax['message'] = __('Ok');
         } else {
-            $ajax['return'] = false;
+            $ajax['status'] = 2;
+            $ajax['title'] = __('Attention');
             $ajax['message'] = __('Promo code is not valid');
         }
         break;
