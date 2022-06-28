@@ -27,6 +27,7 @@
                 </tr>
             @endif
         @endforeach
+        <tr><td></td><td></td><td></td></tr>
         </tbody>
     </table>
 </div>

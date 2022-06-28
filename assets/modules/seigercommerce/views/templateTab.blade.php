@@ -55,7 +55,7 @@
 @push('scripts.bot')
     <div id="actions">
         <div class="btn-group">
-            <a id="Button2" class="btn btn-primary" href="javascript:void(0);">
+            <a id="Button2" class="btn btn-primary" href="{{$url}}&get=template&i=">
                 <i class="fa fa-plus"></i>
                 <span>{{$_lang['scommerce_add_template']}}</span>
             </a>
