@@ -11,7 +11,9 @@ class sFilterValue extends Eloquent\Model
      */
     public function getFilter()
     {
-        return $this->belongsTo(sFilter::class, 'filter');
+        return $this->belongsTo(sFilter::class, 'filter')
+            ->leftJoin('s_filter_translates', 's_filters.id', '=', 's_filter_translates.filter')
+            ->whereLang(evo()->getConfig('lang', 'uk'));
     }
 
     /**
