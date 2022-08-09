@@ -62,7 +62,16 @@ if (!class_exists('sCommerce')) {
             $order = 's_products.updated_at';
             $direc = 'desc';
 
-            return sProduct::lang($this->langDefault())->orderBy($order, $direc)->get();
+            $query = sProduct::lang($this->langDefault());
+
+            if (request()->has('search')) {
+                $query->search();
+            }
+
+            $products = $query->orderBy($order, $direc)->paginate(30);
+            $products->withPath($this->url . (request()->has('search') ? '&search=' . request()->search : ''));
+
+            return $products;
         }
 
         /**

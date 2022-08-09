@@ -2,6 +2,7 @@
 
 use EvolutionCMS\Facades\UrlProcessor;
 use Illuminate\Database\Eloquent;
+use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Str;
 use ReflectionClass;
@@ -126,7 +127,7 @@ class sProduct extends Eloquent\Model
      */
     public function scopeLang($query, $locale)
     {
-        return $this->leftJoin('s_product_translates', function ($leftJoin) use ($locale) {
+        return $query->leftJoin('s_product_translates', function ($leftJoin) use ($locale) {
             $leftJoin->on('s_products.id', '=', 's_product_translates.product')
                 ->where('lang', function ($leftJoin) use ($locale) {
                     $leftJoin->select('lang')
@@ -142,12 +143,13 @@ class sProduct extends Eloquent\Model
     /**
      * Filter search
      *
-     * @return mixed
+     * @param Builder $query
+     * @return Builder
      */
-    public function scopeSearchProducts()
+    public function scopeSearchNew($query)
     {
         if (request()->has('search')) {
-            $fields = collect(['code', 'pagetitle', 'introtext', 'content']);
+            $fields = collect(['code', 'pagetitle']);
 
             $search = Str::of(request('search'))
                 ->stripTags()
@@ -160,9 +162,8 @@ class sProduct extends Eloquent\Model
 
             $search->map(fn($word) => $fields->map(fn($field) => $select->push("(CASE WHEN \"{$field}\" LIKE '%{$word}%' THEN 1 ELSE 0 END)"))); // Generate points source
 
-            return $this->select('*', DB::Raw('(' . $select->implode(' + ') . ') as points'))
+            return $query->addSelect('*', DB::Raw('(' . $select->implode(' + ') . ') as points'))
                 ->when($search->count(), fn($query) => $query->where(fn($query) => $search->map(fn($word) => $fields->map(fn($field) => $query->orWhere($field, 'like', "%{$word}%")))))
-                ->leftJoin('s_product_translates', 's_products.id', '=', 's_product_translates.product')->where('lang', '=', evo()->getConfig('lang', 'en'))
                 ->orderByDesc('points');
         }
     }

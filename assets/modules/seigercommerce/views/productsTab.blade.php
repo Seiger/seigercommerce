@@ -1,3 +1,12 @@
+<div class="input-group">
+    <input type="text" class="form-control" name="search" value="{{request()->search ?? ''}}" placeholder="Артикул или название товара" />
+    <span class="input-group-btn">
+        <button class="btn btn-light js_search" type="button" title="Поиск" style="padding:0 5px;color:#0275d8;">
+            <i class="fa fa-search" style="font-size:large;margin:5px;"></i>
+        </button>
+    </span>
+</div>
+<div class="split my-1"></div>
 <div class="table-responsive">
     <table class="table table-condensed table-hover sectionTrans">
         <thead>
@@ -52,6 +61,8 @@
         </tbody>
     </table>
 </div>
+<div class="split my-1"></div>
+<div class="paginator">{{$sCommerce->productsAll()->render()}}</div>
 
 @push('scripts.bot')
     <div id="actions">
@@ -61,4 +72,16 @@
             </a>
         </div>
     </div>
+    <script>
+        jQuery(document).on("click", ".js_search", function () {
+            var _form = jQuery(document).find("[name=\"search\"]");
+            window.location.href = window.location.href+'&'+_form.serialize();
+        });
+        jQuery(document).on('keypress', "[name=\"search\"]", function(e) {
+            if (e.which == 13) {
+                var _form = jQuery(document).find("[name=\"search\"]");
+                window.location.href = window.location.href+'&'+_form.serialize();
+            }
+        });
+    </script>
 @endpush
